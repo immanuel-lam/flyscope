@@ -106,7 +106,9 @@ class FoundationRuntime:
         first, second = x[..., :half], x[..., half:]
         return np.concatenate([first * cosine - second * sine, second * cosine + first * sine], axis=-1)
 
-    def next(self, prefix, graph=True, ablated=False, attention_cut=False, trace=False):
+    def next(self, prefix, graph=True, ablated=False, attention_cut=False, trace=False, inspect=False):
+        if inspect and not graph:
+            raise ValueError('Source-cell inspection is only available for source-graph computation')
         prefix = list(prefix)[-128:]
         if not prefix:
             raise ValueError('A nonempty token context is required')
@@ -135,12 +137,24 @@ class FoundationRuntime:
             readout = len(prefix) - 1
             injected = x.copy() if trace else None
         snapshots = [x.copy()] if trace else None
+        selected = np.concatenate([self.inputs[-8:], self.outputs[-16:]]) if inspect else None
+        inspection = None
+        if inspect:
+            inspection = {'schema': 'foundation-source-computation-v1', 'feature': 0,
+                          'cells': [{'id': self.ids[int(i)], 'index': int(i), 'slot': int(self.slots[i]),
+                                     'role': 'input' if i in self.inputs else 'readout'} for i in selected],
+                          'relay': [{'sourceId': self.ids[int(i)], 'targetId': self.ids[int(o)],
+                                     'featureContribution': float(w['model.embed_tokens.weight'][tokens[slot], 0])
+                                     if valid[slot] and not ablated else 0.}
+                                    for slot, (i, o) in enumerate(zip(self.inputs, self.outputs))],
+                          'blocks': [], 'assumptions': 'One selected feature from 576 per cell. Every cell computes. Self and MLP updates are local operations; relay and intercell attention use source edges. Continuous model values, not biological spikes.'}
         heads = self.config['num_attention_heads']
         kv_heads = self.config['num_key_value_heads']
         width = self.config['hidden_size']
         head_dim = width // heads
         for layer in range(self.config['num_hidden_layers']):
             key = f'model.layers.{layer}.'
+            before = x[selected, 0].copy() if inspect else None
             normed = self.norm(x, w[key + 'input_layernorm.weight'])
             q = (normed @ w[key + 'self_attn.q_proj.weight'].T).reshape(len(x), heads, head_dim).transpose(1, 0, 2)
             k = (normed @ w[key + 'self_attn.k_proj.weight'].T).reshape(len(x), kv_heads, head_dim).transpose(1, 0, 2)
@@ -154,15 +168,44 @@ class FoundationRuntime:
             attention /= attention.sum(axis=-1, keepdims=True)
             message = (attention @ v).transpose(1, 0, 2).reshape(len(x), width)
             x += message @ w[key + 'self_attn.o_proj.weight'].T
+            if inspect:
+                # This is the actual signed feature-0 contribution after the
+                # output projection, summed over all attention heads.
+                projected = np.einsum('hnd,hd->hn', v, w[key + 'self_attn.o_proj.weight'][0].reshape(heads, head_dim))
+                contributions = np.einsum('hij,hj->ij', attention[:, selected, :], projected)
+                after_attention = x[selected, 0].copy()
             normed = self.norm(x, w[key + 'post_attention_layernorm.weight'])
             gate = normed @ w[key + 'mlp.gate_proj.weight'].T
             gate = gate / (1 + np.exp(-np.clip(gate, -80, 80)))
             up = normed @ w[key + 'mlp.up_proj.weight'].T
             x += (gate * up) @ w[key + 'mlp.down_proj.weight'].T
+            if inspect:
+                edges = [{'source': j, 'target': i, 'contribution': float(contributions[i, pre])}
+                         for i, post in enumerate(selected) for j, pre in enumerate(selected)
+                         if pre != post and self.mask[post, pre]]
+                self_values = contributions[np.arange(len(selected)), selected]
+                shown = np.zeros(len(selected), np.float32)
+                for edge in edges:
+                    shown[edge['target']] += edge['contribution']
+                inspection['blocks'].append({'index': layer, 'before': before.tolist(),
+                    'afterAttention': after_attention.tolist(), 'after': x[selected, 0].tolist(),
+                    'selfContribution': self_values.tolist(), 'edges': edges,
+                    'otherCellContribution': (contributions.sum(axis=-1) - self_values - shown).tolist(),
+                    'mlpUpdate': (x[selected, 0] - after_attention).tolist()})
             if trace:
                 snapshots.append(x.copy())
         logits = w['model.embed_tokens.weight'] @ self.norm(x[readout], w['model.norm.weight'])
-        return logits, x, {'injected': injected, 'blocks': snapshots} if trace else None
+        details = {'injected': injected, 'blocks': snapshots} if trace else {}
+        if inspect:
+            inspection['activityRms'] = np.sqrt(np.mean(x * x, axis=-1)).tolist()
+            inspection['activityIds'] = self.ids
+            top = np.argsort(logits)[-5:][::-1]
+            probabilities = np.exp(logits.astype(np.float64) - np.max(logits))
+            probabilities /= probabilities.sum()
+            inspection['topTokens'] = [{'id': int(i), 'text': self.tokenizer.decode([int(i)]),
+                                        'probability': float(probabilities[i])} for i in top]
+            details['inspection'] = inspection
+        return logits, x, details if details else None
 
     def generate(self, message, max_tokens=16, graph=True):
         prompt = '<|im_start|>system\nYou are a helpful assistant.<|im_end|>\n'

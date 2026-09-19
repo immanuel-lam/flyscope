@@ -103,6 +103,61 @@ class FoundationChecks(unittest.TestCase):
             self.assertEqual(mask[row, -1], 1)
             self.assertTrue(np.all(mask[row, ~valid[row]] == 0))
 
+    def test_compact_inspection_reconstructs_actual_updates(self):
+        prefix = self.cpu.tokenizer.encode('What is a cat?').ids
+        logits, states, _ = self.cpu.next(prefix)
+        actual, observed, details = self.cpu.next(prefix, trace=True, inspect=True)
+        np.testing.assert_array_equal(actual, logits)
+        np.testing.assert_array_equal(observed, states)
+        view = details['inspection']
+        selected = np.array([c['index'] for c in view['cells']])
+        np.testing.assert_allclose(view['activityRms'], np.sqrt(np.mean(states * states, axis=-1)), rtol=1e-6)
+        for i, block in enumerate(view['blocks']):
+            np.testing.assert_array_equal(block['before'], details['blocks'][i][selected, 0])
+            np.testing.assert_array_equal(block['after'], details['blocks'][i + 1][selected, 0])
+            contribution = np.array(block['selfContribution']) + np.array(block['otherCellContribution'])
+            for edge in block['edges']:
+                pre, post = selected[edge['source']], selected[edge['target']]
+                self.assertNotEqual(pre, post)
+                self.assertTrue(self.cpu.mask[post, pre])
+                contribution[edge['target']] += edge['contribution']
+            np.testing.assert_allclose(np.array(block['before']) + contribution,
+                                       block['afterAttention'], atol=3e-4, rtol=3e-4)
+            np.testing.assert_allclose(np.array(block['afterAttention']) + block['mlpUpdate'],
+                                       block['after'], atol=3e-4, rtol=3e-4)
+        # Independently reconstruct the largest displayed first-block edge.
+        edge = max(view['blocks'][0]['edges'], key=lambda e: abs(e['contribution']))
+        pre, post = selected[edge['source']], selected[edge['target']]
+        w, key = self.cpu.weights, 'model.layers.0.'
+        z = self.cpu.norm(details['blocks'][0], w[key + 'input_layernorm.weight'])
+        q = (z @ w[key + 'self_attn.q_proj.weight'].T).reshape(512, 9, 64).transpose(1, 0, 2)
+        k = (z @ w[key + 'self_attn.k_proj.weight'].T).reshape(512, 3, 64).transpose(1, 0, 2)
+        v = (z @ w[key + 'self_attn.v_proj.weight'].T).reshape(512, 3, 64).transpose(1, 0, 2)
+        q, k = self.cpu.rope(q, self.cpu.slots), self.cpu.rope(k, self.cpu.slots)
+        allowed = self.cpu.mask[post] & (self.cpu.slots >= 128 - len(prefix))
+        allowed[post] = True
+        expected = 0.
+        for head in range(9):
+            score = k[head // 3].astype(np.float64) @ q[head, post].astype(np.float64) / 8
+            score[~allowed] = -np.inf
+            probability = np.exp(score - score.max())
+            probability /= probability.sum()
+            projected = np.dot(v[head // 3, pre], w[key + 'self_attn.o_proj.weight'][0, head * 64:(head + 1) * 64])
+            expected += float(probability[pre] * projected)
+        self.assertAlmostEqual(expected, edge['contribution'], places=4)
+
+    def test_compact_inspection_distinguishes_relay_and_attention_cuts(self):
+        _, _, full = self.cpu.next([50, 80, 60], inspect=True)
+        _, _, cut = self.cpu.next([50, 80, 60], ablated=True, inspect=True)
+        _, _, local = self.cpu.next([50, 80, 60], attention_cut=True, inspect=True)
+        self.assertTrue(any(r['featureContribution'] != 0 for r in full['inspection']['relay']))
+        self.assertTrue(all(r['featureContribution'] == 0 for r in cut['inspection']['relay']))
+        self.assertEqual(full['inspection']['relay'], local['inspection']['relay'])
+        for run in [cut, local]:
+            self.assertTrue(all(e['contribution'] == 0 for b in run['inspection']['blocks'] for e in b['edges']))
+        with self.assertRaisesRegex(ValueError, 'Source-cell'):
+            self.cpu.next([5], graph=False, inspect=True)
+
 
 if __name__ == '__main__':
     unittest.main()

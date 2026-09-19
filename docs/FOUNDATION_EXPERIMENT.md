@@ -65,3 +65,15 @@ VECLIB_MAXIMUM_THREADS=4 .venv-foundation/bin/python scripts/foundation/quantize
 VECLIB_MAXIMUM_THREADS=4 .venv-foundation/bin/python tests/foundation_storage_checks.py
 VECLIB_MAXIMUM_THREADS=4 .venv-foundation/bin/python scripts/foundation/check-storage.py --run adapt-1
 ```
+
+## compact computation inspection
+
+`runtime.next(..., inspect=True)` captures a compact record during the actual CPU calculation. It includes RMS activity for all 512 source cells and feature zero for eight input and sixteen readout cells across all 30 blocks. Each displayed directed connection carries its actual attention-weighted value after the output projection. Contributions from other cells, self operations and local MLP updates are reported separately. The initial source-paired relay is explicit. These are continuous engineered model states, not firing measurements.
+
+The trace includes raw full-vocabulary top-token probabilities before generation masking. It cannot be requested for the ordinary-reference model. Inspection leaves logits and final states unchanged. Tests reconstruct every displayed update from its terms, independently recompute the largest first-block displayed edge from the model weights, and distinguish a complete intercell cut from an attention-only cut that preserves the relay.
+
+```sh
+VECLIB_MAXIMUM_THREADS=4 .venv-foundation/bin/python scripts/foundation/inspect-computation.py --run adapt-1 --prompt 'What is a cat?'
+```
+
+The sample raw-text probe produced a 177,583-byte JSON record in about 0.410 seconds of CPU computation while training was running. This is a local diagnostic measurement, not a hosted speed guarantee. Full feature-vector debug snapshots are optional and separate. The compact trace is not yet connected to the website; the public FlyGPT still uses its existing scalar-model trace. Any replacement requires reply-quality, stream and browser checks before promotion.
