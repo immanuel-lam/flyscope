@@ -1,5 +1,6 @@
 import type { Activity } from '../data';
 export interface PhysicsRun {
+  memory?:{frames:{time:number;cue:number[];logits:number[];turn:number;phase:'cue'|'delay'|'response'}[];activity:Activity;control:string};
   obstacles?:{frames:{time:number;origin:number[];directions:number[][];distances:number[];turn:number;contacts:number}[];geometry:{position:number[];radius:number;halfHeight:number}[];control:string};
   odour?:{frames:{time:number;antennae:number[][];concentration:number[];turn:number}[];sourcePosition:number[];spreadMm:number;control:string};
   vision?:{frames:{time:number;eyes:string[];redFraction:number[];turn:number}[];target:number[];targetPosition?:number[];sourceSize:number[];control:string};
@@ -9,7 +10,7 @@ export interface PhysicsRun {
   geometry:{name?:string;body:number;vertices:number[];faces:number[];position:number[];quaternion:number[];color:number[]}[];
   bodyNames:string[];
   activity:Activity;
-  parameters:{duration:number;drive:number;turn:number;silenced:boolean;feedback:boolean;seed:number;vision?:boolean;visionControl?:boolean;target?:number[];odour?:boolean;odourControl?:boolean;obstacles?:boolean;avoidance?:boolean;layout?:string};
+  parameters:{duration:number;drive:number;turn:number;silenced:boolean;feedback:boolean;seed:number;vision?:boolean;visionControl?:boolean;target?:number[];odour?:boolean;odourControl?:boolean;obstacles?:boolean;avoidance?:boolean;layout?:string;memory?:boolean;cueSide?:string;resetMemory?:boolean};
   metrics:{displacementMm:number;finalHeightMm:number;wallSeconds:number;neurons:number;effectiveSignedEdges:number;recordedNeurons:number;maxContacts:number;physicsStepSeconds:number;neuralStepSeconds:number;targetStartDistanceMm?:number;targetFinalDistanceMm?:number;odourStartDistanceMm?:number;odourFinalDistanceMm?:number;obstacleContactSteps?:number;forwardProgressMm?:number};
   provenance:Record<string,string>;
 }

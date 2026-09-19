@@ -1,0 +1,22 @@
+{
+  "responseTimeSeconds": 1.8,
+  "leftFinalPositionMm": [
+    11.48975,
+    10.048993,
+    1.110952
+  ],
+  "rightFinalPositionMm": [
+    15.299044,
+    -5.983596,
+    1.10752
+  ],
+  "silencedDisplacementMm": 0.12620827848045468,
+  "checks": [
+    "independent CPU replay matches all memory samples",
+    "body paths identical before response",
+    "reset removes cue-dependent physical response",
+    "silencing zeros both models",
+    "browser overlay selection and rewind"
+  ],
+  "limitations": "Two sequential engineered models sharing source IDs; binary cue recall only. Reset can produce a default response, not silence. Browser suite had one dataset-loading timeout that passed on retry."
+}

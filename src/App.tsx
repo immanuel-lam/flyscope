@@ -72,6 +72,7 @@ export default function App() {
   const [playing, setPlaying] = useState(false);
   const [inspectActivity, setInspectActivity] = useState(false);
   const [chatActivity, setChatActivity] = useState<Activity>();
+  const [physicsActivitySource,setPhysicsActivitySource]=useState<'locomotion'|'memory'>('locomotion');
   const [physicsRun, setPhysicsRun] = useState<PhysicsRun>();
   const [motorMode, setMotorMode] = useState("off");
   const [motorCommand, setMotorCommand] = useState<MotorCommand>({
@@ -84,7 +85,7 @@ export default function App() {
     if (motorMode === "physics" && physicsRun)
       return {
         track: physicsTelemetry(physicsRun),
-        activity: physicsRun.activity,
+        activity: physicsActivitySource==='memory' && physicsRun.memory ? physicsRun.memory.activity : physicsRun.activity,
       };
     if (motorMode === "replay") return { track: dataset.motor };
     try {
@@ -100,7 +101,7 @@ export default function App() {
     } catch (e) {
       return { error: (e as Error).message };
     }
-  }, [dataset, motorMode, motorCommand, physicsRun]);
+  }, [dataset, motorMode, motorCommand, physicsRun, physicsActivitySource]);
   const displayDataset = useMemo(
     () =>
       (chatActivity ?? motorResult.activity)
@@ -842,6 +843,8 @@ export default function App() {
             </div>
             {isFull && (
               <PhysicsPanel
+                activitySource={physicsActivitySource}
+                onActivitySource={source=>{setPhysicsActivitySource(source);const activity=source==='memory'?physicsRun?.memory?.activity:physicsRun?.activity;const id=activity&&Object.keys(activity.values)[0];if(id)setSelected(id);}}
                 run={physicsRun}
                 time={time}
                 onRun={(run) => {
@@ -854,6 +857,7 @@ export default function App() {
                   }
                   setChatActivity(undefined);
                   setPhysicsRun(run);
+                  setPhysicsActivitySource('locomotion');
                   setMotorMode("physics");
                   setTime(0);
                   setPlaying(false);

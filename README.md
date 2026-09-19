@@ -133,3 +133,5 @@ physical simulation uses [neuromechfly / flygym](https://github.com/NeLy-EPFL/fl
 local odour experiments sample a defined field at both simulated antennae and route steering through the rate model. the panel shows concentrations during playback. two tested source positions show improved approach against disabled steering; this is not a turbulent plume or validated biological olfactory model. see [physical experiments](docs/PHYSICAL_FLY.md).
 
 local obstacle experiments use physical collisions and artificial head-mounted range rays. the panel shows sensor readings and contact time. tests include disabled steering, neural silencing and held-out layouts; avoidance can still touch obstacles or take inefficient detours.
+
+a [trained cue-memory experiment](docs/CUE_MEMORY.md) retains a brief left/right cue during a blank delay, then steers the physical fly. separate overlays show memory states and locomotion rates. reset, untrained, graph-ablation and held-out delay controls are documented. this is binary cue recall, not language reasoning.
