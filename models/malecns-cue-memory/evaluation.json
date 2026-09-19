@@ -1,0 +1,72 @@
+{
+  "conditions": [
+    {
+      "delaySteps": 16,
+      "cueAmplitude": 0.4,
+      "trials": 128,
+      "accuracy": {
+        "trained": 1.0,
+        "reset": 0.5,
+        "ablated": 0.5,
+        "untrained": 0.5
+      }
+    },
+    {
+      "delaySteps": 16,
+      "cueAmplitude": 1.6,
+      "trials": 128,
+      "accuracy": {
+        "trained": 1.0,
+        "reset": 0.5,
+        "ablated": 0.5,
+        "untrained": 0.5
+      }
+    },
+    {
+      "delaySteps": 24,
+      "cueAmplitude": 0.4,
+      "trials": 128,
+      "accuracy": {
+        "trained": 1.0,
+        "reset": 0.5,
+        "ablated": 0.5,
+        "untrained": 0.5
+      }
+    },
+    {
+      "delaySteps": 24,
+      "cueAmplitude": 1.6,
+      "trials": 128,
+      "accuracy": {
+        "trained": 1.0,
+        "reset": 0.5,
+        "ablated": 0.5,
+        "untrained": 0.5
+      }
+    },
+    {
+      "delaySteps": 48,
+      "cueAmplitude": 0.4,
+      "trials": 128,
+      "accuracy": {
+        "trained": 1.0,
+        "reset": 0.5,
+        "ablated": 0.5,
+        "untrained": 0.5
+      }
+    },
+    {
+      "delaySteps": 48,
+      "cueAmplitude": 1.6,
+      "trials": 128,
+      "accuracy": {
+        "trained": 1.0,
+        "reset": 0.5,
+        "ablated": 0.5,
+        "untrained": 0.5
+      }
+    }
+  ],
+  "cpuMlxMaxLogitError": 1.52587890625e-05,
+  "limitations": "Artificial binary cue recall with engineered dynamics; longer delays and strengths held out, not unseen semantic concepts or biological learning. No claim that this improves language ability."
+}
