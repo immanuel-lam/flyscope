@@ -3106,8 +3106,138 @@
   "tokenizerSha256": "aad4cbe52907b2c9e7aa4da02b412e506e324b25ea582e1086d011507c05cc7a",
   "graphSha256": "31fc438535a41aff55dffdc8ab01c92eeb021e081a5453daa8b5974fd1973869",
   "seed": 7,
-  "finetuning": null,
-  "modelId": "malecns-lm-512-v2",
+  "finetuning": {
+    "seed": 29,
+    "trainingPairs": 5697,
+    "validationPairs": 886,
+    "validationSample": 128,
+    "initialValidationLoss": 3.0239686965942383,
+    "bestValidationLoss": 2.9029078483581543,
+    "objective": "assistant next-token cross entropy on external conversation pairs; exact training pair deduplication; no authored Q&A",
+    "history": [
+      {
+        "step": 200,
+        "trainingLoss": 3.0533668994903564,
+        "validationLoss": 2.993544578552246,
+        "seconds": 10.142885416000354
+      },
+      {
+        "step": 400,
+        "trainingLoss": 2.9004340171813965,
+        "validationLoss": 2.979882001876831,
+        "seconds": 20.172376040998643
+      },
+      {
+        "step": 600,
+        "trainingLoss": 2.647587299346924,
+        "validationLoss": 2.9616899490356445,
+        "seconds": 30.235671040998568
+      },
+      {
+        "step": 800,
+        "trainingLoss": 2.705076217651367,
+        "validationLoss": 2.9542622566223145,
+        "seconds": 40.365797999998904
+      },
+      {
+        "step": 1000,
+        "trainingLoss": 2.8122403621673584,
+        "validationLoss": 2.940812826156616,
+        "seconds": 51.098838082998554
+      },
+      {
+        "step": 1200,
+        "trainingLoss": 2.6279635429382324,
+        "validationLoss": 2.9413604736328125,
+        "seconds": 62.3590853329988
+      },
+      {
+        "step": 1400,
+        "trainingLoss": 2.835021734237671,
+        "validationLoss": 2.929490089416504,
+        "seconds": 73.24617145799857
+      },
+      {
+        "step": 1600,
+        "trainingLoss": 2.5004730224609375,
+        "validationLoss": 2.9254512786865234,
+        "seconds": 83.79137674999947
+      },
+      {
+        "step": 1800,
+        "trainingLoss": 2.740838050842285,
+        "validationLoss": 2.923119068145752,
+        "seconds": 94.17113320800127
+      },
+      {
+        "step": 2000,
+        "trainingLoss": 2.599409818649292,
+        "validationLoss": 2.9238698482513428,
+        "seconds": 104.45720666600027
+      },
+      {
+        "step": 2200,
+        "trainingLoss": 2.457267999649048,
+        "validationLoss": 2.9223475456237793,
+        "seconds": 114.71668229100032
+      },
+      {
+        "step": 2400,
+        "trainingLoss": 2.531374931335449,
+        "validationLoss": 2.9246373176574707,
+        "seconds": 124.88299995800116
+      },
+      {
+        "step": 2600,
+        "trainingLoss": 2.681380271911621,
+        "validationLoss": 2.9209446907043457,
+        "seconds": 135.05707933300073
+      },
+      {
+        "step": 2800,
+        "trainingLoss": 2.455916404724121,
+        "validationLoss": 2.9169225692749023,
+        "seconds": 145.2590637909998
+      },
+      {
+        "step": 3000,
+        "trainingLoss": 2.2839784622192383,
+        "validationLoss": 2.915969133377075,
+        "seconds": 155.45876187500107
+      },
+      {
+        "step": 3200,
+        "trainingLoss": 2.4759373664855957,
+        "validationLoss": 2.912797212600708,
+        "seconds": 165.6974068749987
+      },
+      {
+        "step": 3400,
+        "trainingLoss": 2.420057773590088,
+        "validationLoss": 2.9090185165405273,
+        "seconds": 175.92906520799806
+      },
+      {
+        "step": 3600,
+        "trainingLoss": 2.5655839443206787,
+        "validationLoss": 2.9060909748077393,
+        "seconds": 186.10721579099845
+      },
+      {
+        "step": 3800,
+        "trainingLoss": 2.5137407779693604,
+        "validationLoss": 2.9093880653381348,
+        "seconds": 196.53294399999868
+      },
+      {
+        "step": 4000,
+        "trainingLoss": 2.3107502460479736,
+        "validationLoss": 2.9029078483581543,
+        "seconds": 207.9964202500014
+      }
+    ]
+  },
+  "modelId": "malecns-lm-512-v3",
   "architecture": "512 continuous recurrent cell states, 2 graph propagation steps/token, learned per-cell retention; 128 input cells and 384 disjoint readout cells; only observed directed edges permit inter-cell messages",
   "dynamics": "Artificial tanh states and learned signed weights; source counts define topology, not fixed physiological weights. State retention is a model assumption. No biological spiking claim.",
   "runtime": "NumPy + tokenizers; MLX required only for training/export",
@@ -3372,5 +3502,5 @@
       "length": 48
     }
   },
-  "weightsSha256": "10de32b86c56a18f4979ea8b94b08bcc42b4d710b3a31258cdd54b76daeed84f"
+  "weightsSha256": "499af42e14b6ccd730f06756ac005b212076529c1853573e8e3db7360f17d3d0"
 }

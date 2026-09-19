@@ -1,0 +1,266 @@
+{
+  "modelId": "malecns-lm-512-v3",
+  "testPairs": 64,
+  "meanResponseLossCorrectPrompt": 2.5193500394469113,
+  "meanResponseLossMismatchedPrompt": 2.791806648646328,
+  "uniqueGreedyReplies": 41,
+  "outputs": [
+    {
+      "prompt": "That sounds good, but I'm looking for something a bit more portable. Do you have any other suggestions?",
+      "generated": "Yes, I do. One popular idea is key together with a potential, and practice. You can also consider using a book for taking a warm"
+    },
+    {
+      "prompt": "Hello",
+      "generated": "Hello! How can I help you today?"
+    },
+    {
+      "prompt": "I have a guitar and a computer. What software would you recommend for recording music?",
+      "generated": "Yes, there are many online resources available for adults need 7-9 hours of sleep."
+    },
+    {
+      "prompt": "Do you have any recommendations for brands?",
+      "generated": "Yes, there are many great options. Some popular ones include Coursera, LinkedIn, and New York."
+    },
+    {
+      "prompt": "Hi",
+      "generated": "Hello! How can I help you today?"
+    },
+    {
+      "prompt": "That makes sense. Do you have any tips for finding a reliable contractor?",
+      "generated": "Yes, there are many online resources available for adults need 7-9 hours of sleep."
+    },
+    {
+      "prompt": "Okay, that makes sense. Can you give me another example of a simile?",
+      "generated": "The main difference is that affect the life cycle is a great way to get started. It's a good idea to check your corpoint, make sure to use"
+    },
+    {
+      "prompt": "Hey!",
+      "generated": "Hello! How can I help you today?"
+    },
+    {
+      "prompt": "I'll definitely do that. Are there any exercises I can do to help prevent shin splints?",
+      "generated": "Yes, there are many great options. Some popular ones include Coursera, LinkedIn, and New York."
+    },
+    {
+      "prompt": "That sounds like a lot. How can I get started with saving that much?",
+      "generated": "You can start by setting a specific time for expenses, or going on a walk, or a list of your papping."
+    },
+    {
+      "prompt": "Are climate models accurate?",
+      "generated": "Yes, there are many online resources available for adoption, such as GPS, and Christmas. They're allowing to learn and"
+    },
+    {
+      "prompt": "I'm thirsty, what are some popular juice options?",
+      "generated": "Some popular crafting foods include fruits, vegetables, and whole grains, and internal training."
+    },
+    {
+      "prompt": "I'm looking for a new pair of jeans. What are the current styles?",
+      "generated": "The main difference is that affect the life cycle of the most important thing in the mid of the Earth's calming, and the low of"
+    },
+    {
+      "prompt": "I'm a senior in high school, and we're getting ready to take our senior class photos. What's the usual attire for these photos?",
+      "generated": "The main difference is that affect the life cycle of the Earth's crustical hamans, but it's a good idea to check the store's webs"
+    },
+    {
+      "prompt": "I have a dog and I'm not sure how often I should bathe him.",
+      "generated": "You're welcome. I hope you find a great choice. You can also consider a career or a view of your city's cardio."
+    },
+    {
+      "prompt": "Thanks for the tips! Do you have any favorite destinations for underwater photography?",
+      "generated": "Yes, there are many online resources available for adults need 7-9 hours of sleep."
+    },
+    {
+      "prompt": "Hey!",
+      "generated": "Hello! How can I help you today?"
+    },
+    {
+      "prompt": "That sounds great. Are there any tutoring services that can provide one-on-one support?",
+      "generated": "Yes, there are many online resources available for adults need 7-9 hours of sleep."
+    },
+    {
+      "prompt": "I'm looking for some new YouTube channels to watch. What's popular right now?",
+      "generated": "Some popular crafting for cats include carrots, and bathrooms, and books, and cocking tips."
+    },
+    {
+      "prompt": "I see. I'll pay more attention to the store displays this weekend then.",
+      "generated": "You're welcome! I hope you find the perfect for your team's best to avoiding screens before bedtime."
+    },
+    {
+      "prompt": "It's for a wedding, and I want something classic and elegant.",
+      "generated": "You're welcome. I hope you find a great choice. You can also consider a career-mostring, you can also try to bring a list"
+    },
+    {
+      "prompt": "That sounds like a great idea. What are some other ways I can provide positive feedback?",
+      "generated": "You can find a simple recipe for beginners, including a local bike, or a mixing board game."
+    },
+    {
+      "prompt": "That sounds fun. Do you have any specific exercises that are suitable for kids?",
+      "generated": "Yes, there are many great options. Some popular ones include Coursera, LinkedIn, and New York."
+    },
+    {
+      "prompt": "I'm looking for a new frying pan. What are some good materials?",
+      "generated": "Some popular crafting cooking include cardio, or books, and cocking tips. They're all fun to watch and make sure to keep your dog"
+    },
+    {
+      "prompt": "Thanks for the help!",
+      "generated": "You're welcome! Have a great day!"
+    },
+    {
+      "prompt": "I'm feeling stressed and overwhelmed. What are some therapy options?",
+      "generated": "Some popular breakfast food for grow include throwing, book, and batteries, and book pieces like tooth or a monthle"
+    },
+    {
+      "prompt": "That sounds like a good idea. How do I find other parents who might be interested in carpooling?",
+      "generated": "Yes, there are many great options. Some popular ones include Coursera, LinkedIn, and Fitbit Coach. They offer a variety"
+    },
+    {
+      "prompt": "What's the best way to get around in Bora Bora?",
+      "generated": "The main difference is that affect the life cycle is a great way to get started. It's a good idea to check your corpoint, make sure to use"
+    },
+    {
+      "prompt": "Hey!",
+      "generated": "Hello! How can I help you today?"
+    },
+    {
+      "prompt": "That sounds great. Are there any popular scenic routes or day trips I can take from Paris?",
+      "generated": "Yes, there are many great options. You can also consider making a friend of family, friends, and cooking."
+    },
+    {
+      "prompt": "I was wondering what magnets are made of.",
+      "generated": "That's a great idea. It can help you with your dog and needs."
+    },
+    {
+      "prompt": "Is that why some people have blue eyes and others have brown eyes?",
+      "generated": "Yes, that's correct."
+    },
+    {
+      "prompt": "What about walking poles? Are they helpful?",
+      "generated": "Yes, there are many online resources that are often considered buttershevenible, and a larger, which are trending to remove"
+    },
+    {
+      "prompt": "That sounds great. What kind of experience do I need to join one of these leagues?",
+      "generated": "You can find a simple recipe for beginners, including a local bike, or a mixing board game."
+    },
+    {
+      "prompt": "I might check it out. Do you think TikTok will replace YouTube?",
+      "generated": "Yes, there are many online resources available, such as GPS, and California."
+    },
+    {
+      "prompt": "That sounds interesting. What's the goal of visual merchandising?",
+      "generated": "The main difference is that affect the life cycle is a great way to learn. It's a good idea to check the city's website or by reading a b"
+    },
+    {
+      "prompt": "That's interesting. Are there any organizations that specialize in collecting and analyzing climate data?",
+      "generated": "Yes, there are many online resources available for adoption, such as GPS, and Christmas. They're allowing to learn and"
+    },
+    {
+      "prompt": "That's really helpful, thanks.",
+      "generated": "You're welcome. I hope you find the perfect for your team's best to avoiding screens before bedtime."
+    },
+    {
+      "prompt": "Hi there",
+      "generated": "Hello! How can I help you today?"
+    },
+    {
+      "prompt": "Is there anything else I should do to prepare?",
+      "generated": "Yes, there are many online resources available. Some popular ones include Coursera, LinkedIn League, and Nike Tr"
+    },
+    {
+      "prompt": "Hey!",
+      "generated": "Hello! How can I help you today?"
+    },
+    {
+      "prompt": "That sounds like a good plan. Do you have any tips on how to stay safe while walking to work?",
+      "generated": "Yes, you can try using a bigger, or a mix of both, and considered ag-booked with a potential to make a list of"
+    },
+    {
+      "prompt": "I like Nike, but I've also heard of Puma. What's the difference between them?",
+      "generated": "The main difference is that could be aware of the surface, including the Earth's correct, and the lot of the same."
+    },
+    {
+      "prompt": "Hi there",
+      "generated": "Hello! How can I help you today?"
+    },
+    {
+      "prompt": "I like the sound of curtains. What are some good materials for curtains?",
+      "generated": "Some popular crafting cooking is a great way to learn. Some popular ones include Christmas, and Spotify. They offer a variet"
+    },
+    {
+      "prompt": "I'm going to the mall this weekend and I'm worried about parking. Do you have any tips?",
+      "generated": "One helpful tip is to set achievable goals."
+    },
+    {
+      "prompt": "What kind of questions should I ask the teacher?",
+      "generated": "The main difference is that affect the life cycle is a great way to get started. It's a good idea to check your corpoint, make sure to use"
+    },
+    {
+      "prompt": "I'm going shopping and I need to make a list. What's the best way to start?",
+      "generated": "You can try using a bigger, or a mix of both, and considered ag-booked chicken or a book for taking a warm"
+    },
+    {
+      "prompt": "I'm feeling really burned out from work and I was wondering if you had any strategies for achieving a better work-life balance.",
+      "generated": "You're welcome! Have a great days and social media is a great way to learn."
+    },
+    {
+      "prompt": "Hi",
+      "generated": "Hello! How can I help you today?"
+    },
+    {
+      "prompt": "Hi",
+      "generated": "Hello! How can I help you today?"
+    },
+    {
+      "prompt": "Hi",
+      "generated": "Hello! How can I help you today?"
+    },
+    {
+      "prompt": "Hey!",
+      "generated": "Hello! How can I help you today?"
+    },
+    {
+      "prompt": "Hi",
+      "generated": "Hello! How can I help you today?"
+    },
+    {
+      "prompt": "I'm looking for comfortable clothes to wear while exercising. What's a good option?",
+      "generated": "A good starting point is to use a pasta, or a book for a book for a book for a book for a book for taking a warm"
+    },
+    {
+      "prompt": "That sounds good. What about smart lighting options?",
+      "generated": "You can try making a biggery serves with a wide range of mote, and following instructions."
+    },
+    {
+      "prompt": "Just grocery shopping for now. I also want to make an emergency preparedness list. What are some things I should include on that?",
+      "generated": "You can start by setting a specific time, such as a local bike, or evening a local city center."
+    },
+    {
+      "prompt": "Is the Nile River still an important part of Egypt today?",
+      "generated": "The most common fashion is the first stage of the most important thing to focus on the same time every day, but some common ones include the b"
+    },
+    {
+      "prompt": "That makes sense. Are there any other graduation traditions I should know about?",
+      "generated": "Yes, there are several cuiss have a great way to learn."
+    },
+    {
+      "prompt": "What causes sunsets to be so colorful?",
+      "generated": "A good example is a slightly chicken, and a larger. It's a good idea to check your corpoint, make sure to use a f"
+    },
+    {
+      "prompt": "I need help organizing a carpool for my kids' school. Do you have any tips?",
+      "generated": "Yes, I do. One popular idea is a studying a simple recipe for beginners, including a local bike, or a mixing board game"
+    },
+    {
+      "prompt": "I'm planning a trip to Paris. What are some popular tourist attractions?",
+      "generated": "Some popular craft naps include HaThe Laste, and Amazon Echo. Generally, and a low-mores"
+    },
+    {
+      "prompt": "Are these platforms trustworthy?",
+      "generated": "Yes, there are many online resources available for adults need 7-9 hours of sleep."
+    },
+    {
+      "prompt": "I'm having trouble sleeping. Can you tell me what a normal sleep schedule is?",
+      "generated": "Yes, there are several cuiss have a great way to learn."
+    }
+  ],
+  "interpretation": "Lower loss with the correct prompt suggests conditioning; diversity alone does not establish relevant or correct answers. No exact answer targets used for checkpoint selection."
+}

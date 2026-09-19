@@ -41,9 +41,9 @@ uv pip install --python .venv-physics/bin/python numpy==2.5.3 tokenizers==0.23.2
 
 skip the environment-creation command if you already set up physics. prepare the full dataset, start the app, and use the flygpt side panel. the checkpoint and tokenizer are included; retraining is optional.
 
-this is a small experimental language model. replies can be unrelated, malformed or wrong. it uses general conversation training data, with no active hand-written fly q&a fine-tuning and no external model answering at runtime. the “thinking…” label means inference is running; it is not a claim that the model can reason. chat leaves the anatomy view idle instead of replaying cell states afterward.
+this is a small experimental language model. replies can be unrelated, malformed or wrong. it uses general conversation training data, with no active hand-written fly q&a fine-tuning and no external model answering at runtime. the “thinking…” label means inference is running; it is not a claim that the model can reason. chat leaves the anatomy view idle instead of replaying cell states afterward. after a reply, select **inspect model computation** to examine actual cell states, source connections and token probabilities.
 
-see [the model notes](docs/FLYGPT.md) for the architecture, training data, reproduction steps and evaluation. disabling the recurrent connections increases held-out token loss from 2.74 to 6.77. that shows dependence on the wiring, not that fly wiring is better than another network.
+see [the model notes](docs/FLYGPT.md) for the architecture, training data, reproduction steps and evaluation. disabling the recurrent connections increases held-out token loss from 2.97 to 7.26. that shows dependence on the wiring, not that fly wiring is better than another network.
 
 ## run the walking simulation
 

@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import CircuitView, { type CircuitInspection } from "./CircuitView";
 import type { Activity } from "../data";
 type Message = { role: "user" | "assistant"; content: string };
 export interface ChatReply {
+  inspection?: CircuitInspection;
   text: string;
   tokens: string[];
   activity: Activity;
@@ -63,7 +65,6 @@ export default function ChatPanel() {
           content: result.text || "[Model produced an end token without text]",
         },
       ]);
-
     } catch (e) {
       if (mounted.current) setError((e as Error).message);
     } finally {
@@ -143,9 +144,11 @@ export default function ChatPanel() {
         <p className="motor-provenance" data-testid="chat-provenance">
           {last.modelId} · {last.tokens.length} generated tokens ·{" "}
           {last.elapsedSeconds.toFixed(2)} s ·{" "}
-          {last.ablated ? "connections disabled" : "real graph enabled"}. Artificial continuous cell states; no biological reasoning claim.
+          {last.ablated ? "connections disabled" : "real graph enabled"}.
+          Artificial continuous cell states; no biological reasoning claim.
         </p>
       )}
+      {last?.inspection && <CircuitView data={last.inspection} />}
       {error && (
         <p role="alert" className="motor-error">
           {error}

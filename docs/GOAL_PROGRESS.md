@@ -13,3 +13,5 @@ Requested 19 September 2026. Finish and verify each feature before advancing.
 Commit every verified step without attribution trailers. The user subsequently authorized pushing the current verified changes on 19 September 2026. Future work requires a new push instruction. Do not label the network as biologically validated. Current physics activity is continuous rate dynamics, not spike events.
 
 Chat now uses a pending “Thinking…” indicator and leaves anatomy idle; no post-response state replay. The heading is “Explore the fruit fly nervous system.”
+
+Language follow-up: v3 uses deduplicated external assistant-token training. Prompt-conditioning tests show lower loss with the matching input, but generated semantics remain poor. Computation inspection shows measured recurrent states and source edges with no automatic replay. Authored Q&A files removed.

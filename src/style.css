@@ -1274,3 +1274,12 @@ footer b {
 @media(min-width:851px){.workbench{grid-template-columns:180px minmax(280px,1fr) 310px;}}
 @media(min-width:1400px){.workbench{grid-template-columns:220px minmax(400px,1fr) 360px;}}
 @media(max-width:850px){.inspector{display:block;} .inspector .chat-panel .chat-messages{min-height:180px;}}
+
+.circuit-dialog { width: min(1120px, 94vw); max-height: 92vh; padding: 24px; border: 1px solid #435247; border-radius: 16px; background: #101811; color: #dbe5da; overflow: auto; }
+.circuit-dialog::backdrop { background: #000b; }
+.circuit-dialog header { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.circuit-dialog p { max-width: 95ch; font-size: 13px; line-height: 1.6; color: #b2c0b0; }
+.circuit-dialog label { display: flex; align-items: center; gap: 12px; }
+.circuit-dialog select { max-width: 65%; }
+.circuit-scroll { overflow-x: auto; }
+.circuit-scroll svg { width: 100%; min-width: 760px; display: block; }

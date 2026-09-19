@@ -10,7 +10,7 @@ from runtime import ChatCircuit
 def main():
     report={};test=np.load(DATA/'test.npy');rng=np.random.default_rng(91)
     blocks=np.stack([test[i:i+65] for i in rng.integers(0,len(test)-65,128)])
-    x=mx.array(blocks[:,:-1]);y=mx.array(blocks[:,1:]);model=CircuitLM();weights=DATA/'real/weights.safetensors';model.load_weights(str(weights))
+    x=mx.array(blocks[:,:-1]);y=mx.array(blocks[:,1:]);model=CircuitLM();weights=DATA/'real/dialogue.safetensors';model.load_weights(str(weights))
     for name,ablated in [('normal',False),('connectionsDisabled',True)]:
         value=float(nn.losses.cross_entropy(model(x,ablated),y,reduction='mean'));report[name]={'heldOutTokenLoss':value,'perplexity':float(np.exp(value))}
     assert report['normal']['heldOutTokenLoss']<report['connectionsDisabled']['heldOutTokenLoss']
