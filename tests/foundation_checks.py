@@ -103,6 +103,18 @@ class FoundationChecks(unittest.TestCase):
             self.assertEqual(mask[row, -1], 1)
             self.assertTrue(np.all(mask[row, ~valid[row]] == 0))
 
+    def test_early_reply_sampling_retains_target_alignment(self):
+        tokens = np.arange(500, dtype=np.int32)
+        spans = np.array([[20, 30, 70], [200, 230, 400]], dtype=np.int64)
+        x, y, valid, mask = map(np.array, sample(tokens, spans, np.random.default_rng(13), 128, early_fraction=1.))
+        for row in range(len(x)):
+            target = int(y[row, -1])
+            begin, reply, end = next(s for s in spans if s[1] <= target < s[2])
+            self.assertLess(target, min(end, reply + 16))
+            self.assertEqual(x[row, -1], target - 1)
+            self.assertEqual(mask[row, -1], 1)
+            self.assertGreaterEqual(int(x[row, valid[row]][0]), begin)
+
     def test_compact_inspection_reconstructs_actual_updates(self):
         prefix = self.cpu.tokenizer.encode('What is a cat?').ids
         logits, states, _ = self.cpu.next(prefix)

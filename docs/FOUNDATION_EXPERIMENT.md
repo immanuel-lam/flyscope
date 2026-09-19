@@ -77,3 +77,11 @@ VECLIB_MAXIMUM_THREADS=4 .venv-foundation/bin/python scripts/foundation/inspect-
 ```
 
 The sample raw-text probe produced a 177,583-byte JSON record in about 0.410 seconds of CPU computation while training was running. This is a local diagnostic measurement, not a hosted speed guarantee. Full feature-vector debug snapshots are optional and separate. The compact trace is not yet connected to the website; the public FlyGPT still uses its existing scalar-model trace. Any replacement requires reply-quality, stream and browser checks before promotion.
+
+## reply-start exposure audit
+
+The exact sampling audit in `docs/performance/foundation-sampling-audit.json` found a median reply length of 294 foundation tokens. Uniform reply and target selection puts only 9.30% of targets in the first 16 reply tokens. With the 128-token window and four-token assistant header, 48.64% of target windows contain no preceding-message tokens at all. The remaining fraction is only an upper bound on useful prompt retention: some windows retain markers or partial text. This is a plausible contributor to poor prompt response, not proof of its sole cause.
+
+The optional `--early-fraction` setting addresses exposure without introducing authored responses. For that fraction of training draws, it chooses a target from the first 16 tokens of an existing source reply; other draws retain the original uniform distribution. It requires the final-readout objective. Validation records uniform and early-target losses separately, and checkpoint selection uses the same declared mixture. Default zero preserves earlier sampling. The running `adapt-readout-1` experiment predates this option and remains unchanged. Source conversation partitions and answers are unchanged.
+
+A two-step, batch-one pilot from `adapt-1` completed with finite gradients and separate uniform/early validation metrics. Its eight-example mixture loss changed from 1.9978 to 1.9953; this is an execution check with a tiny sample, not a quality improvement claim. The report is `docs/performance/foundation-early-sampling-pilot.json`. Ten model checks pass, including exact assistant-target alignment under early sampling. A substantive early-sampling run has not yet been evaluated.

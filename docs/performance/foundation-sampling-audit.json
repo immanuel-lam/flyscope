@@ -1,0 +1,10 @@
+{
+  "replyCount": 252324,
+  "medianReplyTokens": 294.0,
+  "meanReplyTokens": 288.8116825985638,
+  "uniformTargetFirst16Fraction": 0.09304085381880259,
+  "uniformTargetPriorMessagePossibleFraction": 0.5135651681595323,
+  "replySpansSha256": "fdeca35dd2fe2acba501818ffdd1655fd618bf71b996f26f9d2e1883b0916e1b",
+  "method": "Exact expectation under uniform reply selection and uniform target position. Context is 128 tokens; assistant header is four tokens. A target at offset 124 or later leaves no preceding-message tokens in the window. Earlier windows may retain only markers or part of the prompt; this is an upper bound on useful prompt presence.",
+  "inference": "Reply starts receive little training weight and about half of windows cannot contain the preceding message. This is a possible contributor to weak prompt response, not a demonstrated sole cause."
+}

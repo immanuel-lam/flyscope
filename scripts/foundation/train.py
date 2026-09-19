@@ -12,14 +12,15 @@ from mlx.utils import tree_flatten
 from model import CircuitFoundation, ROOT
 
 
-def sample(tokens, spans, rng, batch):
+def sample(tokens, spans, rng, batch, early_fraction=0., early_tokens=16):
     x = np.zeros((batch, 128), np.int32)
     y = np.zeros_like(x)
     valid = np.zeros(x.shape, bool)
     mask = np.zeros(x.shape, np.float32)
     for row, index in enumerate(rng.integers(0, len(spans), batch)):
         begin, reply, end = map(int, spans[index])
-        target = int(rng.integers(reply, end))
+        target_end = min(end, reply + early_tokens) if early_fraction > 0 and rng.random() < early_fraction else end
+        target = int(rng.integers(reply, target_end))
         start = max(begin, target - 128)
         count = target - start
         x[row, -count:] = tokens[start:target]
@@ -40,7 +41,10 @@ def main():
     parser.add_argument('--seed', type=int, default=191)
     parser.add_argument('--target', choices=['all', 'last'], default='all')
     parser.add_argument('--validation-examples', type=int, default=16)
+    parser.add_argument('--early-fraction', type=float, default=0.)
     args = parser.parse_args()
+    if not 0 <= args.early_fraction <= 1 or (args.early_fraction and args.target != 'last'):
+        parser.error('--early-fraction must be between zero and one and requires --target last')
     root = ROOT / 'data/foundation'
     out = root / args.run
     out.mkdir(exist_ok=True)
@@ -65,6 +69,10 @@ def main():
     train_spans = np.load(root / 'corpus/train-reply-spans.npy')
     validation = sample(np.load(root / 'corpus/validation.npy', mmap_mode='r'),
                         np.load(root / 'corpus/validation-reply-spans.npy'), np.random.default_rng(193), args.validation_examples)
+    early_validation = (sample(np.load(root / 'corpus/validation.npy', mmap_mode='r'),
+                               np.load(root / 'corpus/validation-reply-spans.npy'),
+                               np.random.default_rng(223), args.validation_examples, early_fraction=1.)
+                        if args.early_fraction else None)
 
     def loss(m, x, y, valid, mask):
         if args.target == 'last':
@@ -75,29 +83,36 @@ def main():
     grad = nn.value_and_grad(model, loss)
 
     def evaluate():
-        return float(mx.mean(mx.stack([loss(model, *(v[i:i + 1] for v in validation)) for i in range(args.validation_examples)])))
+        def measure(batch):
+            return float(mx.mean(mx.stack([loss(model, *(v[i:i + 1] for v in batch)) for i in range(args.validation_examples)])))
+        uniform = measure(validation)
+        early = measure(early_validation) if early_validation is not None else None
+        combined = (1 - args.early_fraction) * uniform + args.early_fraction * early if early is not None else uniform
+        return {'validationLoss': combined, 'validationUniformLoss': uniform, 'validationEarlyLoss': early}
 
     for filename in ['config.json', 'tokenizer.json', 'tokenizer_config.json', 'special_tokens_map.json']:
         shutil.copyfile(root / 'smollm2-135m' / filename, out / filename)
     shutil.copyfile(ROOT / 'data/graph-language/run-2/wiring.npz', out / 'wiring.npz')
     shutil.copyfile(ROOT / 'data/language/manifest.json', out / 'source-cells.json')
-    initial = best = evaluate()
+    initial_measures = evaluate()
+    initial = best = initial_measures['validationLoss']
     started = time.perf_counter()
     history = []
     model.base.save_weights(str(out / 'model.safetensors'))
     print(json.dumps({'initialValidationLoss': initial, 'trainableParameters': sum(v.size for _, v in trainable)}), flush=True)
     for step in range(1, args.steps + 1):
         optimizer.learning_rate = args.lr * min(step / 20, 1)
-        value, gradients = grad(model, *sample(train, train_spans, rng, args.batch))
+        value, gradients = grad(model, *sample(train, train_spans, rng, args.batch, args.early_fraction))
         gradients, norm = optim.clip_grad_norm(gradients, 1)
         optimizer.update(model, gradients)
         mx.eval(model.parameters(), optimizer.state, value, norm)
         if not np.isfinite(float(value)) or not np.isfinite(float(norm)):
             raise FloatingPointError('Training produced a nonfinite loss or gradient')
         if step == 1 or step % 100 == 0 or step == args.steps:
-            val = evaluate()
+            measures = evaluate()
+            val = measures['validationLoss']
             row = {'step': step, 'loss': float(value), 'gradientNorm': float(norm),
-                   'validationLoss': val, 'seconds': time.perf_counter() - started,
+                   **measures, 'seconds': time.perf_counter() - started,
                    'peakMemoryBytes': mx.get_peak_memory()}
             history.append(row)
             if val < best:
@@ -107,6 +122,7 @@ def main():
                 temporary.replace(out / 'model.safetensors')
             report = {'arguments': vars(args), 'seed': args.seed, 'initialCheckpointSha256': initial_hash,
                       'initialValidationLoss': initial,
+                      'initialValidationMeasures': initial_measures,
                       'bestValidationLoss': best, 'history': history,
                       'totalParameters': sum(v.size for _, v in tree_flatten(model.parameters())),
                       'trainableParameters': sum(v.size for _, v in trainable),
