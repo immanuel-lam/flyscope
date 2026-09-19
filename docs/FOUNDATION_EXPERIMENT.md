@@ -114,3 +114,33 @@ Three checks verify that reference padding matches ordinary unpadded inference, 
 .venv-foundation/bin/python tests/foundation_distillation_checks.py
 .venv-foundation/bin/python scripts/foundation/train.py --run adapt-distill-1 --initial-run adapt-early-1 --target last --batch 4 --steps 4000 --seed 229 --validation-examples 64 --early-fraction .5 --distill
 ```
+
+## distillation outcome and context exposure
+
+The first distillation run finished 4,000 updates in 1,229.79 seconds, with best objective 1.66799 at update 3,700 versus 1.79142 initially. It remains unsuitable for deployment: a greeting receives repetitive math-homework text, name recall fails, and arithmetic and factual replies remain incorrect. Every raw reply and the failed strict numerical checks are retained in `docs/performance/foundation-distillation-evaluation.json` and `docs/performance/foundation-distillation-checks.txt`.
+
+An exact exposure audit found that the standard greeting chat prefix contains 21 tokens, while only 0.375% of training draws in the half-early mixture have fewer than 32 context tokens. Source wiring is fixed by token slot, so this difference in active context length is a material condition to test. It is not proof of the sole cause of poor replies. See `docs/performance/foundation-context-exposure.json`.
+
+`--balanced-context` chooses uniformly among input lengths 1–31, 32–63, 64–95 and 96–128, including truncated full windows in the last band. It then samples an eligible original source target. No answers are authored or replaced. The same context policy is used for a separate fixed validation sample and checkpoint selection; uniform and early-only validation values remain visible. Source partitions are unchanged. The short-context source pool has 4,767 training replies and 48 validation replies, so repeated sampling is expected and validation is limited.
+
+Two checks verify band coverage, source-target alignment, conversation boundaries, early-target limits and explicit rejection of missing bands. A five-step pilot with the original 135M teacher completed; its context-balanced objective changed from 1.89224 to 1.88309. This is execution evidence, not proof of useful chat. See `docs/performance/foundation-context-pilot.json`.
+
+## larger training reference
+
+The ordinary 135M reference also fails several basic probes. Its unedited answers are in `docs/performance/foundation-ordinary-reference.json`. Matching it cannot by itself establish factual competence.
+
+The next offline reference is [SmolLM2-1.7B-Instruct](https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B-Instruct), pinned to revision `31b70e2e869a7173562077fd711b654946d38674`. Its model card declares Apache-2.0; exact file hashes and the measured 1,711,376,384 parameter count are in `scripts/foundation/teacher-source.json`. Its tokenizer JSON is identical to the student's tokenizer. The ten offline reference probes are retained in `docs/performance/foundation-large-reference.json`; they show better answers on these prompts, not a comprehensive quality guarantee.
+
+This reference is used only for training targets. The student's 134,515,008 parameters, 512 source cells, fixed wiring and CPU inference architecture remain unchanged. Feature-vector matching is explicitly disabled because the reference has 2,048 features per token and the student has 576. The objective is equal-weight source-target cross entropy and teacher-to-student KL. The teacher is never loaded by the chat endpoint or used to supply a user reply.
+
+For this reference, `--teacher-trim-padding` removes padding before each reference forward pass and uses the ordinary reference's full readout operation. This exactly matches the tested unpadded reference logits. The earlier padded formulation differed by up to 0.02804 in that check; it is not used for the new experiment. Four distillation checks cover both reference modes, masked-token exclusion, zero teacher gradients, invalid masks and finite student gradients. See `docs/performance/foundation-large-teacher-padding.json`.
+
+A two-step batch-four pilot completed with finite gradients and about 12.36 GB peak MLX memory. It uses float32 teacher computation and exact vocabulary compatibility checking. Its eight-example validation set is only an execution check, not a quality claim. The complete report is `docs/performance/foundation-large-teacher-pilot.json`. Validation now finishes each example before constructing the next calculation to keep the larger teacher's memory use bounded.
+
+The separate `adapt-context-teacher-1` run trains for 2,000 updates with 64 fixed validation examples per reported sampling policy. It combines balanced context exposure and the larger reference; any improvement would not isolate those two factors. Only the source student's attention projections train. The initial checkpoint and every prior rejected run remain preserved.
+
+```sh
+.venv-foundation/bin/python tests/foundation_context_checks.py
+.venv-foundation/bin/python tests/foundation_distillation_checks.py
+.venv-foundation/bin/python scripts/foundation/train.py --run adapt-context-teacher-1 --initial-run adapt-distill-1 --target last --batch 4 --steps 2000 --seed 241 --validation-examples 64 --early-fraction .5 --distill --balanced-context --teacher-run smollm2-1.7b --feature-weight 0 --teacher-trim-padding
+```

@@ -28,23 +28,31 @@ class DistillationChecks(unittest.TestCase):
         cls.x, cls.valid = mx.array(x), mx.array(valid)
 
     def test_reference_padding_matches_original_unpadded_model(self):
-        actual, _ = reference_targets(self.reference, self.x, self.valid)
         expected = self.reference(mx.array([self.prefix]))[:, -1]
         modified = mx.where(self.valid, self.x, mx.full(self.x.shape, 77))
-        padded, _ = reference_targets(self.reference, modified, self.valid)
-        mx.eval(actual, expected, padded)
-        np.testing.assert_allclose(np.array(actual), np.array(expected), atol=.003, rtol=.0003)
-        np.testing.assert_array_equal(np.array(actual), np.array(padded))
+        for trim in [False, True]:
+            actual, _ = reference_targets(self.reference, self.x, self.valid, trim_padding=trim)
+            padded, _ = reference_targets(self.reference, modified, self.valid, trim_padding=trim)
+            mx.eval(actual, expected, padded)
+            np.testing.assert_allclose(np.array(actual), np.array(expected), atol=.003, rtol=.0003)
+            np.testing.assert_array_equal(np.array(actual), np.array(padded))
+
+    def test_trim_rejects_noncontiguous_valid_tokens(self):
+        valid = np.array(self.valid)
+        valid[0, 0] = True
+        with self.assertRaisesRegex(ValueError, 'left-padded'):
+            reference_targets(self.reference, self.x, mx.array(valid), trim_padding=True)
 
     def test_reference_targets_have_no_parameter_gradient(self):
         self.reference.unfreeze()
-        def objective(m):
-            logits, features = reference_targets(m, self.x, self.valid)
-            return logits.sum() + features.sum()
-        _, gradients = nn.value_and_grad(self.reference, objective)(self.reference)
-        mx.eval(gradients)
-        for key, value in tree_flatten(gradients):
-            self.assertTrue(bool(mx.all(value == 0)), key)
+        for trim in [False, True]:
+            def objective(m):
+                logits, features = reference_targets(m, self.x, self.valid, trim_padding=trim)
+                return logits.sum() + features.sum()
+            _, gradients = nn.value_and_grad(self.reference, objective)(self.reference)
+            mx.eval(gradients)
+            for key, value in tree_flatten(gradients):
+                self.assertTrue(bool(mx.all(value == 0)), key)
         self.reference.freeze()
 
     def test_student_receives_finite_nonzero_gradients(self):
@@ -53,15 +61,17 @@ class DistillationChecks(unittest.TestCase):
         student.freeze()
         for layer in student.base.model.layers:
             layer.self_attn.unfreeze()
-        def objective(m):
-            ce, kl, feature = loss_terms(m, self.reference, self.x, mx.array([100]), self.valid)
-            return .5 * ce + .5 * kl + .05 * feature
-        loss, gradients = nn.value_and_grad(student, objective)(student)
-        mx.eval(loss, gradients)
-        self.assertTrue(np.isfinite(float(loss)))
-        for key, value in tree_flatten(gradients):
-            self.assertTrue(bool(mx.all(mx.isfinite(value))), key)
-        self.assertGreater(float(mx.max(mx.abs(gradients['base']['model']['layers'][0]['self_attn']['v_proj']['weight']))), 0)
+        for matching, trim in [(True, False), (False, True)]:
+            def objective(m):
+                ce, kl, feature = loss_terms(m, self.reference, self.x, mx.array([100]), self.valid,
+                                             match_features=matching, trim_reference_padding=trim)
+                return .5 * ce + .5 * kl + .05 * feature
+            loss, gradients = nn.value_and_grad(student, objective)(student)
+            mx.eval(loss, gradients)
+            self.assertTrue(np.isfinite(float(loss)))
+            for key, value in tree_flatten(gradients):
+                self.assertTrue(bool(mx.all(mx.isfinite(value))), key)
+            self.assertGreater(float(mx.max(mx.abs(gradients['base']['model']['layers'][0]['self_attn']['v_proj']['weight']))), 0)
 
 
 if __name__ == '__main__':

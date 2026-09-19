@@ -1,0 +1,63 @@
+{
+  "run": "smollm2-1.7b",
+  "mode": "offline-training-reference-only",
+  "engine": "MLX",
+  "parameters": 1711376384,
+  "weightSha256": "f55217be716b6a997b97b9d8d7eb6fad02e00858f5010ec24f64603c3a98a0e8",
+  "maxNewTokens": 48,
+  "temperature": 0,
+  "peakMlxMemoryBytes": 3502428436,
+  "replies": [
+    {
+      "prompt": "hi",
+      "text": "Hello! How can I assist you today?",
+      "seconds": 1.1001111250006943
+    },
+    {
+      "prompt": "who are you?",
+      "text": "I am an AI language model, developed to assist and answer questions to the best of my knowledge and abilities. I don't have personal experiences or a physical presence. I'm here to provide information, answer questions to the best of my knowledge",
+      "seconds": 0.7384180840017507
+    },
+    {
+      "prompt": "what is a cat?",
+      "text": "A cat, also known as a domestic cat or Felis catus, is a small, carnivorous mammal that belongs to the family Felidae. Cats are typically characterized by their slender bodies, sharp teeth, retractable claws, and a coat",
+      "seconds": 0.7373116669987212
+    },
+    {
+      "prompt": "what is a tree?",
+      "text": "A tree is a type of plant that has a single stem, or trunk, that supports branches and leaves. Trees typically have a woody trunk and branches that grow upward, with leaves that absorb sunlight and produce food through photosynthesis. Trees can be",
+      "seconds": 0.731289666997327
+    },
+    {
+      "prompt": "what is two plus three?",
+      "text": "Two plus three equals five.",
+      "seconds": 0.14857195800141199
+    },
+    {
+      "prompt": "I feel sad today.",
+      "text": "I'm sorry to hear that you're feeling sad. It's important to remember that it's okay to feel this way and that you're not alone. If you're feeling persistently sad, it might be helpful to talk to a mental health",
+      "seconds": 0.7317775409974274
+    },
+    {
+      "prompt": "Why does ice melt in a warm room?",
+      "text": "Ice melts in a warm room because the ice absorbs heat from the surrounding environment. This process is called heat transfer. When ice is in a warm room, the temperature of the air and the surrounding surfaces increases, causing the ice to absorb heat",
+      "seconds": 0.7310628749983152
+    },
+    {
+      "prompt": "Name one thing a bicycle and a car have in common.",
+      "text": "One thing a bicycle and a car have in common is that they both have wheels.",
+      "seconds": 0.30500520799978403
+    },
+    {
+      "prompt": "My name is Mira. What is my name?",
+      "text": "Your name is Mira.",
+      "seconds": 0.1339552920035203
+    },
+    {
+      "prompt": "Is a stone alive? Explain in one short sentence.",
+      "text": "No, a stone is not alive because it lacks the ability to move, reproduce, or respond to its environment.",
+      "seconds": 0.3883722909959033
+    }
+  ],
+  "limitation": "Ordinary pretrained reference, without source wiring. This is not the FlyGPT inference model and its replies do not satisfy the source-wired goal. No reference model is connected to the chat UI."
+}

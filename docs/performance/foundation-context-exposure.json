@@ -1,0 +1,83 @@
+{
+  "replySpansSha256": "fdeca35dd2fe2acba501818ffdd1655fd618bf71b996f26f9d2e1883b0916e1b",
+  "greetingChatPromptTokens": 21,
+  "originalSamplingExposure": [
+    {
+      "contextTokensBelow": 32,
+      "uniformFraction": 0.0024488324986018896,
+      "earlyFraction": 0.0050444402170754,
+      "halfEarlyMixtureFraction": 0.003746636357838645
+    },
+    {
+      "contextTokensBelow": 48,
+      "uniformFraction": 0.007600647883648887,
+      "earlyFraction": 0.06333647815061592,
+      "halfEarlyMixtureFraction": 0.03546856301713241
+    },
+    {
+      "contextTokensBelow": 64,
+      "uniformFraction": 0.019225319272618308,
+      "earlyFraction": 0.13369526918832575,
+      "halfEarlyMixtureFraction": 0.07646029423047203
+    },
+    {
+      "contextTokensBelow": 96,
+      "uniformFraction": 0.05829463253813202,
+      "earlyFraction": 0.24699597369141285,
+      "halfEarlyMixtureFraction": 0.15264530311477242
+    },
+    {
+      "contextTokensBelow": 128,
+      "uniformFraction": 0.10617384053480645,
+      "earlyFraction": 0.31390565167673173,
+      "halfEarlyMixtureFraction": 0.2100397461057691
+    }
+  ],
+  "balancedBands": [
+    [
+      1,
+      31
+    ],
+    [
+      32,
+      63
+    ],
+    [
+      64,
+      95
+    ],
+    [
+      96,
+      128
+    ]
+  ],
+  "trainPoolSizes": [
+    [
+      4767,
+      40918,
+      66068,
+      249541
+    ],
+    [
+      4767,
+      40918,
+      41188,
+      195102
+    ]
+  ],
+  "validationPoolSizes": [
+    [
+      48,
+      427,
+      687,
+      2518
+    ],
+    [
+      48,
+      427,
+      428,
+      1947
+    ]
+  ],
+  "method": "Exact expectations under the previous span/target sampler. New sampler chooses a context-length band uniformly, then an eligible source reply and actual target within that band. The last band includes all truncated 128-token prefixes. No text is authored or replaced."
+}

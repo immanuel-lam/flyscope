@@ -12,15 +12,43 @@ from mlx.utils import tree_flatten
 from model import CircuitFoundation, ROOT
 
 
-def sample(tokens, spans, rng, batch, early_fraction=0., early_tokens=16):
+CONTEXT_BANDS = [(1, 31), (32, 63), (64, 95), (96, None)]
+
+
+def make_context_pools(spans, early_tokens=16):
+    begin, reply, end = spans.T
+    groups = []
+    for early in [False, True]:
+        stop = np.minimum(end, reply + early_tokens) if early else end
+        bands = []
+        for low, high in CONTEXT_BANDS:
+            first = np.maximum(reply, begin + low)
+            last = np.minimum(stop, begin + high + 1) if high is not None else stop
+            indices = np.flatnonzero(first < last)
+            if not len(indices):
+                raise ValueError(f'No source targets for context band {low}:{high}, early={early}')
+            bands.append((indices, first[indices], last[indices]))
+        groups.append(bands)
+    return groups
+
+
+def sample(tokens, spans, rng, batch, early_fraction=0., early_tokens=16, context_pools=None):
     x = np.zeros((batch, 128), np.int32)
     y = np.zeros_like(x)
     valid = np.zeros(x.shape, bool)
     mask = np.zeros(x.shape, np.float32)
-    for row, index in enumerate(rng.integers(0, len(spans), batch)):
+    indices = rng.integers(0, len(spans), batch) if context_pools is None else [None] * batch
+    for row, index in enumerate(indices):
+        if context_pools is not None:
+            early = int(early_fraction > 0 and rng.random() < early_fraction)
+            pool = context_pools[early][int(rng.integers(0, len(CONTEXT_BANDS)))]
+            item = int(rng.integers(0, len(pool[0])))
+            index = int(pool[0][item])
+            target = int(rng.integers(pool[1][item], pool[2][item]))
         begin, reply, end = map(int, spans[index])
-        target_end = min(end, reply + early_tokens) if early_fraction > 0 and rng.random() < early_fraction else end
-        target = int(rng.integers(reply, target_end))
+        if context_pools is None:
+            target_end = min(end, reply + early_tokens) if early_fraction > 0 and rng.random() < early_fraction else end
+            target = int(rng.integers(reply, target_end))
         start = max(begin, target - 128)
         count = target - start
         x[row, -count:] = tokens[start:target]
@@ -43,11 +71,17 @@ def main():
     parser.add_argument('--validation-examples', type=int, default=16)
     parser.add_argument('--early-fraction', type=float, default=0.)
     parser.add_argument('--distill', action='store_true', help='Add training-only foundation distribution and state targets')
+    parser.add_argument('--balanced-context', action='store_true', help='Balance actual input-length bands using source targets')
+    parser.add_argument('--teacher-run', default='smollm2-135m')
+    parser.add_argument('--feature-weight', type=float, default=.05)
+    parser.add_argument('--teacher-trim-padding', action='store_true')
     args = parser.parse_args()
     if not 0 <= args.early_fraction <= 1 or (args.early_fraction and args.target != 'last'):
         parser.error('--early-fraction must be between zero and one and requires --target last')
     if args.distill and args.target != 'last':
         parser.error('--distill requires --target last')
+    if args.feature_weight < 0:
+        parser.error('--feature-weight must be nonnegative')
     root = ROOT / 'data/foundation'
     out = root / args.run
     out.mkdir(exist_ok=True)
@@ -60,12 +94,21 @@ def main():
     model = CircuitFoundation(initial_directory)
     model.set_dtype(mx.float32)
     reference = None
+    teacher_metadata = None
     if args.distill:
         from mlx_lm import load
         from distillation import loss_terms
-        reference = load(str(root / 'smollm2-135m'))[0]
+        teacher_directory = root / args.teacher_run
+        if json.loads((teacher_directory / 'tokenizer.json').read_text()) != json.loads((root / 'smollm2-135m/tokenizer.json').read_text()):
+            raise ValueError('Teacher tokenizer must match every student token ID and tokenizer operation')
+        reference = load(str(teacher_directory))[0]
         reference.set_dtype(mx.float32)
         reference.freeze()
+        with (teacher_directory / 'model.safetensors').open('rb') as handle:
+            teacher_hash = hashlib.file_digest(handle, 'sha256').hexdigest()
+        teacher_metadata = {'run': args.teacher_run, 'weightSha256': teacher_hash,
+                            'parameters': sum(v.size for _, v in tree_flatten(reference.parameters())),
+                            'trainingOnly': True, 'dtype': 'float32', 'tokenizerMatchesStudent': True}
     model.freeze()
     for layer in model.base.model.layers:
         layer.self_attn.unfreeze()
@@ -77,17 +120,24 @@ def main():
     optimizer = optim.AdamW(learning_rate=args.lr, weight_decay=.01)
     train = np.load(root / 'corpus/train.npy', mmap_mode='r')
     train_spans = np.load(root / 'corpus/train-reply-spans.npy')
-    validation = sample(np.load(root / 'corpus/validation.npy', mmap_mode='r'),
-                        np.load(root / 'corpus/validation-reply-spans.npy'), np.random.default_rng(193), args.validation_examples)
-    early_validation = (sample(np.load(root / 'corpus/validation.npy', mmap_mode='r'),
-                               np.load(root / 'corpus/validation-reply-spans.npy'),
+    train_pools = make_context_pools(train_spans) if args.balanced_context else None
+    validation_tokens = np.load(root / 'corpus/validation.npy', mmap_mode='r')
+    validation_spans = np.load(root / 'corpus/validation-reply-spans.npy')
+    validation_pools = make_context_pools(validation_spans) if args.balanced_context else None
+    validation = sample(validation_tokens, validation_spans, np.random.default_rng(193), args.validation_examples)
+    early_validation = (sample(validation_tokens, validation_spans,
                                np.random.default_rng(223), args.validation_examples, early_fraction=1.)
                         if args.early_fraction else None)
+    balanced_validation = (sample(validation_tokens, validation_spans, np.random.default_rng(233),
+                                  args.validation_examples, args.early_fraction, context_pools=validation_pools)
+                           if args.balanced_context else None)
 
     def loss(m, x, y, valid, mask):
         if reference is not None:
-            ce, kl, state_mse = loss_terms(m, reference, x, y[:, -1], valid)
-            return .5 * ce + .5 * kl + .05 * state_mse
+            ce, kl, state_mse = loss_terms(m, reference, x, y[:, -1], valid,
+                                         match_features=args.feature_weight > 0,
+                                         trim_reference_padding=args.teacher_trim_padding)
+            return .5 * ce + .5 * kl + args.feature_weight * state_mse
         if args.target == 'last':
             return nn.losses.cross_entropy(m(x, valid), y[:, -1], reduction='mean')
         values = nn.losses.cross_entropy(m(x, valid, all_logits=True), y, reduction='none')
@@ -97,11 +147,16 @@ def main():
 
     def evaluate():
         def measure(batch):
-            return float(mx.mean(mx.stack([loss(model, *(v[i:i + 1] for v in batch)) for i in range(args.validation_examples)])))
+            # Finish each validation example before building the next graph;
+            # a larger frozen teacher must not retain a whole validation set.
+            values = [float(loss(model, *(v[i:i + 1] for v in batch))) for i in range(args.validation_examples)]
+            return float(mx.mean(mx.array(values, dtype=mx.float32)))
         uniform = measure(validation)
         early = measure(early_validation) if early_validation is not None else None
+        balanced = measure(balanced_validation) if balanced_validation is not None else None
         combined = (1 - args.early_fraction) * uniform + args.early_fraction * early if early is not None else uniform
-        return {'validationLoss': combined, 'validationUniformLoss': uniform, 'validationEarlyLoss': early}
+        return {'validationLoss': balanced if balanced is not None else combined,
+                'validationUniformLoss': uniform, 'validationEarlyLoss': early, 'validationBalancedLoss': balanced}
 
     for filename in ['config.json', 'tokenizer.json', 'tokenizer_config.json', 'special_tokens_map.json']:
         shutil.copyfile(root / 'smollm2-135m' / filename, out / filename)
@@ -115,7 +170,7 @@ def main():
     print(json.dumps({'initialValidationLoss': initial, 'trainableParameters': sum(v.size for _, v in trainable)}), flush=True)
     for step in range(1, args.steps + 1):
         optimizer.learning_rate = args.lr * min(step / 20, 1)
-        value, gradients = grad(model, *sample(train, train_spans, rng, args.batch, args.early_fraction))
+        value, gradients = grad(model, *sample(train, train_spans, rng, args.batch, args.early_fraction, context_pools=train_pools))
         gradients, norm = optim.clip_grad_norm(gradients, 1)
         optimizer.update(model, gradients)
         mx.eval(model.parameters(), optimizer.state, value, norm)
@@ -136,11 +191,15 @@ def main():
             report = {'arguments': vars(args), 'seed': args.seed, 'initialCheckpointSha256': initial_hash,
                       'initialValidationLoss': initial,
                       'initialValidationMeasures': initial_measures,
+                      'contextSampling': {'balanced': args.balanced_context, 'bands': CONTEXT_BANDS,
+                                          'trainPoolSizes': [[len(p[0]) for p in g] for g in train_pools] if train_pools else None,
+                                          'validationPoolSizes': [[len(p[0]) for p in g] for g in validation_pools] if validation_pools else None},
                       'objective': {'crossEntropyWeight': .5 if args.distill else 1.,
                                     'teacherKlWeight': .5 if args.distill else 0.,
-                                    'teacherFeatureMseWeight': .05 if args.distill else 0.,
+                                    'teacherFeatureMseWeight': args.feature_weight if args.distill else 0.,
                                     'teacherTrainingOnly': args.distill,
                                     'validationMeaning': 'Same declared objective and sampling mixture; not necessarily pure token cross entropy'},
+                      'teacher': teacher_metadata,
                       'bestValidationLoss': best, 'history': history,
                       'totalParameters': sum(v.size for _, v in tree_flatten(model.parameters())),
                       'trainableParameters': sum(v.size for _, v in trainable),

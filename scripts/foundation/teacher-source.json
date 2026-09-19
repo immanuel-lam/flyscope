@@ -1,0 +1,16 @@
+{
+  "repository": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+  "revision": "31b70e2e869a7173562077fd711b654946d38674",
+  "license": "Apache-2.0",
+  "modelCard": "https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B-Instruct",
+  "parameters": 1711376384,
+  "files": {
+    "model.safetensors": "f55217be716b6a997b97b9d8d7eb6fad02e00858f5010ec24f64603c3a98a0e8",
+    "config.json": "994f50b16abb4ae00880baefe03c10260b5bd608d2bf586f7056ca05a534feea",
+    "tokenizer.json": "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c",
+    "tokenizer_config.json": "4ec77d44f62efeb38d7e044a1db318f6a939438425312dfa333b8382dbad98df",
+    "special_tokens_map.json": "2b7379f3ae813529281a5c602bc5a11c1d4e0a99107aaa597fe936c1e813ca52",
+    "README.md": "b00c0570dbc43674a0028d088fc72f40d83eea90f47cd987706ca2f95ed114c0"
+  },
+  "use": "Offline training reference only; never used for FlyGPT user inference. Student architecture and parameter count stay unchanged. Tokenizer JSON is semantically identical to the student foundation tokenizer."
+}

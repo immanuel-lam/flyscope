@@ -1,0 +1,286 @@
+{
+  "arguments": {
+    "run": "large-teacher-batch-pilot",
+    "steps": 2,
+    "batch": 4,
+    "lr": 1e-05,
+    "initial_run": "adapt-distill-1",
+    "seed": 239,
+    "target": "last",
+    "validation_examples": 8,
+    "early_fraction": 0.5,
+    "distill": true,
+    "balanced_context": true,
+    "teacher_run": "smollm2-1.7b",
+    "feature_weight": 0.0,
+    "teacher_trim_padding": true
+  },
+  "seed": 239,
+  "initialCheckpointSha256": "d527eff6d77720f53e9c796c25b9b4ec3210d6d0e6b8c40a9883d5529a65aabd",
+  "initialValidationLoss": 1.4764004945755005,
+  "initialValidationMeasures": {
+    "validationLoss": 1.4764004945755005,
+    "validationUniformLoss": 2.126079797744751,
+    "validationEarlyLoss": 1.6529220342636108,
+    "validationBalancedLoss": 1.4764004945755005
+  },
+  "contextSampling": {
+    "balanced": true,
+    "bands": [
+      [
+        1,
+        31
+      ],
+      [
+        32,
+        63
+      ],
+      [
+        64,
+        95
+      ],
+      [
+        96,
+        null
+      ]
+    ],
+    "trainPoolSizes": [
+      [
+        4767,
+        40918,
+        66068,
+        249541
+      ],
+      [
+        4767,
+        40918,
+        41188,
+        195102
+      ]
+    ],
+    "validationPoolSizes": [
+      [
+        48,
+        427,
+        687,
+        2518
+      ],
+      [
+        48,
+        427,
+        428,
+        1947
+      ]
+    ]
+  },
+  "objective": {
+    "crossEntropyWeight": 0.5,
+    "teacherKlWeight": 0.5,
+    "teacherFeatureMseWeight": 0.0,
+    "teacherTrainingOnly": true,
+    "validationMeaning": "Same declared objective and sampling mixture; not necessarily pure token cross entropy"
+  },
+  "teacher": {
+    "run": "smollm2-1.7b",
+    "weightSha256": "f55217be716b6a997b97b9d8d7eb6fad02e00858f5010ec24f64603c3a98a0e8",
+    "parameters": 1711376384,
+    "trainingOnly": true,
+    "dtype": "float32",
+    "tokenizerMatchesStudent": true
+  },
+  "bestValidationLoss": 1.4755008220672607,
+  "history": [
+    {
+      "step": 1,
+      "loss": 2.5499072074890137,
+      "gradientNorm": 34.329620361328125,
+      "validationLoss": 1.477659821510315,
+      "validationUniformLoss": 2.1256613731384277,
+      "validationEarlyLoss": 1.65361487865448,
+      "validationBalancedLoss": 1.477659821510315,
+      "seconds": 3.3092128330026753,
+      "peakMemoryBytes": 11979549936
+    },
+    {
+      "step": 2,
+      "loss": 1.5752842426300049,
+      "gradientNorm": 24.30790138244629,
+      "validationLoss": 1.4755008220672607,
+      "validationUniformLoss": 2.1250624656677246,
+      "validationEarlyLoss": 1.6509757041931152,
+      "validationBalancedLoss": 1.4755008220672607,
+      "seconds": 5.009056166003575,
+      "peakMemoryBytes": 12358441264
+    }
+  ],
+  "totalParameters": 134515008,
+  "trainableParameters": 26542080,
+  "trainableKeys": [
+    "base.model.layers.0.self_attn.q_proj.weight",
+    "base.model.layers.0.self_attn.k_proj.weight",
+    "base.model.layers.0.self_attn.v_proj.weight",
+    "base.model.layers.0.self_attn.o_proj.weight",
+    "base.model.layers.1.self_attn.q_proj.weight",
+    "base.model.layers.1.self_attn.k_proj.weight",
+    "base.model.layers.1.self_attn.v_proj.weight",
+    "base.model.layers.1.self_attn.o_proj.weight",
+    "base.model.layers.2.self_attn.q_proj.weight",
+    "base.model.layers.2.self_attn.k_proj.weight",
+    "base.model.layers.2.self_attn.v_proj.weight",
+    "base.model.layers.2.self_attn.o_proj.weight",
+    "base.model.layers.3.self_attn.q_proj.weight",
+    "base.model.layers.3.self_attn.k_proj.weight",
+    "base.model.layers.3.self_attn.v_proj.weight",
+    "base.model.layers.3.self_attn.o_proj.weight",
+    "base.model.layers.4.self_attn.q_proj.weight",
+    "base.model.layers.4.self_attn.k_proj.weight",
+    "base.model.layers.4.self_attn.v_proj.weight",
+    "base.model.layers.4.self_attn.o_proj.weight",
+    "base.model.layers.5.self_attn.q_proj.weight",
+    "base.model.layers.5.self_attn.k_proj.weight",
+    "base.model.layers.5.self_attn.v_proj.weight",
+    "base.model.layers.5.self_attn.o_proj.weight",
+    "base.model.layers.6.self_attn.q_proj.weight",
+    "base.model.layers.6.self_attn.k_proj.weight",
+    "base.model.layers.6.self_attn.v_proj.weight",
+    "base.model.layers.6.self_attn.o_proj.weight",
+    "base.model.layers.7.self_attn.q_proj.weight",
+    "base.model.layers.7.self_attn.k_proj.weight",
+    "base.model.layers.7.self_attn.v_proj.weight",
+    "base.model.layers.7.self_attn.o_proj.weight",
+    "base.model.layers.8.self_attn.q_proj.weight",
+    "base.model.layers.8.self_attn.k_proj.weight",
+    "base.model.layers.8.self_attn.v_proj.weight",
+    "base.model.layers.8.self_attn.o_proj.weight",
+    "base.model.layers.9.self_attn.q_proj.weight",
+    "base.model.layers.9.self_attn.k_proj.weight",
+    "base.model.layers.9.self_attn.v_proj.weight",
+    "base.model.layers.9.self_attn.o_proj.weight",
+    "base.model.layers.10.self_attn.q_proj.weight",
+    "base.model.layers.10.self_attn.k_proj.weight",
+    "base.model.layers.10.self_attn.v_proj.weight",
+    "base.model.layers.10.self_attn.o_proj.weight",
+    "base.model.layers.11.self_attn.q_proj.weight",
+    "base.model.layers.11.self_attn.k_proj.weight",
+    "base.model.layers.11.self_attn.v_proj.weight",
+    "base.model.layers.11.self_attn.o_proj.weight",
+    "base.model.layers.12.self_attn.q_proj.weight",
+    "base.model.layers.12.self_attn.k_proj.weight",
+    "base.model.layers.12.self_attn.v_proj.weight",
+    "base.model.layers.12.self_attn.o_proj.weight",
+    "base.model.layers.13.self_attn.q_proj.weight",
+    "base.model.layers.13.self_attn.k_proj.weight",
+    "base.model.layers.13.self_attn.v_proj.weight",
+    "base.model.layers.13.self_attn.o_proj.weight",
+    "base.model.layers.14.self_attn.q_proj.weight",
+    "base.model.layers.14.self_attn.k_proj.weight",
+    "base.model.layers.14.self_attn.v_proj.weight",
+    "base.model.layers.14.self_attn.o_proj.weight",
+    "base.model.layers.15.self_attn.q_proj.weight",
+    "base.model.layers.15.self_attn.k_proj.weight",
+    "base.model.layers.15.self_attn.v_proj.weight",
+    "base.model.layers.15.self_attn.o_proj.weight",
+    "base.model.layers.16.self_attn.q_proj.weight",
+    "base.model.layers.16.self_attn.k_proj.weight",
+    "base.model.layers.16.self_attn.v_proj.weight",
+    "base.model.layers.16.self_attn.o_proj.weight",
+    "base.model.layers.17.self_attn.q_proj.weight",
+    "base.model.layers.17.self_attn.k_proj.weight",
+    "base.model.layers.17.self_attn.v_proj.weight",
+    "base.model.layers.17.self_attn.o_proj.weight",
+    "base.model.layers.18.self_attn.q_proj.weight",
+    "base.model.layers.18.self_attn.k_proj.weight",
+    "base.model.layers.18.self_attn.v_proj.weight",
+    "base.model.layers.18.self_attn.o_proj.weight",
+    "base.model.layers.19.self_attn.q_proj.weight",
+    "base.model.layers.19.self_attn.k_proj.weight",
+    "base.model.layers.19.self_attn.v_proj.weight",
+    "base.model.layers.19.self_attn.o_proj.weight",
+    "base.model.layers.20.self_attn.q_proj.weight",
+    "base.model.layers.20.self_attn.k_proj.weight",
+    "base.model.layers.20.self_attn.v_proj.weight",
+    "base.model.layers.20.self_attn.o_proj.weight",
+    "base.model.layers.21.self_attn.q_proj.weight",
+    "base.model.layers.21.self_attn.k_proj.weight",
+    "base.model.layers.21.self_attn.v_proj.weight",
+    "base.model.layers.21.self_attn.o_proj.weight",
+    "base.model.layers.22.self_attn.q_proj.weight",
+    "base.model.layers.22.self_attn.k_proj.weight",
+    "base.model.layers.22.self_attn.v_proj.weight",
+    "base.model.layers.22.self_attn.o_proj.weight",
+    "base.model.layers.23.self_attn.q_proj.weight",
+    "base.model.layers.23.self_attn.k_proj.weight",
+    "base.model.layers.23.self_attn.v_proj.weight",
+    "base.model.layers.23.self_attn.o_proj.weight",
+    "base.model.layers.24.self_attn.q_proj.weight",
+    "base.model.layers.24.self_attn.k_proj.weight",
+    "base.model.layers.24.self_attn.v_proj.weight",
+    "base.model.layers.24.self_attn.o_proj.weight",
+    "base.model.layers.25.self_attn.q_proj.weight",
+    "base.model.layers.25.self_attn.k_proj.weight",
+    "base.model.layers.25.self_attn.v_proj.weight",
+    "base.model.layers.25.self_attn.o_proj.weight",
+    "base.model.layers.26.self_attn.q_proj.weight",
+    "base.model.layers.26.self_attn.k_proj.weight",
+    "base.model.layers.26.self_attn.v_proj.weight",
+    "base.model.layers.26.self_attn.o_proj.weight",
+    "base.model.layers.27.self_attn.q_proj.weight",
+    "base.model.layers.27.self_attn.k_proj.weight",
+    "base.model.layers.27.self_attn.v_proj.weight",
+    "base.model.layers.27.self_attn.o_proj.weight",
+    "base.model.layers.28.self_attn.q_proj.weight",
+    "base.model.layers.28.self_attn.k_proj.weight",
+    "base.model.layers.28.self_attn.v_proj.weight",
+    "base.model.layers.28.self_attn.o_proj.weight",
+    "base.model.layers.29.self_attn.q_proj.weight",
+    "base.model.layers.29.self_attn.k_proj.weight",
+    "base.model.layers.29.self_attn.v_proj.weight",
+    "base.model.layers.29.self_attn.o_proj.weight"
+  ],
+  "frozenEmbeddingUnchanged": true,
+  "frozenMlpExampleUnchanged": true,
+  "source": {
+    "sourceSha256": "498cd4580014f42c40cfde066573564ed28e3e1548a5566715b615f5ea932856",
+    "tokenizerSha256": "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c",
+    "sourceRevision": "f73fe857d519ff6ac5af2ea67c4d3834da7b8bcc",
+    "format": "SmolLM chat markers. Source system messages retained; generic assistant system header inserted only when absent. Content boundary whitespace stripped; source answers otherwise unchanged.",
+    "splitMeaning": "Same deduplicated conversation hash partitions as prior experiments. Validation/test are held out from this adaptation only. The pretrained instruction foundation may already have seen this corpus, so these are not globally unseen language benchmarks.",
+    "splits": {
+      "train": {
+        "conversations": 112742,
+        "replies": 252324,
+        "tokens": 101630951
+      },
+      "validation": {
+        "conversations": 1139,
+        "replies": 2547,
+        "tokens": 1036185
+      },
+      "test": {
+        "conversations": 1183,
+        "replies": 2668,
+        "tokens": 1036986
+      }
+    }
+  },
+  "foundation": {
+    "repository": "HuggingFaceTB/SmolLM2-135M-Instruct",
+    "revision": "12fd25f77366fa6b3b4b768ec3050bf629380bac",
+    "license": "apache-2.0 as declared in the pinned model card",
+    "modelCard": "https://huggingface.co/HuggingFaceTB/SmolLM2-135M-Instruct",
+    "parameters": 134515008,
+    "files": {
+      "model.safetensors": "5af571cbf074e6d21a03528d2330792e532ca608f24ac70a143f6b369968ab8c",
+      "tokenizer_config.json": "4ec77d44f62efeb38d7e044a1db318f6a939438425312dfa333b8382dbad98df",
+      "special_tokens_map.json": "2b7379f3ae813529281a5c602bc5a11c1d4e0a99107aaa597fe936c1e813ca52",
+      "config.json": "8eb740e8bbe4cff95ea7b4588d17a2432deb16e8075bc5828ff7ba9be94d982a",
+      "tokenizer.json": "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c",
+      "README.md": "4f97533ad95b1b2fea15fbc075c01b94578ebdd7c8138888fa43fa3abd530dc4"
+    },
+    "sourceGraphSha256": "31fc438535a41aff55dffdc8ab01c92eeb021e081a5453daa8b5974fd1973869",
+    "sourceCellManifestSha256": "ab7f41891ce0796061fe3af66ed66c5aa03abecd67b3a1ff3ee7fbd7764d5aef",
+    "wiringSha256": "6981c2bf6fcb1386fa8e51619ef98dfffe996126defb65ed6b1fbf71b21b1927",
+    "assumptions": "Pretrained weights initialize shared local feature transforms and source-masked attention. Explicit identity-feature relay follows 128 verified source pairs between disjoint input/readout cells. No external model supplies graph-mode logits. The dynamics and vector features are engineered, not biological firing."
+  },
+  "assumptions": "Source mask and verified relay fixed. Only attention projections adapt; embeddings and local MLP language weights frozen. Validation is held out from adaptation, not necessarily from foundation training."
+}

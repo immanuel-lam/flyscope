@@ -1,0 +1,63 @@
+..FF.......
+======================================================================
+FAIL: test_cpu_matches_source_model (__main__.FoundationChecks.test_cpu_matches_source_model) (text='<|im_start|>system\nYou are a helpful assistant.<|i')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/immanuellam/Documents/ChatGPT/New project/tests/foundation_checks.py", line 41, in test_cpu_matches_source_model
+    np.testing.assert_allclose(cpu_states, np.array(states)[0], atol=3e-3, rtol=3e-4)
+  File "/Users/immanuellam/Documents/ChatGPT/New project/.venv-foundation/lib/python3.12/site-packages/numpy/testing/_private/utils.py", line 1780, in assert_allclose
+    assert_array_compare(compare, actual, desired, err_msg=str(err_msg),
+  File "/Users/immanuellam/Documents/ChatGPT/New project/.venv-foundation/lib/python3.12/site-packages/numpy/testing/_private/utils.py", line 988, in assert_array_compare
+    raise AssertionError(msg)
+AssertionError: 
+Not equal to tolerance rtol=0.0003, atol=0.003
+
+Mismatched elements: 14 / 294912 (0.00475%)
+First 5 mismatches are at indices:
+ [239, 3]: -3.6976566314697266 (ACTUAL), -3.692864418029785 (DESIRED)
+ [239, 49]: 7.989370346069336 (ACTUAL), 7.983097076416016 (DESIRED)
+ [239, 72]: -0.20937538146972656 (ACTUAL), -0.2056589126586914 (DESIRED)
+ [239, 157]: 14.738481521606445 (ACTUAL), 14.748516082763672 (DESIRED)
+ [239, 165]: 5.625574111938477 (ACTUAL), 5.631631851196289 (DESIRED)
+Max absolute difference among violations: 0.02774811
+Max relative difference among violations: 0.01807103
+ ACTUAL: array([[  0.      ,   0.      ,   0.      , ...,   0.      ,   0.      ,
+          0.      ],
+       [  0.      ,   0.      ,   0.      , ...,   0.      ,   0.      ,...
+ DESIRED: array([[  0.      ,   0.      ,   0.      , ...,   0.      ,   0.      ,
+          0.      ],
+       [  0.      ,   0.      ,   0.      , ...,   0.      ,   0.      ,...
+
+======================================================================
+FAIL: test_cpu_matches_source_model (__main__.FoundationChecks.test_cpu_matches_source_model) (text='A tiny fly follows an odour trail. A tiny fly foll')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/immanuellam/Documents/ChatGPT/New project/tests/foundation_checks.py", line 41, in test_cpu_matches_source_model
+    np.testing.assert_allclose(cpu_states, np.array(states)[0], atol=3e-3, rtol=3e-4)
+  File "/Users/immanuellam/Documents/ChatGPT/New project/.venv-foundation/lib/python3.12/site-packages/numpy/testing/_private/utils.py", line 1780, in assert_allclose
+    assert_array_compare(compare, actual, desired, err_msg=str(err_msg),
+  File "/Users/immanuellam/Documents/ChatGPT/New project/.venv-foundation/lib/python3.12/site-packages/numpy/testing/_private/utils.py", line 988, in assert_array_compare
+    raise AssertionError(msg)
+AssertionError: 
+Not equal to tolerance rtol=0.0003, atol=0.003
+
+Mismatched elements: 263 / 294912 (0.0892%)
+First 5 mismatches are at indices:
+ [18, 24]: 0.9404697418212891 (ACTUAL), 0.9440460205078125 (DESIRED)
+ [18, 27]: 28.841175079345703 (ACTUAL), 28.853349685668945 (DESIRED)
+ [18, 34]: -3.0486602783203125 (ACTUAL), -3.0423107147216797 (DESIRED)
+ [18, 43]: 0.21498870849609375 (ACTUAL), 0.21128082275390625 (DESIRED)
+ [18, 48]: -3.4656896591186523 (ACTUAL), -3.470684051513672 (DESIRED)
+Max absolute difference among violations: 0.12670898
+Max relative difference among violations: 1.2074554
+ ACTUAL: array([[   0.      ,    0.      ,    0.      , ...,    0.      ,
+           0.      ,    0.      ],
+       [-111.45859 ,  -15.109377,   33.816887, ...,   67.948265,...
+ DESIRED: array([[   0.      ,    0.      ,    0.      , ...,    0.      ,
+           0.      ,    0.      ],
+       [-111.45865 ,  -15.109169,   33.816925, ...,   67.94844 ,...
+
+----------------------------------------------------------------------
+Ran 10 tests in 6.457s
+
+FAILED (failures=2)

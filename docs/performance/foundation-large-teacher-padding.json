@@ -1,0 +1,9 @@
+{
+  "teacher": "smollm2-1.7b",
+  "dtype": "float32",
+  "promptTokens": 21,
+  "trimPadding": true,
+  "maxAbsoluteLogitDifference": 0.0,
+  "exactlyMatchesUnpaddedReference": true,
+  "previousPaddedVariantMaxDifference": 0.02803957
+}
