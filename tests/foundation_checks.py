@@ -25,15 +25,20 @@ class FoundationChecks(unittest.TestCase):
         cls.model.set_dtype(mx.float32)
 
     def test_cpu_matches_source_model(self):
-        prefix = self.cpu.tokenizer.encode('What is a cat?').ids
-        tokens = np.zeros((1, 128), np.int32)
-        valid = np.zeros((1, 128), bool)
-        tokens[0, -len(prefix):], valid[0, -len(prefix):] = prefix, True
-        expected, states = self.model(mx.array(tokens), mx.array(valid), return_states=True)
-        mx.eval(expected, states)
-        actual, cpu_states, _ = self.cpu.next(prefix)
-        np.testing.assert_allclose(actual, np.array(expected)[0], atol=3e-3, rtol=3e-4)
-        np.testing.assert_allclose(cpu_states, np.array(states)[0], atol=3e-3, rtol=3e-4)
+        cases = ['What is a cat?',
+                 '<|im_start|>system\nYou are a helpful assistant.<|im_end|>\n<|im_start|>user\nWho are you?<|im_end|>\n<|im_start|>assistant\n',
+                 'A tiny fly follows an odour trail. ' * 32]
+        for text in cases:
+            with self.subTest(text=text[:50]):
+                prefix = self.cpu.tokenizer.encode(text).ids[-128:]
+                tokens = np.zeros((1, 128), np.int32)
+                valid = np.zeros((1, 128), bool)
+                tokens[0, -len(prefix):], valid[0, -len(prefix):] = prefix, True
+                expected, states = self.model(mx.array(tokens), mx.array(valid), return_states=True)
+                mx.eval(expected, states)
+                actual, cpu_states, _ = self.cpu.next(prefix)
+                np.testing.assert_allclose(actual, np.array(expected)[0], atol=3e-3, rtol=3e-4)
+                np.testing.assert_allclose(cpu_states, np.array(states)[0], atol=3e-3, rtol=3e-4)
 
     def test_ordinary_cpu_matches_original_library_model(self):
         prefix = self.cpu.tokenizer.encode('What is a cat?').ids

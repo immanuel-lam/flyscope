@@ -1,0 +1,34 @@
+..F.......
+======================================================================
+FAIL: test_cpu_matches_source_model (__main__.FoundationChecks.test_cpu_matches_source_model) (text='A tiny fly follows an odour trail. A tiny fly foll')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/immanuellam/Documents/ChatGPT/New project/tests/foundation_checks.py", line 41, in test_cpu_matches_source_model
+    np.testing.assert_allclose(cpu_states, np.array(states)[0], atol=3e-3, rtol=3e-4)
+  File "/Users/immanuellam/Documents/ChatGPT/New project/.venv-foundation/lib/python3.12/site-packages/numpy/testing/_private/utils.py", line 1780, in assert_allclose
+    assert_array_compare(compare, actual, desired, err_msg=str(err_msg),
+  File "/Users/immanuellam/Documents/ChatGPT/New project/.venv-foundation/lib/python3.12/site-packages/numpy/testing/_private/utils.py", line 988, in assert_array_compare
+    raise AssertionError(msg)
+AssertionError: 
+Not equal to tolerance rtol=0.0003, atol=0.003
+
+Mismatched elements: 26 / 294912 (0.00882%)
+First 5 mismatches are at indices:
+ [69, 199]: -95.16867065429688 (ACTUAL), -95.21160888671875 (DESIRED)
+ [69, 243]: -4.758758544921875 (ACTUAL), -4.74835205078125 (DESIRED)
+ [128, 25]: -10.924800872802734 (ACTUAL), -10.936203002929688 (DESIRED)
+ [128, 100]: -9.088741302490234 (ACTUAL), -9.079263687133789 (DESIRED)
+ [128, 507]: -60.948768615722656 (ACTUAL), -60.97486877441406 (DESIRED)
+Max absolute difference among violations: 0.04293823
+Max relative difference among violations: 0.02337642
+ ACTUAL: array([[   0.      ,    0.      ,    0.      , ...,    0.      ,
+           0.      ,    0.      ],
+       [-111.62276 ,  -16.908903,   32.237133, ...,   67.522285,...
+ DESIRED: array([[   0.      ,    0.      ,    0.      , ...,    0.      ,
+           0.      ,    0.      ],
+       [-111.62279 ,  -16.908974,   32.23716 , ...,   67.52231 ,...
+
+----------------------------------------------------------------------
+Ran 10 tests in 6.649s
+
+FAILED (failures=1)

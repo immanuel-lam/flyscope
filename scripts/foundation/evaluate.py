@@ -30,6 +30,7 @@ def main():
     cut = [model.next(p, ablated=True)[0] for p in prefixes]
     attention_cut = [model.next(p, attention_cut=True)[0] for p in prefixes]
     report = {'run': args.run, 'maxTokens': args.tokens, 'replies': replies,
+              'runtimeSha256': hashlib.sha256(Path(__file__).with_name('runtime.py').read_bytes()).hexdigest(),
               'weightSha256': hashlib.sha256((directory / 'model.safetensors').read_bytes()).hexdigest(),
               'training': json.loads((directory / 'training.json').read_text()),
               'ablation': {'fullPromptMaxLogitDifference': float(np.max(np.abs(full[0] - full[1]))),

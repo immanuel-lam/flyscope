@@ -42,9 +42,12 @@ def main():
     parser.add_argument('--target', choices=['all', 'last'], default='all')
     parser.add_argument('--validation-examples', type=int, default=16)
     parser.add_argument('--early-fraction', type=float, default=0.)
+    parser.add_argument('--distill', action='store_true', help='Add training-only foundation distribution and state targets')
     args = parser.parse_args()
     if not 0 <= args.early_fraction <= 1 or (args.early_fraction and args.target != 'last'):
         parser.error('--early-fraction must be between zero and one and requires --target last')
+    if args.distill and args.target != 'last':
+        parser.error('--distill requires --target last')
     root = ROOT / 'data/foundation'
     out = root / args.run
     out.mkdir(exist_ok=True)
@@ -56,6 +59,13 @@ def main():
     initial_hash = hashlib.sha256((initial_directory / 'model.safetensors').read_bytes()).hexdigest()
     model = CircuitFoundation(initial_directory)
     model.set_dtype(mx.float32)
+    reference = None
+    if args.distill:
+        from mlx_lm import load
+        from distillation import loss_terms
+        reference = load(str(root / 'smollm2-135m'))[0]
+        reference.set_dtype(mx.float32)
+        reference.freeze()
     model.freeze()
     for layer in model.base.model.layers:
         layer.self_attn.unfreeze()
@@ -75,6 +85,9 @@ def main():
                         if args.early_fraction else None)
 
     def loss(m, x, y, valid, mask):
+        if reference is not None:
+            ce, kl, state_mse = loss_terms(m, reference, x, y[:, -1], valid)
+            return .5 * ce + .5 * kl + .05 * state_mse
         if args.target == 'last':
             return nn.losses.cross_entropy(m(x, valid), y[:, -1], reduction='mean')
         values = nn.losses.cross_entropy(m(x, valid, all_logits=True), y, reduction='none')
@@ -123,6 +136,11 @@ def main():
             report = {'arguments': vars(args), 'seed': args.seed, 'initialCheckpointSha256': initial_hash,
                       'initialValidationLoss': initial,
                       'initialValidationMeasures': initial_measures,
+                      'objective': {'crossEntropyWeight': .5 if args.distill else 1.,
+                                    'teacherKlWeight': .5 if args.distill else 0.,
+                                    'teacherFeatureMseWeight': .05 if args.distill else 0.,
+                                    'teacherTrainingOnly': args.distill,
+                                    'validationMeaning': 'Same declared objective and sampling mixture; not necessarily pure token cross entropy'},
                       'bestValidationLoss': best, 'history': history,
                       'totalParameters': sum(v.size for _, v in tree_flatten(model.parameters())),
                       'trainableParameters': sum(v.size for _, v in trainable),

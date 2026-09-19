@@ -94,4 +94,23 @@ A two-step, batch-one pilot from `adapt-1` completed with finite gradients and s
 
 Nine of ten model checks passed on this saved checkpoint. The CPU/MLX output logits passed, but one of 294,912 hidden-state elements exceeded the existing mixed tolerance: CPU 74.24615 versus MLX 74.27277 at cell index 488, feature 17. A float64 weights/state diagnostic yielded 74.26341; both float32 paths had small vector-relative errors and logit errors below 0.00005 against that diagnostic. Rotary constants stayed float32. The original failed assertion and its tolerance are retained, not relaxed to promote this checkpoint. See `docs/performance/foundation-readout-precision.json`.
 
-The next separate run, `adapt-early-1`, starts from this checkpoint and uses a 50% early-target mixture, batch four, learning rate 0.00003 and 2,000 updates. It preserves all source answers and partitions. Its reply quality and complete numerical checks are not yet established.
+The subsequent separate run, `adapt-early-1`, started from this checkpoint with a 50% early-target mixture, batch four, learning rate 0.00003 and 2,000 updates. It preserved all source answers and partitions. Its outcome follows below.
+
+## reply-start outcome and broader numerical checks
+
+`adapt-early-1` completed in 569.20 seconds. Its best mixed validation objective was 2.32375 at update 1,800, compared with 2.32849 initially. It is also rejected for deployment. Some definitions begin more relevantly, but greeting, arithmetic, name recall and other replies remain wrong or repetitive. All ten outputs are in `docs/performance/foundation-early-evaluation.json`; the full check output is in `docs/performance/foundation-early-checks.txt`. Nine of ten tests pass. The expanded CPU comparison still fails on a full-length context; output logits pass.
+
+The CPU comparison now includes raw short text, an actual chat-template prefix and a full 128-token context. `check-precision.py` independently compares original normalization, a higher-precision-normalization variant, and float64 weights/state arithmetic with the existing float32 rotary constants. The variant removes the original short-probe mismatch but not the broader failures, and some reference-relative errors increase. It is therefore **not adopted**. Runtime arithmetic and existing test tolerances remain unchanged. Every measured case is in `docs/performance/foundation-broader-precision.json`. This unresolved numerical qualification must remain visible.
+
+## training-only distillation experiment
+
+The optional `--distill` objective uses the pinned original foundation as a training-only reference. It receives the same source-corpus token windows and supplies a next-token probability distribution and normalized final feature vector. No generated teacher answer is inserted into the source corpus, and no reference model supplies replies at inference. The CPU runtime does not import the distillation module. Export still saves only the source-wired student weights.
+
+The objective is `0.5 × source-target cross entropy + 0.5 × teacher-to-student KL + 0.05 × final-feature mean squared error`. These combined losses must not be compared directly with earlier pure cross-entropy losses. Both uniform and reply-start validation components are recorded. The graph, cell IDs, relay, frozen local MLPs and CPU inference contract are unchanged.
+
+Three checks verify that reference padding matches ordinary unpadded inference, that reference targets have zero parameter gradient, and that the source student receives finite nonzero gradients. A five-step pilot completed with about 6.11 GB peak MLX memory; its mixed objective changed from 1.79142 to 1.79067. This verifies execution only. The report is `docs/performance/foundation-distillation-pilot.json`. The separate `adapt-distill-1` run is now training for 4,000 updates; no reply-quality or deployment claim is made.
+
+```sh
+.venv-foundation/bin/python tests/foundation_distillation_checks.py
+.venv-foundation/bin/python scripts/foundation/train.py --run adapt-distill-1 --initial-run adapt-early-1 --target last --batch 4 --steps 4000 --seed 229 --validation-examples 64 --early-fraction .5 --distill
+```

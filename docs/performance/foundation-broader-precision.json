@@ -1,0 +1,92 @@
+{
+  "cases": [
+    {
+      "run": "adapt-readout-1",
+      "prompt": "What is a cat?",
+      "results": {
+        "originalFloat32Norm": {
+          "stateToleranceViolations": 1,
+          "maxAbsoluteStateDifferenceFromMlx": 0.04443359375,
+          "maxAbsoluteLogitDifferenceFromMlx": 2.956390380859375e-05,
+          "computeSeconds": 0.4263557500016759,
+          "maxCellRelativeL2VsFloat64State": 3.604474986438977e-05,
+          "maxLogitDifferenceVsFloat64State": 4.121094434594852e-05
+        },
+        "higherPrecisionNorm": {
+          "stateToleranceViolations": 0,
+          "maxAbsoluteStateDifferenceFromMlx": 0.03857421875,
+          "maxAbsoluteLogitDifferenceFromMlx": 2.956390380859375e-05,
+          "computeSeconds": 0.39681058300629957,
+          "maxCellRelativeL2VsFloat64State": 4.232799067817735e-05,
+          "maxLogitDifferenceVsFloat64State": 3.553587634641531e-05
+        }
+      },
+      "weightSha256": "76d6d22136b542af48efc37f7f908b34f79d00fc6604947b4845cad620015bf7",
+      "runtimeSha256": "dc9745a6ce729c0a08768ef041b329f927c63e52e69b0c8be4fccbaddb65efc9",
+      "stateTolerance": {
+        "absolute": 0.003,
+        "relative": 0.0003
+      },
+      "referenceMeaning": "Diagnostic CPU weights and states use float64. Rotary constants remain float32. Higher-precision normalization is an experimental variant, not production behavior. Production arithmetic and test tolerances are unchanged. Timings are single local calls, not a deployment benchmark."
+    },
+    {
+      "run": "adapt-readout-1",
+      "prompt": "<|im_start|>system\nYou are a helpful assistant.<|im_end|>\n<|im_start|>user\nWho are you?<|im_end|>\n<|im_start|>assistant\n",
+      "results": {
+        "originalFloat32Norm": {
+          "stateToleranceViolations": 29,
+          "maxAbsoluteStateDifferenceFromMlx": 0.208740234375,
+          "maxAbsoluteLogitDifferenceFromMlx": 4.9114227294921875e-05,
+          "computeSeconds": 0.42969525000080466,
+          "maxCellRelativeL2VsFloat64State": 8.333450551425947e-05,
+          "maxLogitDifferenceVsFloat64State": 3.810555857342024e-05
+        },
+        "higherPrecisionNorm": {
+          "stateToleranceViolations": 53,
+          "maxAbsoluteStateDifferenceFromMlx": 0.1856689453125,
+          "maxAbsoluteLogitDifferenceFromMlx": 5.1021575927734375e-05,
+          "computeSeconds": 0.4001405419985531,
+          "maxCellRelativeL2VsFloat64State": 0.00012291482168604585,
+          "maxLogitDifferenceVsFloat64State": 4.318605668629516e-05
+        }
+      },
+      "weightSha256": "76d6d22136b542af48efc37f7f908b34f79d00fc6604947b4845cad620015bf7",
+      "runtimeSha256": "dc9745a6ce729c0a08768ef041b329f927c63e52e69b0c8be4fccbaddb65efc9",
+      "stateTolerance": {
+        "absolute": 0.003,
+        "relative": 0.0003
+      },
+      "referenceMeaning": "Diagnostic CPU weights and states use float64. Rotary constants remain float32. Higher-precision normalization is an experimental variant, not production behavior. Production arithmetic and test tolerances are unchanged. Timings are single local calls, not a deployment benchmark."
+    },
+    {
+      "run": "adapt-readout-1",
+      "prompt": "A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. A tiny fly follows an odour trail. ",
+      "results": {
+        "originalFloat32Norm": {
+          "stateToleranceViolations": 355,
+          "maxAbsoluteStateDifferenceFromMlx": 0.4949951171875,
+          "maxAbsoluteLogitDifferenceFromMlx": 5.054473876953125e-05,
+          "computeSeconds": 0.421908500000427,
+          "maxCellRelativeL2VsFloat64State": 0.0003090610719613685,
+          "maxLogitDifferenceVsFloat64State": 8.545329834497295e-05
+        },
+        "higherPrecisionNorm": {
+          "stateToleranceViolations": 350,
+          "maxAbsoluteStateDifferenceFromMlx": 0.398681640625,
+          "maxAbsoluteLogitDifferenceFromMlx": 4.7206878662109375e-05,
+          "computeSeconds": 0.42307329200411914,
+          "maxCellRelativeL2VsFloat64State": 0.00035187848630489834,
+          "maxLogitDifferenceVsFloat64State": 8.736064697778545e-05
+        }
+      },
+      "weightSha256": "76d6d22136b542af48efc37f7f908b34f79d00fc6604947b4845cad620015bf7",
+      "runtimeSha256": "dc9745a6ce729c0a08768ef041b329f927c63e52e69b0c8be4fccbaddb65efc9",
+      "stateTolerance": {
+        "absolute": 0.003,
+        "relative": 0.0003
+      },
+      "referenceMeaning": "Diagnostic CPU weights and states use float64. Rotary constants remain float32. Higher-precision normalization is an experimental variant, not production behavior. Production arithmetic and test tolerances are unchanged. Timings are single local calls, not a deployment benchmark."
+    }
+  ],
+  "conclusion": "Higher-precision normalization does not remove all elementwise CPU/MLX state mismatches. It is not adopted; original arithmetic and tolerance remain unchanged."
+}
