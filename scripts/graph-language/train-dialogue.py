@@ -7,7 +7,7 @@ import numpy as np
 import mlx.core as mx
 import mlx.nn as nn
 import mlx.optimizers as optim
-from model import GraphLanguageModel, ROOT
+from model import GraphLanguageModel, AttentionControl, ROOT
 from dialogue_data import sample
 
 
@@ -23,8 +23,11 @@ def main():
     mx.random.seed(163)
     rng = np.random.default_rng(163)
     wiring = dict(np.load(run / 'wiring.npz'))
-    model = GraphLanguageModel(width=base['arguments']['width'], layers=base['arguments']['layers'],
-                              wiring_data=tuple(wiring[k] for k in ['inputs','outputs','slots','mask','sourceMask']))
+    if base.get('architecture') == 'control':
+        model = AttentionControl(width=base['arguments']['width'], layers=base['arguments']['layers'])
+    else:
+        model = GraphLanguageModel(width=base['arguments']['width'], layers=base['arguments']['layers'],
+                                  wiring_data=tuple(wiring[k] for k in ['inputs','outputs','slots','mask','sourceMask']))
     model.load_weights(str(run / 'weights.safetensors'))
     base_sha = hashlib.sha256((run / 'weights.safetensors').read_bytes()).hexdigest()
     optimizer = optim.AdamW(learning_rate=.0001, weight_decay=.01)
@@ -68,6 +71,7 @@ def main():
                 best = val
                 model.save_weights(str(run / 'dialogue.safetensors'))
             report = {'arguments': {**base['arguments'], **vars(args)}, 'seed': 163,
+                      'architecture': base.get('architecture', 'graph'),
                       'parameters': base['parameters'], 'baseCheckpointSha256': base_sha,
                       'initialValidationLoss': initial, 'bestValidationLoss': best,
                       'history': history, 'assumptions': base['assumptions'],

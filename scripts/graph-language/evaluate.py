@@ -27,11 +27,11 @@ def token_loss(logits, token):
     return float(peak + np.log(np.exp(values - peak).sum()) - values[token])
 
 
-def response_loss(model, prefix, target):
+def response_loss(model, prefix, target, ablated=False):
     losses = []
     context = list(prefix)
     for token in target:
-        logits, _ = model.next(context)
+        logits, _ = model.next(context, ablated)
         losses.append(token_loss(logits, token))
         context.append(token)
     return losses
@@ -52,14 +52,16 @@ def main():
     tokens = np.load(ROOT / 'data/graph-language' / f'{args.split}.npy', mmap_mode='r')
     spans = np.load(ROOT / 'data/graph-language' / f'{args.split}-reply-spans.npy')
     rows = examples(tokens, spans, args.examples)
-    # Source-cut logits are prompt-independent; this is separately tested.
-    ablated_logits, _ = model.next(rows[0]['prefix'], ablated=True)
+    # Only the graph has disjoint input/readout cells. The ordinary control
+    # retains its current-token embedding when attention edges are cut.
+    ordinary_control = model.config.get('architecture') == 'ordinary-attention-control'
+    ablated_logits = None if ordinary_control else model.next(rows[0]['prefix'], ablated=True)[0]
     outputs = []
     for index, row in enumerate(rows):
         target = row['target'][:args.tokens]
         correct = response_loss(model, row['prefix'], target)
         mismatched = response_loss(model, rows[(index + 1) % len(rows)]['prefix'], target)
-        cut = [token_loss(ablated_logits, token) for token in target]
+        cut = response_loss(model, row['prefix'], target, True) if ordinary_control else [token_loss(ablated_logits, token) for token in target]
         generation = model.generate_tokens(row['prefix'], max_tokens=args.tokens)
         generated = generation['tokenIds']
         grams = [tuple(generated[i:i + 4]) for i in range(max(0, len(generated) - 3))]
@@ -81,6 +83,8 @@ def main():
                ['correctPromptLoss', 'mismatchedPromptLoss', 'ablatedLoss',
                 'firstEightCorrectLoss', 'firstEightMismatchedLoss', 'repeatedFourGramFraction']}
     report = {'checkpointSha256': model.config['checkpointSha256'],
+              'architecture': model.config.get('architecture', 'source-edge-attention'),
+              'ablationMeaning': 'Diagonal-only attention; ordinary control retains direct current-token embedding readout.' if ordinary_control else 'Source inter-cell edges cut; disjoint readout receives no prompt information.',
               'parameters': model.config['parameters'], 'arguments': vars(args), 'seed': 173,
               'examples': len(rows), 'metrics': metrics, 'outputs': outputs,
               'limitations': 'Untrained source conversations, selected without model scores. Reused development split across architecture experiments, not an independent final benchmark. Response losses use at most the declared token limit and the actual final CPU readout. Full source replies retained for inspection. Generation receives context only, never source answer tokens. Timings may overlap MLX training.'}

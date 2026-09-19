@@ -57,3 +57,20 @@ class GraphLanguageModel(nn.Module):
         for block in self.blocks:x=block(x,mask)
         logits=self.norm(x[:,self._outputs,:])@self.embedding.weight.T
         return (logits,x) if return_states else logits
+
+
+class AttentionControl(nn.Module):
+    """Ordinary causal token attention. Diagnostic only; no fly-cell claim."""
+    def __init__(self,width=256,layers=4,heads=8):
+        super().__init__()
+        self.embedding=nn.Embedding(2048,width)
+        self.cell_embedding=nn.Embedding(128,width)
+        self.blocks=[GraphBlock(width,heads) for _ in range(layers)]
+        self.norm=nn.RMSNorm(width)
+        self._mask=mx.tril(mx.ones((128,128),dtype=mx.bool_))
+    def __call__(self,tokens,ablated=False,return_states=False):
+        x=self.cell_embedding(mx.arange(128))[None]+self.embedding(tokens)*mx.expand_dims(tokens!=0,-1)
+        mask=mx.eye(128,dtype=mx.bool_) if ablated else self._mask
+        for block in self.blocks:x=block(x,mask)
+        logits=self.norm(x)@self.embedding.weight.T
+        return (logits,x) if return_states else logits

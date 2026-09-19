@@ -17,6 +17,7 @@ class GraphRuntime:
         self.mask = self.weights.pop('attention_mask').astype(bool)
         self.heads = self.config['heads']
         self.layers = self.config['layers']
+        self.cells = self.weights['cell_embedding.weight'].shape[0]
 
     @staticmethod
     def norm(x, weight):
@@ -30,19 +31,19 @@ class GraphRuntime:
         x = w['cell_embedding.weight'].copy()
         x[self.inputs] += w['embedding.weight'][tokens] * (tokens != 0)[:, None]
         snapshots = [x.copy()] if trace else None
-        mask = np.eye(512, dtype=bool) if ablated else self.mask
+        mask = np.eye(self.cells, dtype=bool) if ablated else self.mask
         width = x.shape[1]
         for layer in range(self.layers):
             prefix = f'blocks.{layer}.'
             qkv = self.norm(x, w[prefix + 'norm1.weight']) @ w[prefix + 'qkv.weight'].T
-            q, k, v = [a.reshape(512, self.heads, width // self.heads).transpose(1, 0, 2)
+            q, k, v = [a.reshape(self.cells, self.heads, width // self.heads).transpose(1, 0, 2)
                        for a in np.split(qkv, 3, axis=-1)]
             scores = (q @ k.transpose(0, 2, 1)) * (width // self.heads) ** -.5
             scores = np.where(mask[None], scores, -np.inf)
             scores -= scores.max(axis=-1, keepdims=True)
             attention = np.exp(scores)
             attention /= attention.sum(axis=-1, keepdims=True)
-            value = (attention @ v).transpose(1, 0, 2).reshape(512, width)
+            value = (attention @ v).transpose(1, 0, 2).reshape(self.cells, width)
             attention_update = value @ w[prefix + 'projection.weight'].T
             x += attention_update
             hidden = self.norm(x, w[prefix + 'norm2.weight']) @ w[prefix + 'up.weight'].T
@@ -58,6 +59,8 @@ class GraphRuntime:
 
     def inspect(self, prefix, ablated=False, feature=0):
         """Capture actual per-layer attention and one fixed feature, without replay."""
+        if self.config.get('architecture') == 'ordinary-attention-control':
+            raise ValueError('The control has no fly-cell inspection')
         width = self.weights['embedding.weight'].shape[1]
         if not 0 <= feature < width:
             raise ValueError('Feature index is outside the model width')
@@ -67,7 +70,7 @@ class GraphRuntime:
         if context:
             window[-len(context):] = context
         edge_layers = []
-        effective_mask = np.eye(512, dtype=bool) if ablated else self.mask
+        effective_mask = np.eye(self.cells, dtype=bool) if ablated else self.mask
 
         def observe(layer, attention, values, projection, attention_update, local_update):
             # Exact contribution to the chosen feature after output projection.
