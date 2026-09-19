@@ -12,13 +12,13 @@ User direction, 19 September 2026: use real fly wiring; train an actual language
 
 ## Stage 1: actually train a text predictor
 
-Default proposal pending user preference: a small local character/byte-level proof of concept on this Mac. A larger GPU job is an alternative, not authorized spending. A local MLX-trained 512-cell circuit and portable checkpoint now exist; see FLYGPT.md for exact scope and evaluation.
+The user authorized local MLX training and CPU inference, with architecture left open provided that language computation uses real source pathways. A local MLX-trained 512-cell circuit and portable checkpoint exist; see FLYGPT.md for exact scope and evaluation. General conversation quality remains weak. Rejected recurrent candidates and an undeployed source-edge attention experiment are documented in LANGUAGE_NEXT_EXPERIMENT.md and GRAPH_LANGUAGE.md. No paid external training job has been started.
 
-The model must perform next-token prediction through a recurrent circuit constrained by a documented subgraph of the real MaleCNS connections. Start with a tractable selected subgraph, not a dense 166,700-by-166,700 weight matrix. Define:
+The model must perform next-token prediction through a circuit constrained by a documented subgraph of the real MaleCNS connections. The current deployed architecture is recurrent; the new attention experiment also restricts inter-cell communication to source edges. Use a tractable selected subgraph, not a dense 166,700-by-166,700 weight matrix. Define:
 
 1. An exact cell-ID list and source-version manifest; preserve mapping between tensor indices and real body IDs.
 2. A token encoder that injects signals into specified circuit units.
-3. Sparse or indexed recurrent propagation using the graph's directed mask, with explicitly documented learned weights, signs, nonlinearities and time dynamics. Synapse count is not automatically a physiological weight.
+3. Inter-cell propagation using the graph's directed mask, with explicitly documented learned weights, signs, nonlinearities and computation steps. Synapse count is not automatically a physiological weight.
 4. A readout from circuit state to vocabulary logits. Avoid a powerful independent language model that can bypass the circuit.
 5. A licensed/public-domain text dataset with immutable train/validation/test splits.
 6. Training code, seed, checkpoint, tokenizer, configuration and a reproducible generation command.
@@ -30,12 +30,11 @@ Motor behavior may later use a separate documented decoder of the trained state.
 
 ## Stage 2: see what the fly sees
 
-Add a body-attached camera and a visible input panel on the same run clock. Show the input frame actually delivered to the model, including its resolution, channels, timestamp and transformations. A scene camera image is a synthetic visual observation, not a biologically accurate compound eye.
+Implemented: actual bilateral FlyGym fisheye camera frames feed a red-pixel target-seeking controller, and the input panel follows the physical run clock. PHYSICAL_FLY.md records image dimensions, processing, left/right target controls and neural silencing. These simulated camera observations and engineered sensory mapping do not establish biologically accurate compound-eye processing.
 
-Useful progressive views:
+Future extensions beyond the current camera input and steering experiment include:
 
-- Raw left/right camera frames from the simulated environment.
-- The exact resized/normalized image tensor supplied to the model.
+- A learned visual encoder, with its exact resized/normalized input tensor exposed.
 - An optional explicitly approximate facet/ommatidial sampling view.
 - Neural responses from the visual model, joined to neuron IDs through a declared mapping.
 
