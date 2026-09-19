@@ -1,6 +1,7 @@
 """Behavioral controls for a separately exported graph-language candidate."""
 from pathlib import Path
 import sys
+import os
 import unittest
 import numpy as np
 
@@ -12,7 +13,13 @@ from runtime import GraphRuntime
 class GraphCpuChecks(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.model = GraphRuntime(ROOT / 'data/graph-language/run-1/portable')
+        cls.model = GraphRuntime(ROOT / 'data/graph-language' / os.environ.get('GRAPH_LANGUAGE_RUN', 'run-2') / 'portable')
+
+    def test_all_context_slots_reach_generation_cell(self):
+        reach = np.eye(512, dtype=bool)
+        for _ in range(self.model.layers):
+            reach = (self.model.mask.astype(np.int32) @ reach.astype(np.int32)) > 0
+        self.assertTrue(np.all(reach[self.model.outputs[-1], self.model.inputs]))
 
     def test_future_tokens_cannot_change_past_predictions(self):
         a = np.full(128, 75)

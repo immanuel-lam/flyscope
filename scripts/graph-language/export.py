@@ -16,18 +16,22 @@ from runtime import GraphRuntime
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--run', default='run-1')
+    parser.add_argument('--checkpoint', choices=['base', 'dialogue'], default='base')
     args = parser.parse_args()
     run = ROOT / 'data/graph-language' / args.run
     out = run / 'portable'
     out.mkdir(exist_ok=True)
-    training = json.loads((run / 'training.json').read_text())
+    training_file = 'training.json' if args.checkpoint == 'base' else 'dialogue-training.json'
+    weights_file = 'weights.safetensors' if args.checkpoint == 'base' else 'dialogue.safetensors'
+    training = json.loads((run / training_file).read_text())
     config = training['arguments']
     # Snapshot first: a concurrent trainer can replace its best checkpoint.
-    shutil.copyfile(run / 'weights.safetensors', out / 'checkpoint.safetensors')
-    model = GraphLanguageModel(width=config['width'], layers=config['layers'])
+    shutil.copyfile(run / weights_file, out / 'checkpoint.safetensors')
+    wiring = dict(np.load(run / 'wiring.npz'))
+    model = GraphLanguageModel(width=config['width'], layers=config['layers'],
+                              wiring_data=tuple(wiring[k] for k in ['inputs','outputs','slots','mask','sourceMask']))
     model.load_weights(str(out / 'checkpoint.safetensors'))
     mx.eval(model.parameters())
-    wiring = dict(np.load(run / 'wiring.npz'))
     weights = {key: np.array(value) for key, value in tree_flatten(model.parameters())}
     weights['attention_mask'] = wiring['mask']
     np.savez_compressed(out / 'runtime.npz', **weights)
@@ -36,7 +40,7 @@ def main():
     manifest = dict(modelId='malecns-graph-attention-candidate', neurons=source['neurons'],
                     inputIndices=wiring['inputs'].tolist(), outputIndices=wiring['outputs'].tolist(),
                     slots=wiring['slots'].tolist(), heads=8, layers=config['layers'], width=config['width'],
-                    parameters=training['parameters'], training=training,
+                    parameters=training['parameters'], training=training, checkpoint=args.checkpoint,
                     checkpointSha256=hashlib.sha256((out / 'checkpoint.safetensors').read_bytes()).hexdigest(),
                     weightsSha256=hashlib.sha256((out / 'runtime.npz').read_bytes()).hexdigest(),
                     tokenizerSha256=hashlib.sha256(tokenizer.read_bytes()).hexdigest(),

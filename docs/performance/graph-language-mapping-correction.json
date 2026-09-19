@@ -1,0 +1,86 @@
+{
+  "decision": "Stopped run-1: incomplete prompt reachability is an architectural defect that training cannot repair. Run-2 uses corrected source-only mapping. No candidate has been deployed.",
+  "stoppedRunLastLoggedProgress": {
+    "step": 15200,
+    "loss": 3.8874964714050293,
+    "validationLoss": 3.877854824066162,
+    "seconds": 745.2723767079988
+  },
+  "retainedWeightsSha256": "b6a7469ad1b7bdf51ac9b21d4b346a01e61580667d75bc4e6a445e7c1e7dd2a5",
+  "oldMissingGenerationSlotsAtFourLayers": [
+    68,
+    82,
+    84,
+    91,
+    94,
+    105,
+    106,
+    107,
+    114,
+    118,
+    119,
+    120,
+    124
+  ],
+  "oldMissingGenerationSlotsAtSixteenLayers": [
+    105,
+    107,
+    114,
+    118,
+    120,
+    124
+  ],
+  "correctedGenerationReachableSlots": 128,
+  "correctedCompletePrefixAuxiliarySlots": [
+    0,
+    1,
+    18,
+    19,
+    21,
+    24,
+    25,
+    79,
+    80,
+    84,
+    85,
+    117,
+    121,
+    122,
+    127
+  ],
+  "correctedIntercellEdges": 13788,
+  "correctedPilotParity": [
+    {
+      "ablated": false,
+      "maxLogitError": 8.58306884765625e-06,
+      "maxStateError": 1.52587890625e-05
+    },
+    {
+      "ablated": true,
+      "maxLogitError": 2.09808349609375e-05,
+      "maxStateError": 1.9073486328125e-05
+    }
+  ],
+  "sourceReplyIndex": {
+    "sourceSha256": "498cd4580014f42c40cfde066573564ed28e3e1548a5566715b615f5ea932856",
+    "splitRule": "Same non-system conversation hash as base training; no changes to base arrays.",
+    "objective": "Assistant next-token loss only; conversation-bounded, left-padded windows matching CPU inference.",
+    "splits": {
+      "train": {
+        "replies": 252324,
+        "tokensVerified": 141869735,
+        "spansSha256": "1e30a1422b99102ba6752a1951bb5a7ed9baf873bd7f67487b0f4986fb073f86"
+      },
+      "validation": {
+        "replies": 2547,
+        "tokensVerified": 1449580,
+        "spansSha256": "6d2436ea78fa65d7650d95a6fa3553c4113609358bce2f9190f5b81b3b3cfd6c"
+      },
+      "test": {
+        "replies": 2668,
+        "tokensVerified": 1438914,
+        "spansSha256": "6ae00dff7b27dffd3734dd35c5e14a4d6e09e42897010882fecabfba70a88b0a"
+      }
+    }
+  }
+}

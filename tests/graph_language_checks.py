@@ -4,7 +4,7 @@ import sys,unittest
 import numpy as np
 import mlx.core as mx
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/'scripts/graph-language'))
-from model import wiring,GraphLanguageModel
+from model import wiring,GraphLanguageModel,input_coverage
 class GraphLanguageChecks(unittest.TestCase):
     def test_source_edges_and_slot_paths(self):
         inputs,outputs,slots,mask,source=wiring()
@@ -21,4 +21,8 @@ class GraphLanguageChecks(unittest.TestCase):
         self.assertGreater(float(mx.max(mx.abs(x[:,65:]-y[:,65:]))),1e-4)
         x=model(a,ablated=True);y=model(b,ablated=True);mx.eval(x,y)
         np.testing.assert_array_equal(np.array(x),np.array(y))
+    def test_every_context_slot_can_reach_generation_readout(self):
+        inputs,outputs,_,mask,_=wiring()
+        coverage=input_coverage(inputs,outputs,mask,4)
+        self.assertTrue(np.all(coverage[-1]),np.flatnonzero(~coverage[-1]).tolist())
 if __name__=='__main__':unittest.main()

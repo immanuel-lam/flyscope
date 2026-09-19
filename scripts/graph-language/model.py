@@ -12,16 +12,22 @@ ROOT=Path(__file__).resolve().parents[2]
 
 def wiring():
     counts=np.load(ROOT/'data/language/graph.npz')['counts'];source=counts>0
-    inputs=np.sort(np.random.default_rng(0).choice(512,128,replace=False));remaining=np.setdiff1d(np.arange(512),inputs)
-    cost=(~source[np.ix_(remaining,inputs)].T).astype(float);r,c=linear_sum_assignment(cost)
-    if cost[r,c].sum()!=0:raise ValueError('Missing source paths for token slots')
+    inputs=np.argsort(source.sum(axis=0),kind='stable')[-128:];remaining=np.setdiff1d(np.arange(512),inputs)
+    # Prefer well-connected readouts rather than arbitrary low-index cells.
+    cost=(~source[np.ix_(remaining,inputs)].T)*10000-source[remaining].sum(axis=1)[None,:];r,c=linear_sum_assignment(cost)
+    if np.any(~source[remaining[c],inputs]):raise ValueError('Missing source paths for token slots')
     outputs=remaining[c];slots=np.zeros(512,np.int32);slots[inputs]=np.arange(128);slots[outputs]=np.arange(128)
     intermediate=np.setdiff1d(remaining,outputs)
-    for cell in intermediate:slots[cell]=int(np.argmax(counts[cell,inputs]))
+    slots[intermediate]=np.repeat(np.arange(128),2)
     mask=source&(slots[:,None]>=slots[None,:])
     # Diagonal attention is local state retention, not an added inter-cell edge.
     mask|=np.eye(512,dtype=bool)
     return inputs,outputs,slots,mask,source
+
+def input_coverage(inputs,outputs,mask,layers):
+    reach=np.eye(512,dtype=bool)
+    for _ in range(layers):reach=(mask.astype(np.int32)@reach.astype(np.int32))>0
+    return reach[np.ix_(outputs,inputs)]
 
 class GraphBlock(nn.Module):
     def __init__(self,width,heads):
@@ -37,8 +43,8 @@ class GraphBlock(nn.Module):
         return x+self.down(activated)
 
 class GraphLanguageModel(nn.Module):
-    def __init__(self,width=256,layers=4,heads=8):
-        super().__init__();inputs,outputs,slots,mask,source=wiring()
+    def __init__(self,width=256,layers=4,heads=8,wiring_data=None):
+        super().__init__();inputs,outputs,slots,mask,source=wiring() if wiring_data is None else wiring_data
         self._injection=mx.array(np.eye(512,dtype=np.float32)[:,inputs]);self._inputs=mx.array(inputs);self._outputs=mx.array(outputs);self._mask=mx.array(mask);self._width=width
         self.embedding=nn.Embedding(2048,width);self.cell_embedding=nn.Embedding(512,width)
         self.blocks=[GraphBlock(width,heads) for _ in range(layers)];self.norm=nn.RMSNorm(width)
