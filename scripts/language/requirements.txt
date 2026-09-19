@@ -1,0 +1,6 @@
+# MLX is used only for training/export. Inference imports NumPy and tokenizers.
+mlx==0.32.2
+numpy==2.5.3
+tokenizers==0.23.2
+pyarrow==25.0.1
+huggingface-hub==1.32.0
