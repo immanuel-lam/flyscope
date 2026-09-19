@@ -1,0 +1,117 @@
+{
+  "prompts": [
+    "What is a cat?",
+    "What is a tree?"
+  ],
+  "protocol": "Different prompts followed by the same forced suffix; measures state separation, not semantic understanding.",
+  "rows": [
+    {
+      "sharedSuffixTokens": 0,
+      "stateRmsDifference": 0.0516388900578022
+    },
+    {
+      "sharedSuffixTokens": 1,
+      "stateRmsDifference": 0.04509126394987106
+    },
+    {
+      "sharedSuffixTokens": 2,
+      "stateRmsDifference": 0.040375567972660065
+    },
+    {
+      "sharedSuffixTokens": 3,
+      "stateRmsDifference": 0.03655363991856575
+    },
+    {
+      "sharedSuffixTokens": 4,
+      "stateRmsDifference": 0.03373698890209198
+    },
+    {
+      "sharedSuffixTokens": 5,
+      "stateRmsDifference": 0.03133482113480568
+    },
+    {
+      "sharedSuffixTokens": 6,
+      "stateRmsDifference": 0.029782108962535858
+    },
+    {
+      "sharedSuffixTokens": 7,
+      "stateRmsDifference": 0.028434693813323975
+    },
+    {
+      "sharedSuffixTokens": 8,
+      "stateRmsDifference": 0.027839040383696556
+    },
+    {
+      "sharedSuffixTokens": 9,
+      "stateRmsDifference": 0.027253786101937294
+    },
+    {
+      "sharedSuffixTokens": 10,
+      "stateRmsDifference": 0.026335615664720535
+    },
+    {
+      "sharedSuffixTokens": 11,
+      "stateRmsDifference": 0.02575070597231388
+    },
+    {
+      "sharedSuffixTokens": 12,
+      "stateRmsDifference": 0.025710100308060646
+    },
+    {
+      "sharedSuffixTokens": 13,
+      "stateRmsDifference": 0.025126079097390175
+    },
+    {
+      "sharedSuffixTokens": 14,
+      "stateRmsDifference": 0.024345792829990387
+    },
+    {
+      "sharedSuffixTokens": 15,
+      "stateRmsDifference": 0.023591715842485428
+    },
+    {
+      "sharedSuffixTokens": 16,
+      "stateRmsDifference": 0.022953344509005547
+    },
+    {
+      "sharedSuffixTokens": 17,
+      "stateRmsDifference": 0.02271215431392193
+    },
+    {
+      "sharedSuffixTokens": 18,
+      "stateRmsDifference": 0.02242553047835827
+    },
+    {
+      "sharedSuffixTokens": 19,
+      "stateRmsDifference": 0.022304056212306023
+    },
+    {
+      "sharedSuffixTokens": 20,
+      "stateRmsDifference": 0.02199309505522251
+    },
+    {
+      "sharedSuffixTokens": 21,
+      "stateRmsDifference": 0.02182691916823387
+    },
+    {
+      "sharedSuffixTokens": 22,
+      "stateRmsDifference": 0.021629268303513527
+    },
+    {
+      "sharedSuffixTokens": 23,
+      "stateRmsDifference": 0.02116909809410572
+    },
+    {
+      "sharedSuffixTokens": 24,
+      "stateRmsDifference": 0.020869294181466103
+    },
+    {
+      "sharedSuffixTokens": 25,
+      "stateRmsDifference": 0.020914191380143166
+    },
+    {
+      "sharedSuffixTokens": 26,
+      "stateRmsDifference": 0.020456377416849136
+    }
+  ]
+}
