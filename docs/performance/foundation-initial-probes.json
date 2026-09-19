@@ -1,0 +1,326 @@
+{
+  "source": {
+    "repository": "HuggingFaceTB/SmolLM2-135M-Instruct",
+    "revision": "12fd25f77366fa6b3b4b768ec3050bf629380bac",
+    "license": "apache-2.0 as declared in the pinned model card",
+    "modelCard": "https://huggingface.co/HuggingFaceTB/SmolLM2-135M-Instruct",
+    "parameters": 134515008,
+    "files": {
+      "model.safetensors": "5af571cbf074e6d21a03528d2330792e532ca608f24ac70a143f6b369968ab8c",
+      "tokenizer_config.json": "4ec77d44f62efeb38d7e044a1db318f6a939438425312dfa333b8382dbad98df",
+      "special_tokens_map.json": "2b7379f3ae813529281a5c602bc5a11c1d4e0a99107aaa597fe936c1e813ca52",
+      "config.json": "8eb740e8bbe4cff95ea7b4588d17a2432deb16e8075bc5828ff7ba9be94d982a",
+      "tokenizer.json": "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c",
+      "README.md": "4f97533ad95b1b2fea15fbc075c01b94578ebdd7c8138888fa43fa3abd530dc4"
+    },
+    "sourceGraphSha256": "31fc438535a41aff55dffdc8ab01c92eeb021e081a5453daa8b5974fd1973869",
+    "sourceCellManifestSha256": "ab7f41891ce0796061fe3af66ed66c5aa03abecd67b3a1ff3ee7fbd7764d5aef",
+    "wiringSha256": "6981c2bf6fcb1386fa8e51619ef98dfffe996126defb65ed6b1fbf71b21b1927",
+    "assumptions": "Pretrained weights initialize shared local feature transforms and source-masked attention. Explicit identity-feature relay follows 128 verified source pairs between disjoint input/readout cells. No external model supplies graph-mode logits. The dynamics and vector features are engineered, not biological firing."
+  },
+  "maxTokens": 16,
+  "replies": [
+    {
+      "prompt": "hi",
+      "ordinaryReference": {
+        "text": "Hello! How can I help you today?",
+        "tokenIds": [
+          19556,
+          17,
+          1073,
+          416,
+          339,
+          724,
+          346,
+          1834,
+          47
+        ],
+        "elapsedSeconds": 0.17233416700037196,
+        "tokensPerSecond": 52.224118737757756,
+        "mode": "ordinary-reference",
+        "engine": "NumPy CPU"
+      },
+      "sourceGraph": {
+        "text": "I'm looking for a for a a a a a a a a a a",
+        "tokenIds": [
+          57,
+          5248,
+          3012,
+          327,
+          253,
+          327,
+          253,
+          253,
+          253,
+          253,
+          253,
+          253,
+          253,
+          253,
+          253,
+          253
+        ],
+        "elapsedSeconds": 4.406191083002341,
+        "tokensPerSecond": 3.631254228107088,
+        "mode": "source-graph-adaptation",
+        "engine": "NumPy CPU"
+      }
+    },
+    {
+      "prompt": "who are you?",
+      "ordinaryReference": {
+        "text": "I'm a friendly and knowledgeable AI assistant. I'm here to help you with",
+        "tokenIds": [
+          57,
+          5248,
+          253,
+          7952,
+          284,
+          22477,
+          5646,
+          11173,
+          30,
+          339,
+          5248,
+          1535,
+          288,
+          724,
+          346,
+          351
+        ],
+        "elapsedSeconds": 0.30250045899811084,
+        "tokensPerSecond": 52.892481727110116,
+        "mode": "ordinary-reference",
+        "engine": "NumPy CPU"
+      },
+      "sourceGraph": {
+        "text": "I'mI'mI'm'\n\nI\n\n\nWhat is the",
+        "tokenIds": [
+          57,
+          5248,
+          57,
+          5248,
+          57,
+          5248,
+          23,
+          198,
+          198,
+          57,
+          198,
+          198,
+          198,
+          1780,
+          314,
+          260
+        ],
+        "elapsedSeconds": 4.391184332998819,
+        "tokensPerSecond": 3.6436639381688884,
+        "mode": "source-graph-adaptation",
+        "engine": "NumPy CPU"
+      }
+    },
+    {
+      "prompt": "what is a cat?",
+      "ordinaryReference": {
+        "text": "A cat is a domesticated member of the Felidae family, which includes cats,",
+        "tokenIds": [
+          49,
+          2644,
+          314,
+          253,
+          27996,
+          4028,
+          282,
+          260,
+          23311,
+          12963,
+          1564,
+          28,
+          527,
+          2978,
+          7680,
+          28
+        ],
+        "elapsedSeconds": 0.308476124999288,
+        "tokensPerSecond": 51.86787146018814,
+        "mode": "ordinary-reference",
+        "engine": "NumPy CPU"
+      },
+      "sourceGraph": {
+        "text": "A\nI.\n.\nI am a. b. 19",
+        "tokenIds": [
+          49,
+          198,
+          57,
+          30,
+          198,
+          30,
+          198,
+          57,
+          744,
+          253,
+          30,
+          278,
+          30,
+          216,
+          33,
+          41
+        ],
+        "elapsedSeconds": 4.395632792002289,
+        "tokensPerSecond": 3.6399764850948153,
+        "mode": "source-graph-adaptation",
+        "engine": "NumPy CPU"
+      }
+    },
+    {
+      "prompt": "what is a tree?",
+      "ordinaryReference": {
+        "text": "A tree is a complex organism that consists of a stem, leaves, and roots",
+        "tokenIds": [
+          49,
+          3187,
+          314,
+          253,
+          1784,
+          11703,
+          338,
+          5956,
+          282,
+          253,
+          6046,
+          28,
+          3711,
+          28,
+          284,
+          5190
+        ],
+        "elapsedSeconds": 0.3077315830014413,
+        "tokensPerSecond": 51.993363319893824,
+        "mode": "ordinary-reference",
+        "engine": "NumPy CPU"
+      },
+      "sourceGraph": {
+        "text": "A\nI.\n.\nI am a. b.  b ",
+        "tokenIds": [
+          49,
+          198,
+          57,
+          30,
+          198,
+          30,
+          198,
+          57,
+          744,
+          253,
+          30,
+          278,
+          30,
+          216,
+          278,
+          216
+        ],
+        "elapsedSeconds": 4.412173165997956,
+        "tokensPerSecond": 3.6263309253822276,
+        "mode": "source-graph-adaptation",
+        "engine": "NumPy CPU"
+      }
+    },
+    {
+      "prompt": "what is two plus three?",
+      "ordinaryReference": {
+        "text": "Two plus three is a common mathematical expression that can be represented as 2 +",
+        "tokenIds": [
+          10345,
+          8055,
+          1296,
+          314,
+          253,
+          1273,
+          7132,
+          4352,
+          338,
+          416,
+          325,
+          6610,
+          347,
+          216,
+          34,
+          1232
+        ],
+        "elapsedSeconds": 0.31228754200128606,
+        "tokensPerSecond": 51.23483280013171,
+        "mode": "ordinary-reference",
+        "engine": "NumPy CPU"
+      },
+      "sourceGraph": {
+        "text": "\nI..\n",
+        "tokenIds": [
+          198,
+          57,
+          30,
+          30,
+          198
+        ],
+        "elapsedSeconds": 1.6537152080018132,
+        "tokensPerSecond": 3.0234952038939693,
+        "mode": "source-graph-adaptation",
+        "engine": "NumPy CPU"
+      }
+    },
+    {
+      "prompt": "I feel sad today.",
+      "ordinaryReference": {
+        "text": "I'm sorry for your loss. It's completely normal to feel sad, especially",
+        "tokenIds": [
+          57,
+          5248,
+          22657,
+          327,
+          469,
+          2184,
+          30,
+          657,
+          506,
+          4036,
+          2955,
+          288,
+          1407,
+          8177,
+          28,
+          2117
+        ],
+        "elapsedSeconds": 0.30562450000070385,
+        "tokensPerSecond": 52.35182388834387,
+        "mode": "ordinary-reference",
+        "engine": "NumPy CPU"
+      },
+      "sourceGraph": {
+        "text": "I\nI.\n.\nI am a.\n\nIassistant",
+        "tokenIds": [
+          57,
+          198,
+          57,
+          30,
+          198,
+          30,
+          198,
+          57,
+          744,
+          253,
+          30,
+          198,
+          198,
+          57,
+          520,
+          9531
+        ],
+        "elapsedSeconds": 4.409696458002145,
+        "tokensPerSecond": 3.628367655774872,
+        "mode": "source-graph-adaptation",
+        "engine": "NumPy CPU"
+      }
+    }
+  ],
+  "limitations": "Frozen pretrained weights; graph adaptation has not been trained. Ordinary reference is diagnostic only and is not wired into FlyGPT. Short development probes are not a quality benchmark. Timings are CPU inference with full graph recomputation and exclude weight loading.",
+  "decision": "Not deployable. Ordinary-reference replies do not establish graph-mode language ability; source-wired adaptation requires training."
+}
