@@ -51,3 +51,17 @@ VECLIB_MAXIMUM_THREADS=4 .venv-foundation/bin/python scripts/foundation/evaluate
 ```
 
 `--initial-run` creates a separate artifact and records the initial weight hash; it never overwrites the earlier run. Seven checks now include reply-target alignment and conversation-boundary preservation. Generated evaluation reports retain every prompt, token ID, raw response, CPU timing and weight hash. No candidate is promoted based on loss alone.
+
+## smaller CPU weight storage
+
+`quantize.py` exports two-dimensional weight matrices as symmetric signed int8 values with one float32 scale per row; one-dimensional normalization weights remain float32. The CPU runtime verifies each tensor archive's checksum and shape, then reconstructs float32 weights once at load. This reduces artifact size, not resident inference memory, and does not use GPU inference. Source wiring, cell IDs and the source mask are included in the export. The source checkpoint is preserved.
+
+On the rejected `adapt-1` checkpoint, stored tensor bytes fell from 538,090,247 to 135,562,940. A fixed 32-target comparison had 31 matching top tokens and mean reference-to-quantized KL divergence 0.00355. Teacher-forced loss was 3.0212 before and 3.0008 after quantization; this small change is not evidence of better language quality. The source-path cut still produces zero logits. See `docs/performance/foundation-int8-storage.json` for every sample and artifact hash.
+
+Two storage checks verify every tensor's reconstruction error against half its row quantization step and reject corrupted checksums or invalid archive paths. Seven existing CPU, gradient, source and sampling checks also pass after the loader change. These local results do not prove Vercel bundle acceptance or performance, and no quantized candidate is deployed.
+
+```sh
+VECLIB_MAXIMUM_THREADS=4 .venv-foundation/bin/python scripts/foundation/quantize.py --run adapt-1
+VECLIB_MAXIMUM_THREADS=4 .venv-foundation/bin/python tests/foundation_storage_checks.py
+VECLIB_MAXIMUM_THREADS=4 .venv-foundation/bin/python scripts/foundation/check-storage.py --run adapt-1
+```

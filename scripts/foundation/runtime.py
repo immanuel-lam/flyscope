@@ -7,6 +7,8 @@ and these dynamics are engineered, not biological measurements.
 """
 from pathlib import Path
 import json
+import hashlib
+import re
 import struct
 import time
 import numpy as np
@@ -40,17 +42,51 @@ def load_weights(path):
     return result
 
 
+def load_quantized_weights(directory):
+    """Decode checked, per-row int8 storage to float32 CPU computation weights."""
+    manifest = json.loads((directory / 'weights.json').read_text())
+    if manifest.get('format') != 'flyscope-row-int8-v1':
+        raise ValueError('Unsupported weight storage format')
+    result = {}
+    for key, spec in manifest['tensors'].items():
+        filename = spec['file']
+        if not re.fullmatch(r'weight-[0-9]{3}\.npz', filename):
+            raise ValueError('Invalid weight filename')
+        path = directory / filename
+        if hashlib.sha256(path.read_bytes()).hexdigest() != spec['sha256']:
+            raise ValueError('Weight checksum mismatch')
+        with np.load(path, allow_pickle=False) as archive:
+            values = archive['values']
+            if list(values.shape) != spec['shape']:
+                raise ValueError('Weight shape mismatch')
+            if spec['storage'] == 'row-int8':
+                scales = archive['scales']
+                if (values.dtype != np.int8 or values.ndim != 2 or scales.dtype != np.float32
+                        or scales.shape != (values.shape[0], 1) or not np.all(np.isfinite(scales))
+                        or not np.all(scales > 0)):
+                    raise ValueError('Invalid quantized weight')
+                result[key] = values.astype(np.float32) * scales
+            elif spec['storage'] == 'float32' and values.dtype == np.float32 and np.all(np.isfinite(values)):
+                result[key] = values.copy()
+            else:
+                raise ValueError('Invalid weight encoding')
+    return result
+
+
 class FoundationRuntime:
     def __init__(self, directory=None):
         self.directory = Path(directory or ROOT / 'data/foundation/smollm2-135m')
         self.config = json.loads((self.directory / 'config.json').read_text())
-        self.weights = load_weights(self.directory / 'model.safetensors')
+        self.weights = (load_quantized_weights(self.directory) if (self.directory / 'weights.json').exists()
+                        else load_weights(self.directory / 'model.safetensors'))
         self.tokenizer = Tokenizer.from_file(str(self.directory / 'tokenizer.json'))
         wiring_file = self.directory / 'wiring.npz'
         wiring = dict(np.load(wiring_file if wiring_file.exists() else ROOT / 'data/graph-language/run-2/wiring.npz'))
         self.inputs, self.outputs = wiring['inputs'], wiring['outputs']
         self.slots, self.mask = wiring['slots'], wiring['mask']
-        source = np.load(ROOT / 'data/language/graph.npz')['counts'] > 0
+        source_file = self.directory / 'source-mask.npy'
+        source = (np.load(source_file, allow_pickle=False) if source_file.exists()
+                  else np.load(ROOT / 'data/language/graph.npz')['counts'] > 0)
         if np.any(self.mask & ~np.eye(512, dtype=bool) & ~source):
             raise ValueError('Attention contains an off-source edge')
         if not np.all(source[self.outputs, self.inputs]) or set(self.inputs) & set(self.outputs):

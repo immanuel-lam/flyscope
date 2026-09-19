@@ -1,0 +1,335 @@
+{
+  "run": "adapt-1",
+  "examples": 32,
+  "seed": 211,
+  "sourceWeightSha256": "40aa1d9e5f9c277265730a647e859c5a7fcfcb43b2ac163feaac082ebe2531f5",
+  "storageManifestSha256": "eead676244d7594deb9f0210e1b349d7e08179e52ec8e34e82285c33c7323d2e",
+  "referenceMeanLoss": 3.0212353713958837,
+  "quantizedMeanLoss": 3.0008476943435425,
+  "meanKl": 0.0035466076055488695,
+  "topTokenAgreement": 0.96875,
+  "cutMaxAbsoluteLogit": 0.0,
+  "rows": [
+    {
+      "spanIndex": 404,
+      "targetOffset": 166353,
+      "targetToken": 359,
+      "referenceLoss": 8.995134103326409,
+      "quantizedLoss": 9.05337787290872,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.0038083917879990483,
+      "logitRmsDifference": 0.15646588802337646
+    },
+    {
+      "spanIndex": 1137,
+      "targetOffset": 456500,
+      "targetToken": 260,
+      "referenceLoss": 0.48592673294979133,
+      "quantizedLoss": 0.4767818934814127,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.0011854490417895127,
+      "logitRmsDifference": 0.15278147161006927
+    },
+    {
+      "spanIndex": 188,
+      "targetOffset": 79354,
+      "targetToken": 1109,
+      "referenceLoss": 7.252675879071185,
+      "quantizedLoss": 7.117222667054944,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.0056728998880039,
+      "logitRmsDifference": 0.21016263961791992
+    },
+    {
+      "spanIndex": 961,
+      "targetOffset": 392377,
+      "targetToken": 80,
+      "referenceLoss": 0.06169766722064014,
+      "quantizedLoss": 0.06611889552622882,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.0005626714087555776,
+      "logitRmsDifference": 0.350928395986557
+    },
+    {
+      "spanIndex": 1944,
+      "targetOffset": 789039,
+      "targetToken": 1127,
+      "referenceLoss": 0.2680221830348876,
+      "quantizedLoss": 0.2837389789184439,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.0006378311492230759,
+      "logitRmsDifference": 0.3986911475658417
+    },
+    {
+      "spanIndex": 534,
+      "targetOffset": 216053,
+      "targetToken": 5326,
+      "referenceLoss": 2.7238132821775958,
+      "quantizedLoss": 2.758761355126698,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.0010406994092139316,
+      "logitRmsDifference": 0.15513597428798676
+    },
+    {
+      "spanIndex": 1738,
+      "targetOffset": 703849,
+      "targetToken": 2542,
+      "referenceLoss": 7.092729111233389,
+      "quantizedLoss": 7.1073306473333915,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.007819401334415495,
+      "logitRmsDifference": 0.1790694296360016
+    },
+    {
+      "spanIndex": 1637,
+      "targetOffset": 668005,
+      "targetToken": 40188,
+      "referenceLoss": 3.3199439517973066,
+      "quantizedLoss": 3.474607504732803,
+      "topTokenMatches": false,
+      "referenceToQuantizedKl": 0.005783892660595034,
+      "logitRmsDifference": 0.26174476742744446
+    },
+    {
+      "spanIndex": 1353,
+      "targetOffset": 551599,
+      "targetToken": 29916,
+      "referenceLoss": 3.29112058314975,
+      "quantizedLoss": 3.2795656633109638,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.003212226342694171,
+      "logitRmsDifference": 0.198080375790596
+    },
+    {
+      "spanIndex": 826,
+      "targetOffset": 342998,
+      "targetToken": 40337,
+      "referenceLoss": 6.930594493831208,
+      "quantizedLoss": 6.631719085242624,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.005954139279987259,
+      "logitRmsDifference": 0.15117856860160828
+    },
+    {
+      "spanIndex": 1017,
+      "targetOffset": 409887,
+      "targetToken": 28,
+      "referenceLoss": 2.046472204352211,
+      "quantizedLoss": 2.039212195214546,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.0008527307183190357,
+      "logitRmsDifference": 0.27103132009506226
+    },
+    {
+      "spanIndex": 2534,
+      "targetOffset": 1031099,
+      "targetToken": 429,
+      "referenceLoss": 8.045669816021976,
+      "quantizedLoss": 8.1010296735146,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.00584509997838461,
+      "logitRmsDifference": 0.23692426085472107
+    },
+    {
+      "spanIndex": 2003,
+      "targetOffset": 813114,
+      "targetToken": 288,
+      "referenceLoss": 6.339810071698544,
+      "quantizedLoss": 6.391724130351228,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.0061321223035470315,
+      "logitRmsDifference": 0.1416349709033966
+    },
+    {
+      "spanIndex": 2367,
+      "targetOffset": 957571,
+      "targetToken": 36774,
+      "referenceLoss": 5.825244751001734,
+      "quantizedLoss": 5.788297946144796,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.004534634495113049,
+      "logitRmsDifference": 0.13986176252365112
+    },
+    {
+      "spanIndex": 2541,
+      "targetOffset": 1034001,
+      "targetToken": 1357,
+      "referenceLoss": 6.2796127642764095,
+      "quantizedLoss": 6.325007681377993,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.006757960214257706,
+      "logitRmsDifference": 0.2648751437664032
+    },
+    {
+      "spanIndex": 1437,
+      "targetOffset": 581118,
+      "targetToken": 9704,
+      "referenceLoss": 0.058252785894624334,
+      "quantizedLoss": 0.057296103573116035,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.0003103444741401191,
+      "logitRmsDifference": 0.25351524353027344
+    },
+    {
+      "spanIndex": 2064,
+      "targetOffset": 834127,
+      "targetToken": 416,
+      "referenceLoss": 1.3411035233120945,
+      "quantizedLoss": 1.295330711180796,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.0015342099180324297,
+      "logitRmsDifference": 0.39536407589912415
+    },
+    {
+      "spanIndex": 269,
+      "targetOffset": 111319,
+      "targetToken": 37,
+      "referenceLoss": 1.5525018205552585,
+      "quantizedLoss": 1.5587525356823524,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.001182484315429465,
+      "logitRmsDifference": 0.33657681941986084
+    },
+    {
+      "spanIndex": 2150,
+      "targetOffset": 878322,
+      "targetToken": 198,
+      "referenceLoss": 2.870487514984799,
+      "quantizedLoss": 2.5380564359948514,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.006590376145861235,
+      "logitRmsDifference": 0.15347638726234436
+    },
+    {
+      "spanIndex": 1613,
+      "targetOffset": 659558,
+      "targetToken": 28,
+      "referenceLoss": 1.2354729472983488,
+      "quantizedLoss": 1.247543847291535,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.0013909141732360555,
+      "logitRmsDifference": 0.2293107658624649
+    },
+    {
+      "spanIndex": 2289,
+      "targetOffset": 928478,
+      "targetToken": 198,
+      "referenceLoss": 0.9949236090454564,
+      "quantizedLoss": 0.938371613175899,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.002823378752902925,
+      "logitRmsDifference": 0.17077001929283142
+    },
+    {
+      "spanIndex": 1727,
+      "targetOffset": 700726,
+      "targetToken": 3044,
+      "referenceLoss": 3.842598263999304,
+      "quantizedLoss": 3.7573007803433036,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.005685099989409406,
+      "logitRmsDifference": 0.20202264189720154
+    },
+    {
+      "spanIndex": 1463,
+      "targetOffset": 589856,
+      "targetToken": 3077,
+      "referenceLoss": 0.42652974416264106,
+      "quantizedLoss": 0.47390560554976763,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.0035523619646095576,
+      "logitRmsDifference": 0.15593267977237701
+    },
+    {
+      "spanIndex": 399,
+      "targetOffset": 164772,
+      "targetToken": 27710,
+      "referenceLoss": 1.7783807076611984,
+      "quantizedLoss": 1.6662258771037681,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.004018756599336797,
+      "logitRmsDifference": 0.23344752192497253
+    },
+    {
+      "spanIndex": 765,
+      "targetOffset": 322770,
+      "targetToken": 198,
+      "referenceLoss": 0.36983181079952454,
+      "quantizedLoss": 0.3708403356651449,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.0018651109344563063,
+      "logitRmsDifference": 0.13895224034786224
+    },
+    {
+      "spanIndex": 1339,
+      "targetOffset": 546844,
+      "targetToken": 260,
+      "referenceLoss": 1.2151218958777332,
+      "quantizedLoss": 1.1752188025142674,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.0066355246977853445,
+      "logitRmsDifference": 0.27814120054244995
+    },
+    {
+      "spanIndex": 2370,
+      "targetOffset": 958411,
+      "targetToken": 355,
+      "referenceLoss": 1.617817203065084,
+      "quantizedLoss": 1.5345952782921837,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.0035943126352459866,
+      "logitRmsDifference": 0.3396857678890228
+    },
+    {
+      "spanIndex": 1706,
+      "targetOffset": 693693,
+      "targetToken": 3348,
+      "referenceLoss": 5.191448432893939,
+      "quantizedLoss": 5.153385648129796,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.0037864658161672485,
+      "logitRmsDifference": 0.21805211901664734
+    },
+    {
+      "spanIndex": 1585,
+      "targetOffset": 651042,
+      "targetToken": 253,
+      "referenceLoss": 1.557261644839762,
+      "quantizedLoss": 1.5719333211987205,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.003049808366940485,
+      "logitRmsDifference": 0.260162889957428
+    },
+    {
+      "spanIndex": 1112,
+      "targetOffset": 446375,
+      "targetToken": 30,
+      "referenceLoss": 1.2456967998718516,
+      "quantizedLoss": 1.2700319380111245,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.002713352737571007,
+      "logitRmsDifference": 0.2941911518573761
+    },
+    {
+      "spanIndex": 1683,
+      "targetOffset": 684954,
+      "targetToken": 28,
+      "referenceLoss": 1.4946704016822758,
+      "quantizedLoss": 1.5257056178189559,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.0028393349834489787,
+      "logitRmsDifference": 0.3607915937900543
+    },
+    {
+      "spanIndex": 337,
+      "targetOffset": 134459,
+      "targetToken": 28,
+      "referenceLoss": 0.928965183581345,
+      "quantizedLoss": 0.998135577228383,
+      "topTokenMatches": true,
+      "referenceToQuantizedKl": 0.0021194568606920498,
+      "logitRmsDifference": 0.22714672982692719
+    }
+  ],
+  "limitation": "Teacher-forced next-token storage comparison on adaptation validation only; not conversational quality or deployment verification. Candidate remains rejected for chat quality."
+}
