@@ -5,7 +5,7 @@ Requested 19 September 2026. Finish and verify each feature before advancing.
 1. Restore full structural point-cloud exploration when idle; overlay actual simulated rates during playback; explicit paused activity inspection. Implemented; unit/build/browser verification passed.
 2. Train a small local MLX chat/language model through real MaleCNS directed pathways. Save checkpoint, tokenizer, IDs, data provenance, held-out evaluation and graph-ablation results. Integrate chat and actual neural state display. Implemented and verified: exported CPU runtime, general next-token checkpoint without authored Q&A fine-tuning, graph-ablation loss increase, MLX/NumPy parity, default MaleCNS and FlyGPT side panel. See FLYGPT.md.
 3. Vision and navigation: implemented actual bilateral fisheye camera input, pixel-driven target seeking, shared-clock image playback and source-target geometry. Verified left/right target approach against disabled and silenced controls. See PHYSICAL_FLY.md and performance/vision-validation.json.
-4. Odour tracking: defined field, neural encoding, source-finding test and ablation.
+4. Odour tracking: implemented bilateral antenna sampling of a defined field, engineered neural stimulus, shared-clock observations and source marker. Two source positions improve final distance versus disabled steering; silenced control has zero rates. This demonstrates approach, not reliable arrival or plume tracking. See performance/odour-validation.json.
 5. Obstacle avoidance: physical collisions, perception and held-out-layout tests.
 6. Learning and memory: trained adaptation, retained state and held-out cue tests.
 7. Language experiment comparisons: real vs shuffled wiring and a matched ordinary recurrent baseline; report actual results.

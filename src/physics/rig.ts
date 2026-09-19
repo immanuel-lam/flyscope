@@ -10,6 +10,10 @@ export function addPhysicsRig(scene:THREE.Scene,run:PhysicsRun){
     const target=new THREE.Mesh(new THREE.SphereGeometry(2,24,16),new THREE.MeshStandardMaterial({color:'#ff1111',roughness:.7}));
     target.position.fromArray(run.vision.targetPosition);root.add(target);
   }
+  if(run.odour){
+    const marker=new THREE.Mesh(new THREE.RingGeometry(.7,1,32),new THREE.MeshBasicMaterial({color:'#b9db79',side:THREE.DoubleSide}));
+    marker.position.fromArray(run.odour.sourcePosition);marker.position.z+=.02;root.add(marker);
+  }
   const bodies=run.bodyNames.map(()=>{const g=new THREE.Group();root.add(g);return g;});
   let headMesh:THREE.Mesh | undefined;
   const headCenter=new THREE.Vector3();

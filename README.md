@@ -99,7 +99,7 @@ malecns supplies the reconstructed anatomy and connections. it does **not** supp
 
 the neural dynamics, text interfaces and motor mappings here are engineering choices. the physics model simulates contacts and movement, but its neural controller is not biologically validated. the language model uses a selected subgraph, not all 166,700 cells. activity values are continuous model states, not measured spikes. placing the whole nervous system inside the illustrated fly head is a visual aid, not anatomical registration.
 
-eye-camera navigation now provides local red-target seeking with actual fisheye observations and disabled-vision controls. odour tracking, obstacle avoidance, and learning and memory are planned experiments; they are not working features yet. the [experiment roadmap](docs/EXPERIMENT_ROADMAP.md) records the direction.
+eye-camera navigation now provides local red-target seeking with actual fisheye observations and disabled-vision controls. obstacle avoidance, and learning and memory are planned experiments; they are not working features yet. the [experiment roadmap](docs/EXPERIMENT_ROADMAP.md) records the direction.
 
 ## build on it
 
@@ -129,3 +129,5 @@ some integration tests need the prepared dataset and local model or physics asse
 malecns data comes from flyem at hhmi janelia, the university of cambridge, mrc lmb and google research, under cc by 4.0. see the [source attribution](public/DATA_SOURCES.md) and [full dataset notes](docs/LARGE_DATASETS.md) for exact sources and transformations.
 
 physical simulation uses [neuromechfly / flygym](https://github.com/NeLy-EPFL/flygym) and [mujoco](https://github.com/google-deepmind/mujoco). language training uses the synthetic everyday-conversations subset of smoltalk; its source revision and checksums are recorded with the checkpoint. see the [research notes](docs/RESEARCH.md) for background and the distinction between malecns and flywire.
+
+local odour experiments sample a defined field at both simulated antennae and route steering through the rate model. the panel shows concentrations during playback. two tested source positions show improved approach against disabled steering; this is not a turbulent plume or validated biological olfactory model. see [physical experiments](docs/PHYSICAL_FLY.md).

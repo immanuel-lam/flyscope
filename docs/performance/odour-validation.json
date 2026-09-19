@@ -1,0 +1,14 @@
+{
+  "conditions": {
+    "left": {
+      "activeMm": 1.654270286000749,
+      "disabledMm": 1.9933087684897186
+    },
+    "right": {
+      "activeMm": 5.046898328865066,
+      "disabledMm": 6.110283777905737
+    }
+  },
+  "silencedDisplacementMm": 0.1258385551728881,
+  "limitations": "Two sources, one fixed seed, static field and engineered DN mapping; not turbulent plume tracking or biological olfaction."
+}

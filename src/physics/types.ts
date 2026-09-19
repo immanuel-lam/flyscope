@@ -1,5 +1,6 @@
 import type { Activity } from '../data';
 export interface PhysicsRun {
+  odour?:{frames:{time:number;antennae:number[][];concentration:number[];turn:number}[];sourcePosition:number[];spreadMm:number;control:string};
   vision?:{frames:{time:number;eyes:string[];redFraction:number[];turn:number}[];target:number[];targetPosition?:number[];sourceSize:number[];control:string};
   schemaVersion:1; rig:'neuromechfly-2.1.0'; datasetId:string; datasetVersion:string;
   times:number[];
@@ -7,8 +8,8 @@ export interface PhysicsRun {
   geometry:{name?:string;body:number;vertices:number[];faces:number[];position:number[];quaternion:number[];color:number[]}[];
   bodyNames:string[];
   activity:Activity;
-  parameters:{duration:number;drive:number;turn:number;silenced:boolean;feedback:boolean;seed:number;vision?:boolean;visionControl?:boolean;target?:number[]};
-  metrics:{displacementMm:number;finalHeightMm:number;wallSeconds:number;neurons:number;effectiveSignedEdges:number;recordedNeurons:number;maxContacts:number;physicsStepSeconds:number;neuralStepSeconds:number;targetStartDistanceMm?:number;targetFinalDistanceMm?:number};
+  parameters:{duration:number;drive:number;turn:number;silenced:boolean;feedback:boolean;seed:number;vision?:boolean;visionControl?:boolean;target?:number[];odour?:boolean;odourControl?:boolean};
+  metrics:{displacementMm:number;finalHeightMm:number;wallSeconds:number;neurons:number;effectiveSignedEdges:number;recordedNeurons:number;maxContacts:number;physicsStepSeconds:number;neuralStepSeconds:number;targetStartDistanceMm?:number;targetFinalDistanceMm?:number;odourStartDistanceMm?:number;odourFinalDistanceMm?:number};
   provenance:Record<string,string>;
 }
 export function frameIndex(run:PhysicsRun,time:number){

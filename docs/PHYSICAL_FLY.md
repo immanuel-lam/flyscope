@@ -87,3 +87,13 @@ Two-second target-distance results (mm): left 1.310 with visual steering versus 
 .venv-physics/bin/python scripts/physics/run.py --duration 2 --vision --silenced --output data/physics/vision-silenced.json
 .venv-physics/bin/python tests/vision_checks.py
 ```
+
+## Odour tracking
+
+Enable **Odour tracking** in the local physics panel and choose the source side. The simulator samples `exp(-distance² / (2 × 5²))` at the actual left and right funiculus positions in millimetres. A bounded bilateral contrast supplies the same engineered descending-neuron stimulus pathway used for locomotion. Motor output still comes from the full rate network. The source is a scalar field, not a simulated turbulent plume, chemical receptor model, or identified olfactory circuit.
+
+The panel displays both antenna concentrations and applied steering at the shared playback time; rewind restores the original observations. A green ground ring marks the source for the viewer only. It adds no physical force or observation to the controller. Vision and odour, if both enabled, share the source position; their steering stimuli are summed and bounded.
+
+Reproduce the controls with `.venv-physics/bin/python scripts/physics/run.py --odour --duration 2 --output data/physics/odour-left.json`. Add `--target-y -4` for the right source, `--no-odour-control` to retain sensing without steering, or `--silenced` to zero neural activity. Save the corresponding `odour-right`, `odour-disabled`, `odour-right-disabled`, and `odour-silenced` JSON files before running `.venv-physics/bin/python tests/odour_checks.py`.
+
+For the two fixed-seed, two-second tests, left-source final distance was 1.654 mm versus 1.993 mm without odour steering; right-source distance was 5.047 mm versus 6.110 mm. Neural silencing left 0.126 mm of settling displacement and zero recorded rates. These runs show a modest control effect through the rate model; they do not establish reliable source arrival, general plume tracking, or biological olfaction. See `performance/odour-validation.json`.
