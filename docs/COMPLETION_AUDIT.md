@@ -7,7 +7,7 @@ Checked against the current local work on 20 September 2026. The full goal is **
 | idle source point cloud; truthful activity | activity tests, full-data/browser tests, live-chat test | implemented; continuous model states, not biological spikes |
 | dedicated FlyGPT, larger chat, bounded render load | workspace screenshot, chat and live-chat browser checks | implemented; 5k structural points plus all 512 active model cells |
 | actual CPU token generation, no canned fallback | runtime source, graph-ablation and CPU/MLX checks | deployed v3 works as a predictor; replies remain weak |
-| more relevant, less repetitive conversation | retained four-channel, short-context and persistent-prompt evaluation failures; source-edge attention experiment | **open**; small graph and ordinary attention candidates rejected; source-wired pretrained foundation adaptation in progress; no useful replacement verified |
+| more relevant, less repetitive conversation | retained four-channel, short-context and persistent-prompt evaluation failures; source-edge attention experiment | **open**; small graph and ordinary attention candidates rejected; initial and final-readout foundation adaptations rejected; reply-start adaptation in progress; no useful replacement verified |
 | live computation and tokens/s | NDJSON state/token stream and live-chat browser checks | implemented for deployed v3; any replacement requires equivalent checks |
 | model explanation and weight exploration | README, FLYGPT.md, inspect-weights command | implemented for deployed checkpoint |
 | vision/navigation | vision-validation.json, pixel/physical controls, browser rewind | simple red-target seeking, not general vision |

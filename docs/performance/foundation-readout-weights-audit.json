@@ -1,0 +1,1918 @@
+{
+  "run": "adapt-readout-1",
+  "referenceWeightSha256": "5af571cbf074e6d21a03528d2330792e532ca608f24ac70a143f6b369968ab8c",
+  "weightSha256": "76d6d22136b542af48efc37f7f908b34f79d00fc6604947b4845cad620015bf7",
+  "wiringSha256": "6981c2bf6fcb1386fa8e51619ef98dfffe996126defb65ed6b1fbf71b21b1927",
+  "sourceCellsSha256": "ab7f41891ce0796061fe3af66ed66c5aa03abecd67b3a1ff3ee7fbd7764d5aef",
+  "totalParameters": 134515008,
+  "allowedParameters": 26542080,
+  "changedParameters": 26542001,
+  "allFrozenTensorsUnchanged": true,
+  "sourceWiringAndCellsUnchanged": true,
+  "tensors": [
+    {
+      "name": "model.embed_tokens.weight",
+      "parameters": 28311552,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.0.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.0.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.0.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.0.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.0.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.0.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110591,
+      "maxAbsoluteChange": 0.006533622741699219
+    },
+    {
+      "name": "model.layers.0.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331776,
+      "maxAbsoluteChange": 0.0060013048350811005
+    },
+    {
+      "name": "model.layers.0.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331773,
+      "maxAbsoluteChange": 0.007085263729095459
+    },
+    {
+      "name": "model.layers.0.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.004997363314032555
+    },
+    {
+      "name": "model.layers.1.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.1.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.1.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.1.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.1.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.1.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.012460142374038696
+    },
+    {
+      "name": "model.layers.1.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331776,
+      "maxAbsoluteChange": 0.010825920850038528
+    },
+    {
+      "name": "model.layers.1.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331774,
+      "maxAbsoluteChange": 0.008656114339828491
+    },
+    {
+      "name": "model.layers.1.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.008142644539475441
+    },
+    {
+      "name": "model.layers.10.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.10.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.10.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.10.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.10.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.10.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.009870071895420551
+    },
+    {
+      "name": "model.layers.10.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331776,
+      "maxAbsoluteChange": 0.013157212175428867
+    },
+    {
+      "name": "model.layers.10.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331773,
+      "maxAbsoluteChange": 0.008284904062747955
+    },
+    {
+      "name": "model.layers.10.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.0075933970510959625
+    },
+    {
+      "name": "model.layers.11.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.11.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.11.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.11.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.11.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.11.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.009438246488571167
+    },
+    {
+      "name": "model.layers.11.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331775,
+      "maxAbsoluteChange": 0.011744938790798187
+    },
+    {
+      "name": "model.layers.11.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331774,
+      "maxAbsoluteChange": 0.0105811208486557
+    },
+    {
+      "name": "model.layers.11.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.010431777685880661
+    },
+    {
+      "name": "model.layers.12.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.12.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.12.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.12.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.12.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.12.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.008593082427978516
+    },
+    {
+      "name": "model.layers.12.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331775,
+      "maxAbsoluteChange": 0.017479419708251953
+    },
+    {
+      "name": "model.layers.12.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331776,
+      "maxAbsoluteChange": 0.010386306792497635
+    },
+    {
+      "name": "model.layers.12.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.008327584713697433
+    },
+    {
+      "name": "model.layers.13.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.13.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.13.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.13.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.13.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.13.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.011411603540182114
+    },
+    {
+      "name": "model.layers.13.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331776,
+      "maxAbsoluteChange": 0.014263927936553955
+    },
+    {
+      "name": "model.layers.13.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331775,
+      "maxAbsoluteChange": 0.01026071049273014
+    },
+    {
+      "name": "model.layers.13.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.008199237287044525
+    },
+    {
+      "name": "model.layers.14.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.14.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.14.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.14.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.14.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.14.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.009465247392654419
+    },
+    {
+      "name": "model.layers.14.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331776,
+      "maxAbsoluteChange": 0.013452410697937012
+    },
+    {
+      "name": "model.layers.14.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331775,
+      "maxAbsoluteChange": 0.00882715918123722
+    },
+    {
+      "name": "model.layers.14.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.006937034428119659
+    },
+    {
+      "name": "model.layers.15.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.15.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.15.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.15.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.15.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.15.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.011580448597669601
+    },
+    {
+      "name": "model.layers.15.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331775,
+      "maxAbsoluteChange": 0.011519238352775574
+    },
+    {
+      "name": "model.layers.15.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331775,
+      "maxAbsoluteChange": 0.011823862791061401
+    },
+    {
+      "name": "model.layers.15.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.008518904447555542
+    },
+    {
+      "name": "model.layers.16.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.16.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.16.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.16.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.16.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.16.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.009028017520904541
+    },
+    {
+      "name": "model.layers.16.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331774,
+      "maxAbsoluteChange": 0.020994998514652252
+    },
+    {
+      "name": "model.layers.16.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331775,
+      "maxAbsoluteChange": 0.010101944208145142
+    },
+    {
+      "name": "model.layers.16.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.009854452684521675
+    },
+    {
+      "name": "model.layers.17.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.17.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.17.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.17.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.17.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.17.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.008820198476314545
+    },
+    {
+      "name": "model.layers.17.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331776,
+      "maxAbsoluteChange": 0.012190446257591248
+    },
+    {
+      "name": "model.layers.17.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331776,
+      "maxAbsoluteChange": 0.007329482585191727
+    },
+    {
+      "name": "model.layers.17.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.00750693678855896
+    },
+    {
+      "name": "model.layers.18.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.18.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.18.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.18.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.18.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.18.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110591,
+      "maxAbsoluteChange": 0.009967535734176636
+    },
+    {
+      "name": "model.layers.18.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331775,
+      "maxAbsoluteChange": 0.012393097393214703
+    },
+    {
+      "name": "model.layers.18.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331775,
+      "maxAbsoluteChange": 0.009587675333023071
+    },
+    {
+      "name": "model.layers.18.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.007819116115570068
+    },
+    {
+      "name": "model.layers.19.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.19.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.19.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.19.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.19.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.19.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110591,
+      "maxAbsoluteChange": 0.009569421410560608
+    },
+    {
+      "name": "model.layers.19.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331776,
+      "maxAbsoluteChange": 0.012301921844482422
+    },
+    {
+      "name": "model.layers.19.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331775,
+      "maxAbsoluteChange": 0.010359197854995728
+    },
+    {
+      "name": "model.layers.19.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.010431095957756042
+    },
+    {
+      "name": "model.layers.2.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.2.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.2.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.2.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.2.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.2.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.007485814392566681
+    },
+    {
+      "name": "model.layers.2.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331774,
+      "maxAbsoluteChange": 0.01212744414806366
+    },
+    {
+      "name": "model.layers.2.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331774,
+      "maxAbsoluteChange": 0.01076192781329155
+    },
+    {
+      "name": "model.layers.2.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.010866433382034302
+    },
+    {
+      "name": "model.layers.20.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.20.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.20.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.20.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.20.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.20.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110591,
+      "maxAbsoluteChange": 0.009978950023651123
+    },
+    {
+      "name": "model.layers.20.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331774,
+      "maxAbsoluteChange": 0.009762013331055641
+    },
+    {
+      "name": "model.layers.20.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331775,
+      "maxAbsoluteChange": 0.01111254096031189
+    },
+    {
+      "name": "model.layers.20.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110591,
+      "maxAbsoluteChange": 0.008384943008422852
+    },
+    {
+      "name": "model.layers.21.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.21.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.21.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.21.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.21.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.21.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110591,
+      "maxAbsoluteChange": 0.00829247385263443
+    },
+    {
+      "name": "model.layers.21.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331775,
+      "maxAbsoluteChange": 0.012079581618309021
+    },
+    {
+      "name": "model.layers.21.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331775,
+      "maxAbsoluteChange": 0.007534263655543327
+    },
+    {
+      "name": "model.layers.21.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110591,
+      "maxAbsoluteChange": 0.00802275724709034
+    },
+    {
+      "name": "model.layers.22.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.22.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.22.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.22.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.22.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.22.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.007848799228668213
+    },
+    {
+      "name": "model.layers.22.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331775,
+      "maxAbsoluteChange": 0.009250655770301819
+    },
+    {
+      "name": "model.layers.22.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331775,
+      "maxAbsoluteChange": 0.00817340612411499
+    },
+    {
+      "name": "model.layers.22.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.007219675928354263
+    },
+    {
+      "name": "model.layers.23.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.23.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.23.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.23.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.23.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.23.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110591,
+      "maxAbsoluteChange": 0.006568972021341324
+    },
+    {
+      "name": "model.layers.23.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331776,
+      "maxAbsoluteChange": 0.009257592260837555
+    },
+    {
+      "name": "model.layers.23.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331776,
+      "maxAbsoluteChange": 0.0062551349401474
+    },
+    {
+      "name": "model.layers.23.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.0067739784717559814
+    },
+    {
+      "name": "model.layers.24.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.24.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.24.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.24.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.24.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.24.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.006401024758815765
+    },
+    {
+      "name": "model.layers.24.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331775,
+      "maxAbsoluteChange": 0.01484169065952301
+    },
+    {
+      "name": "model.layers.24.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331774,
+      "maxAbsoluteChange": 0.006721518933773041
+    },
+    {
+      "name": "model.layers.24.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110591,
+      "maxAbsoluteChange": 0.006736457347869873
+    },
+    {
+      "name": "model.layers.25.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.25.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.25.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.25.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.25.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.25.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.00958147831261158
+    },
+    {
+      "name": "model.layers.25.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331773,
+      "maxAbsoluteChange": 0.013006716966629028
+    },
+    {
+      "name": "model.layers.25.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331776,
+      "maxAbsoluteChange": 0.008743301033973694
+    },
+    {
+      "name": "model.layers.25.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110591,
+      "maxAbsoluteChange": 0.00810541957616806
+    },
+    {
+      "name": "model.layers.26.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.26.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.26.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.26.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.26.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.26.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110591,
+      "maxAbsoluteChange": 0.010785259306430817
+    },
+    {
+      "name": "model.layers.26.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331774,
+      "maxAbsoluteChange": 0.01294274628162384
+    },
+    {
+      "name": "model.layers.26.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331776,
+      "maxAbsoluteChange": 0.009082954376935959
+    },
+    {
+      "name": "model.layers.26.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.006620943546295166
+    },
+    {
+      "name": "model.layers.27.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.27.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.27.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.27.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.27.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.27.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.014060890302062035
+    },
+    {
+      "name": "model.layers.27.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331776,
+      "maxAbsoluteChange": 0.008063465356826782
+    },
+    {
+      "name": "model.layers.27.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331776,
+      "maxAbsoluteChange": 0.014146193861961365
+    },
+    {
+      "name": "model.layers.27.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110591,
+      "maxAbsoluteChange": 0.006553322076797485
+    },
+    {
+      "name": "model.layers.28.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.28.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.28.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.28.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.28.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.28.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.012363459914922714
+    },
+    {
+      "name": "model.layers.28.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331775,
+      "maxAbsoluteChange": 0.007806599140167236
+    },
+    {
+      "name": "model.layers.28.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331776,
+      "maxAbsoluteChange": 0.011770486831665039
+    },
+    {
+      "name": "model.layers.28.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.007727116346359253
+    },
+    {
+      "name": "model.layers.29.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.29.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.29.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.29.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.29.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.29.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.013549596071243286
+    },
+    {
+      "name": "model.layers.29.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331775,
+      "maxAbsoluteChange": 0.007151156663894653
+    },
+    {
+      "name": "model.layers.29.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331775,
+      "maxAbsoluteChange": 0.00800452008843422
+    },
+    {
+      "name": "model.layers.29.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.006916448473930359
+    },
+    {
+      "name": "model.layers.3.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.3.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.3.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.3.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.3.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.3.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110591,
+      "maxAbsoluteChange": 0.009142210707068443
+    },
+    {
+      "name": "model.layers.3.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331776,
+      "maxAbsoluteChange": 0.011925812810659409
+    },
+    {
+      "name": "model.layers.3.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331775,
+      "maxAbsoluteChange": 0.008898042142391205
+    },
+    {
+      "name": "model.layers.3.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110591,
+      "maxAbsoluteChange": 0.007750526070594788
+    },
+    {
+      "name": "model.layers.4.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.4.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.4.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.4.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.4.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.4.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.008980780839920044
+    },
+    {
+      "name": "model.layers.4.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331776,
+      "maxAbsoluteChange": 0.009791146032512188
+    },
+    {
+      "name": "model.layers.4.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331773,
+      "maxAbsoluteChange": 0.009583301842212677
+    },
+    {
+      "name": "model.layers.4.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.006439484655857086
+    },
+    {
+      "name": "model.layers.5.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.5.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.5.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.5.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.5.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.5.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.008760392665863037
+    },
+    {
+      "name": "model.layers.5.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331775,
+      "maxAbsoluteChange": 0.010511446744203568
+    },
+    {
+      "name": "model.layers.5.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331773,
+      "maxAbsoluteChange": 0.00855344906449318
+    },
+    {
+      "name": "model.layers.5.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.008030518889427185
+    },
+    {
+      "name": "model.layers.6.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.6.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.6.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.6.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.6.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.6.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110590,
+      "maxAbsoluteChange": 0.0074385106563568115
+    },
+    {
+      "name": "model.layers.6.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331775,
+      "maxAbsoluteChange": 0.010370433330535889
+    },
+    {
+      "name": "model.layers.6.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331775,
+      "maxAbsoluteChange": 0.007875231094658375
+    },
+    {
+      "name": "model.layers.6.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110591,
+      "maxAbsoluteChange": 0.006816553883254528
+    },
+    {
+      "name": "model.layers.7.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.7.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.7.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.7.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.7.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.7.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.0065610893070697784
+    },
+    {
+      "name": "model.layers.7.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331776,
+      "maxAbsoluteChange": 0.010812103748321533
+    },
+    {
+      "name": "model.layers.7.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331776,
+      "maxAbsoluteChange": 0.007448308169841766
+    },
+    {
+      "name": "model.layers.7.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.0076156482100486755
+    },
+    {
+      "name": "model.layers.8.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.8.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.8.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.8.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.8.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.8.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.00619836151599884
+    },
+    {
+      "name": "model.layers.8.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331774,
+      "maxAbsoluteChange": 0.012199826538562775
+    },
+    {
+      "name": "model.layers.8.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331772,
+      "maxAbsoluteChange": 0.006725117564201355
+    },
+    {
+      "name": "model.layers.8.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.00672854483127594
+    },
+    {
+      "name": "model.layers.9.input_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.9.mlp.down_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.9.mlp.gate_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.9.mlp.up_proj.weight",
+      "parameters": 884736,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.9.post_attention_layernorm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    },
+    {
+      "name": "model.layers.9.self_attn.k_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110590,
+      "maxAbsoluteChange": 0.005705446004867554
+    },
+    {
+      "name": "model.layers.9.self_attn.o_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331776,
+      "maxAbsoluteChange": 0.013187825679779053
+    },
+    {
+      "name": "model.layers.9.self_attn.q_proj.weight",
+      "parameters": 331776,
+      "allowedToChange": true,
+      "changedParameters": 331776,
+      "maxAbsoluteChange": 0.007455863058567047
+    },
+    {
+      "name": "model.layers.9.self_attn.v_proj.weight",
+      "parameters": 110592,
+      "allowedToChange": true,
+      "changedParameters": 110592,
+      "maxAbsoluteChange": 0.006796799600124359
+    },
+    {
+      "name": "model.norm.weight",
+      "parameters": 576,
+      "allowedToChange": false,
+      "changedParameters": 0,
+      "maxAbsoluteChange": 0.0
+    }
+  ]
+}

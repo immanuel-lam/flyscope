@@ -1,0 +1,33 @@
+{
+  "cpu32": {
+    "maxAbsoluteStateErrorVs64": 0.07103518929397978,
+    "maxRelativeCellL2ErrorVs64": 3.604474986438977e-05,
+    "maxAbsoluteLogitErrorVs64": 4.121094434594852e-05,
+    "disputedFeature": 74.24615478515625
+  },
+  "mlx32": {
+    "maxAbsoluteStateErrorVs64": 0.04326095315718703,
+    "maxRelativeCellL2ErrorVs64": 1.6636850446349734e-05,
+    "maxAbsoluteLogitErrorVs64": 2.0876227027954997e-05,
+    "disputedFeature": 74.27276611328125
+  },
+  "float64DisputedFeature": 74.2634095742037,
+  "cpuMlxMaxRelativeCellL2": 5.2581701311282814e-05,
+  "run": "adapt-readout-1",
+  "weightSha256": "76d6d22136b542af48efc37f7f908b34f79d00fc6604947b4845cad620015bf7",
+  "prompt": "What is a cat?",
+  "method": "Compared CPU float32 and MLX float32 (MLX_ENABLE_TF32=0) with a diagnostic CPU copy whose weights and 512x576 state allocation used float64. Rotary constants remained float32, matching the runtime. No production arithmetic or tolerance changed.",
+  "strictTest": {
+    "passed": false,
+    "mismatchedStateElements": 1,
+    "stateElements": 294912,
+    "absoluteTolerance": 0.003,
+    "relativeTolerance": 0.0003,
+    "index": [
+      488,
+      17
+    ],
+    "absoluteDifference": 0.026611328125,
+    "outputLogitsPassed": true
+  }
+}
