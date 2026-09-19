@@ -11,20 +11,21 @@ def main():
         k=int(np.flatnonzero(mask)[0]);n=int(mask.sum());examples.append((x[:k+1].tolist(),y[k:k+n].tolist()))
     def prefix_state(prefix,ablated=False):
         state=np.zeros((m.channels,m.cells),np.float32)
-        for t in prefix:logits,state=m.step(t,state,ablated)
-        return logits,state
+        context=m.prompt_context(prefix)
+        for t in prefix:logits,state=m.step(t,state,ablated,context)
+        return logits,state,context
     def loss(prefix,target,ablated=False):
-        logits,state=prefix_state(prefix,ablated);total=0.
+        logits,state,context=prefix_state(prefix,ablated);total=0.
         for t in target:
-            z=logits.astype(np.float64);total+=float(z.max()+np.log(np.exp(z-z.max()).sum())-z[t]);logits,state=m.step(t,state,ablated)
+            z=logits.astype(np.float64);total+=float(z.max()+np.log(np.exp(z-z.max()).sum())-z[t]);logits,state=m.step(t,state,ablated,context)
         return total/len(target)
     outputs=[];correct=[];wrong=[];ablated=[]
     for i,(prefix,target) in enumerate(examples):
-        logits,state=prefix_state(prefix);tokens=[]
+        logits,state,context=prefix_state(prefix);tokens=[]
         for _ in range(96):
             selected=logits.copy();selected[[0,1,2,3]]=-1e9;t=int(np.argmax(selected))
             if t==4:break
-            tokens.append(t);logits,state=m.step(t,state)
+            tokens.append(t);logits,state=m.step(t,state,context=context)
         correct.append(loss(prefix,target));wrong.append(loss(examples[(i+1)%len(examples)][0],target));ablated.append(loss(prefix,target,True))
         grams=[tuple(tokens[j:j+4]) for j in range(max(0,len(tokens)-3))]
         outputs.append({'context':m.tokenizer.decode(prefix,skip_special_tokens=False),'sourceReply':m.tokenizer.decode(target),'generatedReply':m.tokenizer.decode(tokens),'tokenIds':tokens,'repeatedFourGramFraction':1-len(set(grams))/len(grams) if grams else 0})

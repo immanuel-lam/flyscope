@@ -15,10 +15,11 @@ def main():
     rng=np.random.default_rng(61);sample=[pairs[i] for i in rng.choice(len(pairs),64,replace=False)]
     def loss(prompt,reply,ablated=False):
         prefix=m.tokenizer.encode(f'<user> {prompt} <end>\n<assistant>').ids[-256:];target=m.tokenizer.encode(' '+reply+' <end>').ids[:192];state=np.zeros((m.channels,m.cells),dtype=np.float32)
-        for token in prefix:logits,state=m.step(token,state,ablated)
+        context=m.prompt_context(prefix)
+        for token in prefix:logits,state=m.step(token,state,ablated,context)
         total=0
         for token in target:
-            z=logits.astype(np.float64);total+=float(np.log(np.exp(z-z.max()).sum())+z.max()-z[token]);logits,state=m.step(token,state,ablated)
+            z=logits.astype(np.float64);total+=float(np.log(np.exp(z-z.max()).sum())+z.max()-z[token]);logits,state=m.step(token,state,ablated,context)
         return total/max(len(target),1)
     outputs=[];correct=[];wrong=[];ablated=[]
     for i,(prompt,reply) in enumerate(sample):
