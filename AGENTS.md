@@ -42,4 +42,4 @@ Read `docs/PHYSICAL_FLY.md` for real NeuroMechFly/MuJoCo runs. The local job API
 
 ## FlyGPT runtime
 
-Read `docs/FLYGPT.md` before changing the language model. Keep source cell IDs and fixed directed mask, disjoint text input/output cells, and the no-external-LLM contract. MLX is training-only; inference must remain portable. Tests must include graph ablation and CPU/export parity. The goal and publication boundary are in `docs/GOAL_PROGRESS.md`: only the point-cloud fix was authorized for push; subsequent feature commits stay local.
+Read `docs/FLYGPT.md` before changing the language model. Keep source cell IDs and fixed directed mask, disjoint text input/output cells, and the no-external-LLM contract. MLX is training-only; inference must remain portable. Tests must include graph ablation and CPU/export parity. The goal and publication boundary are in `docs/GOAL_PROGRESS.md`: the user authorized pushing the verified current language and UI changes on 19 September 2026; future changes remain local unless asked.

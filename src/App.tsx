@@ -423,7 +423,7 @@ export default function App() {
           <div className="eyebrow">
             DROSOPHILA MELANOGASTER <span>/</span> CONNECTOME EXPLORER
           </div>
-          <h1>A small brain. A new perspective.</h1>
+          <h1>Explore the fruit fly nervous system.</h1>
         </div>
         <div className="dataset-status">
           <span
@@ -1000,23 +1000,7 @@ export default function App() {
             <div hidden={isFull && sidePanel !== "chat"}>
               {" "}
               {isFull && (
-                <ChatPanel
-                  onActivity={(reply) => {
-                    if (
-                      reply.datasetId !== dataset.id ||
-                      reply.datasetVersion !== dataset.version
-                    ) {
-                      setError("Chat model dataset mismatch");
-                      return;
-                    }
-                    setChatActivity(reply.activity);
-                    setMotorMode("off");
-                    setTime(0);
-                    setPlaying(true);
-                    const ids = Object.keys(reply.activity.values);
-                    if (ids.length) setSelected(ids[0]);
-                  }}
-                />
+                <ChatPanel />
               )}
             </div>
             <div

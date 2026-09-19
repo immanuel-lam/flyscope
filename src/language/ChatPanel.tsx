@@ -13,11 +13,7 @@ export interface ChatReply {
   datasetVersion: string;
   ablated: boolean;
 }
-export default function ChatPanel({
-  onActivity,
-}: {
-  onActivity: (reply: ChatReply) => void;
-}) {
+export default function ChatPanel() {
   const [messages, setMessages] = useState<Message[]>([]),
     [input, setInput] = useState(""),
     [busy, setBusy] = useState(false),
@@ -67,7 +63,7 @@ export default function ChatPanel({
           content: result.text || "[Model produced an end token without text]",
         },
       ]);
-      onActivity(result);
+
     } catch (e) {
       if (mounted.current) setError((e as Error).message);
     } finally {
@@ -106,11 +102,11 @@ export default function ChatPanel({
           ))
         ) : (
           <p>
-            Start with “Hi”, then ask a short question. Each reply plays the
-            cell states used to generate its tokens.
+            Send any short message. The model generates tokens through its
+            trained MaleCNS connections. Replies can be incorrect or unreadable.
           </p>
         )}
-        {busy && <p role="status">Running the neural circuit…</p>}
+        {busy && <p role="status">Thinking…</p>}
       </div>
       <form onSubmit={submit}>
         <label htmlFor="fly-chat">Message</label>
@@ -147,8 +143,7 @@ export default function ChatPanel({
         <p className="motor-provenance" data-testid="chat-provenance">
           {last.modelId} · {last.tokens.length} generated tokens ·{" "}
           {last.elapsedSeconds.toFixed(2)} s ·{" "}
-          {last.ablated ? "connections disabled" : "real graph enabled"}. Glow
-          shows hidden-state magnitude; these are continuous states, not spikes.
+          {last.ablated ? "connections disabled" : "real graph enabled"}. Artificial continuous cell states; no biological reasoning claim.
         </p>
       )}
       {error && (

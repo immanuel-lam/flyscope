@@ -1,11 +1,11 @@
 {
   "normal": {
-    "heldOutTokenLoss": 3.0685067176818848,
-    "perplexity": 21.50975853874759
+    "heldOutTokenLoss": 2.7355663776397705,
+    "perplexity": 15.418473642109442
   },
   "connectionsDisabled": {
-    "heldOutTokenLoss": 6.973025798797607,
-    "perplexity": 1067.4477510979345
+    "heldOutTokenLoss": 6.7705888748168945,
+    "perplexity": 871.8251387264227
   },
   "topology": {
     "neurons": 512,
@@ -14,123 +14,15 @@
     "offGraphEdges": 0,
     "inputOutputOverlap": 0
   },
-  "portableRuntimeMaxLogitError": 2.384185791015625e-06,
-  "heldOutFlyPhrasings": {
-    "count": 17,
-    "exactMatches": 11,
-    "outputs": [
-      {
-        "prompt": "Tell me your name.",
-        "expected": "I am FlyGPT, a small model using fruit fly connections.",
-        "generated": "I am FlyGPT, a small model using fruit fly connections.",
-        "exactMatch": true
-      },
-      {
-        "prompt": "How is it going?",
-        "expected": "I am running. I do not have feelings.",
-        "generated": "I am running. I do not have feelings.",
-        "exactMatch": true
-      },
-      {
-        "prompt": "Are you a living fly?",
-        "expected": "No. I am an artificial model using real fly wiring.",
-        "generated": "No. I am an artificial model using real fly wiring.",
-        "exactMatch": true
-      },
-      {
-        "prompt": "How large is your circuit?",
-        "expected": "My chat circuit uses 512 MaleCNS cells.",
-        "generated": "The physical fly can simulate walking with six legs.",
-        "exactMatch": false
-      },
-      {
-        "prompt": "Are you able to walk?",
-        "expected": "The physical fly can simulate walking with six legs.",
-        "generated": "I use recent text. This chat does not change my trained weights.",
-        "exactMatch": false
-      },
-      {
-        "prompt": "What food does a fly like?",
-        "expected": "Fruit flies feed on yeasts and decaying fruit.",
-        "generated": "Fruit flies feed on yeasts and decaying fruit.",
-        "exactMatch": true
-      },
-      {
-        "prompt": "What are fruit flies?",
-        "expected": "A fruit fly is a small insect used in research.",
-        "generated": "A fruit fly is a small insect used in research.",
-        "exactMatch": true
-      },
-      {
-        "prompt": "Where did your brain come from?",
-        "expected": "MaleCNS is a map of a male fruit fly nervous system.",
-        "generated": "MaleCNS is a map of a male fruit fly nervous system.",
-        "exactMatch": true
-      },
-      {
-        "prompt": "Do you see the world?",
-        "expected": "This chat model receives text, not camera images.",
-        "generated": "The physical fly can simulate walking with six legs.",
-        "exactMatch": false
-      },
-      {
-        "prompt": "Do you use ChatGPT to answer?",
-        "expected": "No. I am a tiny trained recurrent circuit.",
-        "generated": "No. I am a tiny trained recurrent circuit.",
-        "exactMatch": true
-      },
-      {
-        "prompt": "What does a neuron do?",
-        "expected": "A neuron is a cell that receives and sends signals.",
-        "generated": "A neuron is a cell that receives and sends signals.",
-        "exactMatch": true
-      },
-      {
-        "prompt": "What connects neurons?",
-        "expected": "A synapse is a connection between neurons.",
-        "generated": "A neuron is a cell that receives and sends signals.",
-        "exactMatch": false
-      },
-      {
-        "prompt": "Do you learn from this chat?",
-        "expected": "I use recent text. This chat does not change my trained weights.",
-        "generated": "I use recent text. This chat does not change my trained weights.",
-        "exactMatch": true
-      },
-      {
-        "prompt": "Can you be wrong?",
-        "expected": "I can make mistakes. Please check my answers.",
-        "generated": "The physical fly can simulate walking with six legs.",
-        "exactMatch": false
-      },
-      {
-        "prompt": "Cheers.",
-        "expected": "You are welcome.",
-        "generated": "You are welcome.",
-        "exactMatch": true
-      },
-      {
-        "prompt": "See you soon.",
-        "expected": "Goodbye!",
-        "generated": "Goodbye!",
-        "exactMatch": true
-      },
-      {
-        "prompt": "Hi FlyGPT.",
-        "expected": "Hello! How can I help you today?",
-        "generated": "Goodbye!",
-        "exactMatch": false
-      }
-    ]
-  },
+  "portableRuntimeMaxLogitError": 2.86102294921875e-06,
   "greeting": {
     "normal": "Hello! How can I help you today?",
     "connectionsDisabled": "........................................"
   },
   "limitations": [
-    "Small authored-domain test with shared answer templates; not a general chat benchmark.",
+    "No authored question/answer fine-tuning or answer-template score in the active model.",
     "External text test includes greetings; no claim of biological language ability.",
     "512 selected cells, not the full MaleCNS network; artificial dynamics and learned weights."
   ],
-  "weightsSha256": "0d7de9093c866b59bade8f64c6227fcd309389cf83f675b7f0b29fbc4029d570"
+  "weightsSha256": "10de32b86c56a18f4979ea8b94b08bcc42b4d710b3a31258cdd54b76daeed84f"
 }

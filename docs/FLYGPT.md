@@ -1,6 +1,6 @@
 # FlyGPT: a trained MaleCNS circuit
 
-The default dataset is MaleCNS. The right side contains FlyGPT and a Neuron inspector tab. Chat runs locally through the trained checkpoint in `models/malecns-chat`; it does not call an external LLM. Every response returns the circuit states used before each generated token, indexed by real cell ID. The point cloud remains visible. Activity plays briefly, then the viewer returns to idle structural exploration. The body does not move from chat: no language-to-motor decoder has been trained.
+The default dataset is MaleCNS. The right side contains FlyGPT and a Neuron inspector tab. Chat runs locally through the trained checkpoint in `models/malecns-chat`; it does not call an external LLM. The endpoint returns the circuit states used before each generated token, indexed by real cell ID. The UI shows “Thinking…” only while inference is pending. This is a loading label, not a reasoning trace. The point cloud remains an explorer; chat does not replay states. The body does not move from chat: no language-to-motor decoder has been trained.
 
 ## What was trained
 
@@ -18,16 +18,15 @@ The external source is HuggingFaceTB/smoltalk's `everyday-conversations` subset,
 
 Source conversations are split before tokenization: 2,028 train, 232 validation, 119 source test. A 1,024-token byte-level BPE tokenizer is trained on the training split only. Initial training ran 1,000 steps at learning rate .002, then 4,000 weight-warm-start steps at .001 (optimizer/RNG reset). Best validation checkpoint was selected. The initial random loss was 6.928; best base validation loss was 2.717. The stored base training log covers the second phase.
 
-Assistant-token fine-tuning uses `scripts/language/fly-dialogues.json`: 17 authored answer templates, with three train phrasings, one validation phrasing and one held-out test phrasing each. 80% of batches use these fly dialogues; 20% use external everyday dialogues. 2,000 optimizer steps were run; the best validation checkpoint was exported. These are small supervised examples, not code that selects responses at inference. Exported inference samples token logits; it never loads the authored answer file.
+The active `malecns-lm-512-v2` checkpoint uses general next-token training only. The earlier authored fly Q&A fine-tuning scripts remain as historical experiments, but export and evaluation explicitly load `real/weights.safetensors`. They do not load `chat.safetensors` or score authored answer templates.
 
 ## Verification and limitations
 
 `models/malecns-chat/evaluation.json` records:
 
-- Held-out external text loss 3.069, versus 6.973 with recurrent edges disabled.
+- Held-out external text loss 2.736, versus 6.771 with recurrent edges disabled.
 - Exactly 28,452 nonzero learned recurrent edges; zero off-graph edges and zero input/output overlap.
 - CPU versus MLX maximum logit error below 0.000003 on the parity sequence.
-- 11/17 exact matches on held-out fly phrasings. This is an authored-domain test sharing answer templates, not a general intelligence or broad conversation benchmark.
 - “Hi” generates “Hello! How can I help you today?”; disabling connections produces repeated punctuation.
 
 Some questions receive incorrect, unrelated or malformed answers. Never use it as an authoritative source. The chat UI labels it as a small experimental circuit. Same-checkpoint ablation shows dependence on wiring, not superiority of biological topology; real/shuffled/ordinary-network training comparisons remain a separate experiment.
@@ -41,7 +40,6 @@ uv pip install --python .venv-physics/bin/python -r scripts/language/requirement
 .venv-physics/bin/python scripts/language/prepare.py
 .venv-physics/bin/python scripts/language/train.py --steps 1000
 .venv-physics/bin/python scripts/language/train.py --steps 4000 --resume --lr .001
-.venv-physics/bin/python scripts/language/finetune.py --steps 2000
 .venv-physics/bin/python scripts/language/export.py
 .venv-physics/bin/python scripts/language/evaluate.py
 ```
@@ -50,4 +48,4 @@ uv pip install --python .venv-physics/bin/python -r scripts/language/requirement
 
 The local endpoint is `POST /api/chat/generate` with `{message, history, ablated}`. It allows one bounded inference process, validates input length/roles, accepts same-origin loopback calls only, and uses a fixed script. Chat history lives in browser component state and is sent to the local process; the server does not write conversations to disk.
 
-A response's activity clock advances 0.15 seconds per generated token for inspection; this is an animation time scale, not biological time. Values are signed hidden activations. Glow uses absolute magnitude divided by each cell's peak; traces retain their actual sign. No spike events are inferred.
+The diagnostic activity array retains a legacy 0.15-second token index scale. It is not wall-clock or biological time and is not played by the chat UI. Values are signed hidden activations, not measured spikes.
