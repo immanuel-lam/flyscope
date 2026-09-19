@@ -16,6 +16,7 @@ import { addPhysicsRig } from "./physics/rig";
 import type { PhysicsRun } from "./physics/types";
 
 type Props = {
+  activityVisible: boolean;
   physics?: PhysicsRun;
   dataset: Dataset;
   detail?: Detail;
@@ -433,7 +434,8 @@ export default function Scene(props: Props) {
         lastReset = p.reset;
       }
       const state = [
-        d.activity ? p.time : 0,
+        p.activityVisible && d.activity ? p.time : 0,
+        p.activityVisible,
         p.region,
         p.selected,
         p.threshold,
@@ -479,27 +481,33 @@ export default function Scene(props: Props) {
         lastState = state;
         const c = new THREE.Color();
         d.neurons.forEach((n, i) => {
-          const raw = activityAt(d, n.id, p.time);
+          const raw = p.activityVisible
+            ? activityAt(d, n.id, p.time)
+            : undefined;
           const value =
             raw === undefined ? 0 : (raw - range[0]) / (range[1] - range[0]);
           const show =
             (p.region === "All regions" || p.region === n.region) &&
-            (p.threshold === 0 || (raw !== undefined && value >= p.threshold));
+            (!p.activityVisible ||
+              p.threshold === 0 ||
+              (raw !== undefined && value >= p.threshold));
           visible[i] = show;
           c.copy(show ? bases[i] : muted);
-          if (focusActivity && !peaks.has(n.id))
-            c.copy(muted).multiplyScalar(0.65);
+
           if (show && raw !== undefined)
             c.multiplyScalar(0.3 + value * 0.7).lerp(white, value * 0.6);
           if (n.id === p.selected && show) c.copy(white);
           c.toArray(colors, i * 3);
         });
+        glow.visible = p.activityVisible;
+        renderer.domElement.dataset.activityVisible = String(p.activityVisible);
         let totalStrength = 0;
         recordedIndices.forEach((ni, j) => {
           const n = d.neurons[ni];
-          strengths[j] = visible[ni]
-            ? relativeRate(activityAt(d, n.id, p.time), peaks.get(n.id)!)
-            : 0;
+          strengths[j] =
+            p.activityVisible && visible[ni]
+              ? relativeRate(activityAt(d, n.id, p.time), peaks.get(n.id)!)
+              : 0;
           totalStrength += strengths[j];
         });
         glowGeometry.attributes.strength.needsUpdate = true;

@@ -22,6 +22,8 @@ test("physical body replay shares neural time, rewinds, and clears on dataset sw
   const initial = await page.getByTestId("motor-position").innerText();
   const canvas = page.locator(".fly-viewport canvas");
   await expect(canvas).toHaveAttribute("data-recorded-cells", "756");
+  await expect(canvas).toHaveAttribute("data-activity-visible", "false");
+  await page.getByLabel("Show activity while paused").check();
   const initialStrength = await canvas.getAttribute("data-activity-strength");
   await page.getByLabel("Activity time", { exact: true }).fill("1");
   await expect(page.getByTestId("motor-position")).not.toHaveText(initial);
@@ -38,6 +40,11 @@ test("physical body replay shares neural time, rewinds, and clears on dataset sw
   await expect(
     page.getByLabel("Activity time", { exact: true }),
   ).not.toHaveValue("0");
+  await page.getByLabel("Show activity while paused").uncheck();
+  await page
+    .getByRole("button", { name: "Pause activity", exact: true })
+    .click();
+  await expect(canvas).toHaveAttribute("data-activity-visible", "false");
   await page.getByLabel("Dataset", { exact: true }).selectOption("demo");
   await expect(page.getByLabel("Motor controller")).toHaveValue("off");
   await expect(

@@ -68,6 +68,7 @@ export default function App() {
   const selectionRef = useRef<string | null>(null);
   useEffect(() => () => largeWorker.current?.terminate(), []);
   const [playing, setPlaying] = useState(false);
+  const [inspectActivity, setInspectActivity] = useState(false);
   const [physicsRun, setPhysicsRun] = useState<PhysicsRun>();
   const [motorMode, setMotorMode] = useState("off");
   const [motorCommand, setMotorCommand] = useState<MotorCommand>({
@@ -345,6 +346,7 @@ export default function App() {
     }
   }
   const shared = {
+    activityVisible: playing || inspectActivity,
     physics: motorMode === "physics" ? physicsRun : undefined,
     dataset: displayDataset,
     detail: isFull ? detail : undefined,
@@ -809,6 +811,14 @@ export default function App() {
                 </section>
               )}
             </div>
+            <label className="activity-inspection">
+              <input
+                type="checkbox"
+                checked={inspectActivity}
+                onChange={(e) => setInspectActivity(e.target.checked)}
+              />{" "}
+              Show activity while paused
+            </label>
             <div className="canvas-bottom">
               <span>
                 Drag to orbit <b>·</b> Scroll to zoom <b>·</b> Click a neuron to
@@ -819,7 +829,7 @@ export default function App() {
                 Low <span className="heat-legend" /> High{" "}
                 <small>
                   {motorMode === "physics"
-                    ? "Glow: rate / each cell’s peak · dim: unrecorded"
+                    ? "Point cloud retained · glow: rate / cell peak"
                     : (displayDataset.activity?.unit ?? "No activity")}
                 </small>
               </div>

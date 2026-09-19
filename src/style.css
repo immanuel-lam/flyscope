@@ -1249,3 +1249,4 @@ footer b {
 .physics-options label { display: flex; align-items: center; gap: 7px; }
 .physics-panel details { font-size: 12px; margin-top: 12px; max-width: 90ch; }
 .physics-panel input[type=checkbox] { accent-color: #b6cf71; }
+.activity-inspection { display:flex; align-items:center; gap:8px; padding:10px 18px; font-size:12px; color:var(--muted); }
