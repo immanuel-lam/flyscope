@@ -44,6 +44,24 @@ class GraphCpuChecks(unittest.TestCase):
                                       self.model.weights['cell_embedding.weight'][self.model.outputs])
         self.assertGreater(float(np.max(np.abs(trace[-1] - trace[0]))), .01)
 
+    def test_masked_padding_features_cannot_affect_active_readout(self):
+        original = self.model.weights['cell_embedding.weight']
+        old_flag = self.model.config.get('paddingMask', False)
+        try:
+            self.model.config['paddingMask'] = True
+            tokens = np.zeros(128, np.int64)
+            tokens[-8:] = 75
+            expected, _, _ = self.model.forward(tokens)
+            changed = original.copy()
+            inactive = np.asarray(self.model.config['slots']) < 120
+            changed[inactive] += 100
+            self.model.weights['cell_embedding.weight'] = changed
+            actual, _, _ = self.model.forward(tokens)
+            np.testing.assert_array_equal(expected[-8:], actual[-8:])
+        finally:
+            self.model.weights['cell_embedding.weight'] = original
+            self.model.config['paddingMask'] = old_flag
+
     def test_inspection_uses_actual_layer_updates_and_predictions(self):
         prefix = [2, 75, 614, 4, 3]
         inspection = self.model.inspect(prefix)

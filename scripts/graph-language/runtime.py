@@ -19,6 +19,14 @@ class GraphRuntime:
         self.layers = self.config['layers']
         self.cells = self.weights['cell_embedding.weight'].shape[0]
 
+    def attention_mask(self, tokens, ablated=False):
+        mask = np.eye(self.cells, dtype=bool) if ablated else self.mask
+        if self.config.get('paddingMask', False):
+            slots = np.asarray(self.config.get('slots', list(range(self.cells))))
+            active = tokens[slots] != 0
+            mask = (mask & active[None, :]) | np.eye(self.cells, dtype=bool)
+        return mask
+
     @staticmethod
     def norm(x, weight):
         return x * (1 / np.sqrt(np.mean(x * x, axis=-1, keepdims=True) + 1e-5)) * weight
@@ -31,7 +39,7 @@ class GraphRuntime:
         x = w['cell_embedding.weight'].copy()
         x[self.inputs] += w['embedding.weight'][tokens] * (tokens != 0)[:, None]
         snapshots = [x.copy()] if trace else None
-        mask = np.eye(self.cells, dtype=bool) if ablated else self.mask
+        mask = self.attention_mask(tokens, ablated)
         width = x.shape[1]
         for layer in range(self.layers):
             prefix = f'blocks.{layer}.'
@@ -70,7 +78,7 @@ class GraphRuntime:
         if context:
             window[-len(context):] = context
         edge_layers = []
-        effective_mask = np.eye(self.cells, dtype=bool) if ablated else self.mask
+        effective_mask = self.attention_mask(window, ablated)
 
         def observe(layer, attention, values, projection, attention_update, local_update):
             # Exact contribution to the chosen feature after output projection.
