@@ -44,6 +44,27 @@ class GraphCpuChecks(unittest.TestCase):
                                       self.model.weights['cell_embedding.weight'][self.model.outputs])
         self.assertGreater(float(np.max(np.abs(trace[-1] - trace[0]))), .01)
 
+    def test_inspection_uses_actual_layer_updates_and_predictions(self):
+        prefix = [2, 75, 614, 4, 3]
+        inspection = self.model.inspect(prefix)
+        logits, states = self.model.next(prefix)
+        np.testing.assert_allclose(inspection['finalFeatureRms'], np.sqrt(np.mean(states * states, axis=1)), atol=1e-6)
+        for i, layer in enumerate(inspection['layers']):
+            before = np.array(inspection['states'][i])
+            after = np.array(inspection['states'][i + 1])
+            attention = np.array(layer['allAttentionFeatureUpdates'])
+            local = np.array(layer['localFeedForwardFeatureUpdates'])
+            np.testing.assert_allclose(layer['summedEdgeFeatureUpdates'], attention, atol=1e-5)
+            np.testing.assert_allclose(before + attention + local, after, atol=1e-5)
+            for edge in layer['edges']:
+                pre = inspection['cells'][edge['from']]['index']
+                post = inspection['cells'][edge['to']]['index']
+                self.assertTrue(self.model.mask[post, pre])
+        for prediction in inspection['predictions']:
+            self.assertAlmostEqual(prediction['logit'], float(logits[prediction['tokenId']]), places=5)
+        cut = self.model.inspect(prefix, ablated=True)
+        self.assertTrue(all(not layer['edges'] for layer in cut['layers']))
+
 
 if __name__ == '__main__':
     unittest.main()

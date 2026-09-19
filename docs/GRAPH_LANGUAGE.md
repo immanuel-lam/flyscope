@@ -40,3 +40,9 @@ VECLIB_MAXIMUM_THREADS=1 .venv-physics/bin/python scripts/graph-language/evaluat
 ```
 
 A two-example, four-token validation run on the pilot checkpoint verifies the pipeline only. Its poor outputs were retained. It does not measure the quality of the still-running corrected training experiment.
+
+## computation inspection
+
+The CPU runtime's `inspect(prefix)` records the same forward pass used for prediction. It selects the last eight input cells and last sixteen readout cells, including the actual generation readout. Five columns contain a chosen feature before and after four graph blocks. Per-edge values decompose the attention update after projection into that feature. Separate fields retain actual local feed-forward updates and self-retention contributions. Tests independently compare the sum of edge contributions with the full attention matrix computation and compare displayed logits with ordinary inference.
+
+The anatomical overlay data is RMS over all final features for each of the 512 source cells. It is an engineered continuous model value, not a spike rate. A selected feature cannot explain a whole vocabulary logit; vocabulary readout uses all 256 features of the final readout cell. Edge contributions describe a particular attention update, not a causal attribution of the entire model. Unselected cells still contribute. This interface is not yet connected to the website and must not be passed off as the existing three-column scalar recurrent trace.

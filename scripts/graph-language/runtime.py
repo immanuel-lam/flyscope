@@ -22,7 +22,7 @@ class GraphRuntime:
     def norm(x, weight):
         return x * (1 / np.sqrt(np.mean(x * x, axis=-1, keepdims=True) + 1e-5)) * weight
 
-    def forward(self, tokens, ablated=False, trace=False):
+    def forward(self, tokens, ablated=False, trace=False, observer=None):
         tokens = np.asarray(tokens, dtype=np.int64)
         if tokens.shape != (128,):
             raise ValueError('Expected exactly 128 token slots')
@@ -43,14 +43,67 @@ class GraphRuntime:
             attention = np.exp(scores)
             attention /= attention.sum(axis=-1, keepdims=True)
             value = (attention @ v).transpose(1, 0, 2).reshape(512, width)
-            x += value @ w[prefix + 'projection.weight'].T
+            attention_update = value @ w[prefix + 'projection.weight'].T
+            x += attention_update
             hidden = self.norm(x, w[prefix + 'norm2.weight']) @ w[prefix + 'up.weight'].T
             activated = .5 * hidden * (1 + np.tanh(np.sqrt(2 / np.pi) * (hidden + .044715 * hidden ** 3)))
-            x += activated @ w[prefix + 'down.weight'].T
+            local_update = activated @ w[prefix + 'down.weight'].T
+            x += local_update
+            if observer is not None:
+                observer(layer, attention, v, w[prefix + 'projection.weight'], attention_update, local_update)
             if trace:
                 snapshots.append(x.copy())
         logits = self.norm(x[self.outputs], w['norm.weight']) @ w['embedding.weight'].T
         return logits, x, snapshots
+
+    def inspect(self, prefix, ablated=False, feature=0):
+        """Capture actual per-layer attention and one fixed feature, without replay."""
+        width = self.weights['embedding.weight'].shape[1]
+        if not 0 <= feature < width:
+            raise ValueError('Feature index is outside the model width')
+        selected = np.concatenate([self.inputs[-8:], self.outputs[-16:]])
+        window = np.zeros(128, np.int64)
+        context = list(prefix)[-128:]
+        if context:
+            window[-len(context):] = context
+        edge_layers = []
+        effective_mask = np.eye(512, dtype=bool) if ablated else self.mask
+
+        def observe(layer, attention, values, projection, attention_update, local_update):
+            # Exact contribution to the chosen feature after output projection.
+            # Local feed-forward and residual terms are reported separately below.
+            projected = np.sum(values * projection[feature].reshape(self.heads, 1, -1), axis=-1)
+            contributions = np.sum(attention * projected[:, None, :], axis=0)
+            edges = []
+            for post_index, post in enumerate(selected):
+                for pre_index, pre in enumerate(selected):
+                    if effective_mask[post, pre] and post != pre:
+                        edges.append({'from': pre_index, 'to': post_index,
+                                      'meanAttention': float(attention[:, post, pre].mean()),
+                                      'featureContribution': float(contributions[post, pre])})
+            edge_layers.append({'layer': layer, 'edges': edges,
+                                'allAttentionFeatureUpdates': attention_update[selected, feature].tolist(),
+                                'summedEdgeFeatureUpdates': contributions.sum(axis=1)[selected].tolist(),
+                                'localFeedForwardFeatureUpdates': local_update[selected, feature].tolist(),
+                                'localSelfFeatureUpdates': np.diag(contributions)[selected].tolist()})
+
+        logits, final, snapshots = self.forward(window, ablated, trace=True, observer=observe)
+        probabilities = np.exp(logits[-1].astype(np.float64) - logits[-1].max())
+        probabilities /= probabilities.sum()
+        top = np.argsort(probabilities)[-5:][::-1]
+        states = [s[selected, feature].tolist() for s in snapshots]
+        return {'architecture': 'source-edge-attention', 'featureIndex': feature, 'featureWidth': width,
+                'cells': [{'id': str(self.config['neurons'][cell][0]), 'index': int(cell),
+                           'input': bool(cell in self.inputs)} for cell in selected],
+                'states': states, 'layers': edge_layers,
+                'generationReadoutId': str(self.config['neurons'][self.outputs[-1]][0]),
+                'finalFeatureRms': np.sqrt(np.mean(final * final, axis=1)).tolist(),
+                'predictions': [{'tokenId': int(i), 'token': self.tokenizer.decode([int(i)], skip_special_tokens=False),
+                                 'logit': float(logits[-1, i]), 'probability': float(probabilities[i])} for i in top],
+                'labels': {'states': 'One engineered feature per source cell, captured before and after each graph block.',
+                           'edges': 'Actual signed attention-update contributions to this feature; only selected source edges shown.',
+                           'overlay': 'RMS over all final engineered features; continuous model values, not spikes.',
+                           'readout': 'Vocabulary logits use all features of the final readout cell, not only the displayed feature.'}}
 
     def next(self, prefix, ablated=False):
         # Right-align the current context. No generated or target future tokens enter it.
