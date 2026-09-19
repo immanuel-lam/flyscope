@@ -34,7 +34,7 @@ A discoverable controller or a validated importable run, its declared mappings/u
 
 - Read `docs/LARGE_DATASETS.md` before working with full MaleCNS data. Keep graph chunks and geometry detail out of the React render state unless selected. Render the full point overview at rest; apply explicit interaction LOD and cache budgets.
 - For joint neural/motor output, use `simulateExperiment()` and the controller's optional activity declaration. Never show arbitrary synthetic signals as a real cell recording.
-- The user's next intended experiments are in `docs/EXPERIMENT_ROADMAP.md`: an actually trained connectome-constrained text model, then a panel showing its actual visual input. A trained 512-cell chat checkpoint now exists; see docs/FLYGPT.md. Vision remains the next stage.
+- The user's next intended experiments are in `docs/EXPERIMENT_ROADMAP.md`: an actually trained connectome-constrained text model, then a panel showing its actual visual input. A trained 512-cell chat checkpoint now exists; see docs/FLYGPT.md. Vision, odour tracking, obstacle avoidance and delayed cue memory now have local physical experiments and control tests. See docs/PHYSICAL_FLY.md and docs/CUE_MEMORY.md; improving general chat quality remains open.
 
 ## Functional physics backend
 
@@ -42,4 +42,12 @@ Read `docs/PHYSICAL_FLY.md` for real NeuroMechFly/MuJoCo runs. The local job API
 
 ## FlyGPT runtime
 
-Read `docs/FLYGPT.md` before changing the language model. Keep source cell IDs and fixed directed mask, disjoint text input/output cells, and the no-external-LLM contract. MLX is training-only; inference must remain portable. Tests must include graph ablation and CPU/export parity. The goal and publication boundary are in `docs/GOAL_PROGRESS.md`: the user authorized pushing the verified current language and UI changes on 19 September 2026; future changes remain local unless asked.
+Read `docs/FLYGPT.md` before changing the language model. Keep source cell IDs and fixed directed mask, disjoint text input/output cells, and the no-external-LLM contract. MLX is training-only; inference must remain portable. Tests must include graph ablation and CPU/export parity. The goal and publication boundary are in `docs/GOAL_PROGRESS.md`: the user authorized pushing all completed verified work when the goal is finished. Commit verified steps without attribution trailers, then verify the GitHub push and public deployment.
+
+## Sensory and memory experiments
+
+The authoritative external loop is `scripts/physics/run.py`. Vision uses actual rendered eye frames; odour samples the actual antennal positions; obstacle rays start at the head geometry because this locomotion model has no independent head body. Add colliding terrain to `world.ground_geoms` before adding the fly so FlyGym creates explicit contact pairs. Do not rely on geometry collision flags alone.
+
+Preserve separate states for the trained cue-memory circuit and the whole-CNS locomotion circuit. Their source IDs overlap, but they are two distinct models; `PhysicsRun.memory.activity` must not be merged with `PhysicsRun.activity`. The activity selector changes the inspected model on the same body clock. The assisted backflip uses explicit external force/torque and must retain that label.
+
+Reproduce control recordings and run feature checks listed in docs/PHYSICAL_FLY.md and docs/CUE_MEMORY.md. Report failed layouts and tradeoffs, not only successful cases. Never claim an obstacle controller is universally collision-free from a few fixed-seed tests, or that binary cue recall proves language reasoning.

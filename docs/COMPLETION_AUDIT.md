@@ -1,0 +1,23 @@
+# Goal completion audit
+
+Checked against the current local work on 20 September 2026. The full goal is **not complete**. A functioning trained predictor is present, but useful general chat quality remains unproven. The latest local commits also remain unpublished pending completion, as requested.
+
+| requirement | current evidence | status / limit |
+| --- | --- | --- |
+| idle source point cloud; truthful activity | activity tests, full-data/browser tests, live-chat test | implemented; continuous model states, not biological spikes |
+| dedicated FlyGPT, larger chat, bounded render load | workspace screenshot, chat and live-chat browser checks | implemented; 5k structural points plus all 512 active model cells |
+| actual CPU token generation, no canned fallback | runtime source, graph-ablation and CPU/MLX checks | deployed v3 works as a predictor; replies remain weak |
+| more relevant, less repetitive conversation | new four-channel candidate training and base evaluation | **open**; base candidate not good enough, dialogue stage running |
+| live computation and tokens/s | NDJSON state/token stream and live-chat browser checks | implemented for deployed v3; any replacement requires equivalent checks |
+| model explanation and weight exploration | README, FLYGPT.md, inspect-weights command | implemented for deployed checkpoint |
+| vision/navigation | vision-validation.json, pixel/physical controls, browser rewind | simple red-target seeking, not general vision |
+| odour tracking | odour-validation.json, antenna field reconstruction, controls | improved approach in two cases, not reliable plume tracking |
+| obstacle avoidance | obstacle-validation.json, actual ray tests and five physical layouts | contact reduction; one residual collision and one inefficient detour reported |
+| trained learning/memory | cue checkpoint/evaluation, memory-physics checks | binary delayed-cue recall and physical response; not semantic memory |
+| backflip | backflip-validation.json and browser/physical checks | actual rotation/landing with explicit external assistance |
+| language wiring comparisons | LANGUAGE_COMPARISON.md and all nine result rows | real topology did not beat shuffled; dense baseline weak under shared settings |
+| public data hosting / CPU chat | previous live Vercel checks and HOSTING.md | current published state works; final push needs fresh verification |
+| GitHub / LinkedIn links | footer source and browser link check | committed locally; final deployment pending |
+| commit each step, no attribution | local git history | followed; final push remains open |
+
+Do not mark the goal complete based on passing the physical tests alone. Review the new candidate's unedited outputs and comparable quality measurements; do not hide poor replies with authored responses or select only favorable prompts. Once all required work is complete, push and verify the deployed commit, full data, chat stream and footer links.

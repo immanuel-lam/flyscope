@@ -136,3 +136,12 @@ A controller can declare `activity: {kind, unit}` and emit `neural: Record<strin
 The walking-circuit module is a concrete example: 24 synthetic oscillator rates determine its forward command. Its input assumptions forbid using the readout on real MaleCNS cells. The UI shows these controller signals instead of the unrelated pre-generated demo signal. This illustrates integration, not a validated spiking connectome model.
 
 For full connectomes, use [LARGE_DATASETS.md](LARGE_DATASETS.md), not the small JSON-import path. The language-model and vision requirements are preserved in [EXPERIMENT_ROADMAP.md](EXPERIMENT_ROADMAP.md).
+
+
+## Extend the physical experiments
+
+Use `scripts/physics/run.py` for simulator-owned sensing, neural updates and body dynamics. The existing modules are `vision.py` (actual eye pixels), `odour.py` (defined field at antennal positions), `obstacles.py` (actual MuJoCo rays and terrain contact pairs), and `backflip.py` (explicitly external assistance). A separate trained circuit in `scripts/memory/runtime.py` supplies delayed-cue decisions. See PHYSICAL_FLY.md and CUE_MEMORY.md for exact commands and control recordings.
+
+Add typed optional observations to `src/physics/types.ts`, record their actual simulator timestamps, and display the previous observation on the common playback clock in `PhysicsPanel.tsx`. Render only geometry/transforms delivered by the simulator. Keep old recordings without the new field valid. The local endpoint has a fixed argument allowlist in `server/physics-plugin.ts`; extend that validation rather than accepting arbitrary executable names or flags.
+
+Each feature needs a disabled-sensor or disabled-controller comparison, a neural-silencing control where applicable, and a browser check for playback and rewind. Keep actual learned-model values separate when two models reuse source neuron IDs. Record assumptions and negative results. Publishing remains controlled by the user's current request, not by the existence of a deploy script.
