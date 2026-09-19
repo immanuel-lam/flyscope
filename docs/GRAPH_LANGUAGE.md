@@ -41,6 +41,8 @@ VECLIB_MAXIMUM_THREADS=1 .venv-physics/bin/python scripts/graph-language/evaluat
 
 A two-example, four-token validation run on the pilot checkpoint verifies the pipeline only. Its poor outputs were retained. It does not measure the quality of the still-running corrected training experiment.
 
+A preliminary corrected-run snapshot was evaluated on 16 validation conversations through the CPU runtime. Correct/mismatched/source-cut response losses were 3.341/3.634/7.802. First-eight-token losses were 2.924 with the matching prompt and 3.614 with a mismatched prompt. However, repeated four-gram fraction was 0.334 and raw replies were malformed and irrelevant. This supports prompt and pathway dependence, not useful chat. The snapshot remains undeployed; full training continues. All source contexts, replies, generated tokens and checkpoint identity are retained in `performance/graph-language-corrected-early-validation.json`.
+
 ## computation inspection
 
 The CPU runtime's `inspect(prefix)` records the same forward pass used for prediction. It selects the last eight input cells and last sixteen readout cells, including the actual generation readout. Five columns contain a chosen feature before and after four graph blocks. Per-edge values decompose the attention update after projection into that feature. Separate fields retain actual local feed-forward updates and self-retention contributions. Tests independently compare the sum of edge contributions with the full attention matrix computation and compare displayed logits with ordinary inference.
