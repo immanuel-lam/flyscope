@@ -77,3 +77,7 @@ For walking with visible controller activity, choose the synthetic dataset and *
 In the full MaleCNS view, choose **Run physics**, then **Play**. NeuroMechFly and MuJoCo simulate forces and contacts; an experimental whole-connectome rate model supplies population motor drive and receives contact feedback. The viewer replays actual simulator meshes/body transforms and sampled neural signals. A two-second run takes about 14.5 seconds locally. Use the silence and feedback controls to compare behavior.
 
 Setup, measured controls, assumptions, full-run export and agent extension points: [PHYSICAL_FLY.md](docs/PHYSICAL_FLY.md). This is a functioning coupled engineering simulation, not a biologically validated neural walking model. Language training and visual input are still unfinished.
+
+## FlyGPT
+
+MaleCNS now opens by default (`?dataset=demo` selects the synthetic fixture). **FlyGPT** is in the right side panel; **Neuron inspector** switches back to cell search and traces. A trained 512-cell MaleCNS subgraph generates short replies locally and displays its actual hidden states. The included checkpoint uses NumPy for inference; MLX is used only for training. It is a limited experimental model, not a general assistant. See [model details, data and evaluation](docs/FLYGPT.md). Install the language dependencies before using chat.

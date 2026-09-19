@@ -4,7 +4,7 @@ test("viewer, playback, filtering, source reconstruction, import and responsive 
 }) => {
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto("/");
+  await page.goto("/?dataset=demo");
   await expect(page.locator("canvas")).toHaveCount(2);
   await page.screenshot({ path: "tests/desktop.png", fullPage: true });
   await page

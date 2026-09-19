@@ -42,6 +42,8 @@ import {
 } from "./data";
 import type { Dataset } from "./data";
 
+import ChatPanel from "./language/ChatPanel";
+import type { Activity } from "./data";
 import PhysicsPanel from "./physics/PhysicsPanel";
 import { physicsTelemetry, type PhysicsRun } from "./physics/types";
 const demo = demoDataset();
@@ -69,6 +71,8 @@ export default function App() {
   useEffect(() => () => largeWorker.current?.terminate(), []);
   const [playing, setPlaying] = useState(false);
   const [inspectActivity, setInspectActivity] = useState(false);
+  const [sidePanel, setSidePanel] = useState<"chat" | "neurons">("chat");
+  const [chatActivity, setChatActivity] = useState<Activity>();
   const [physicsRun, setPhysicsRun] = useState<PhysicsRun>();
   const [motorMode, setMotorMode] = useState("off");
   const [motorCommand, setMotorCommand] = useState<MotorCommand>({
@@ -100,10 +104,10 @@ export default function App() {
   }, [dataset, motorMode, motorCommand, physicsRun]);
   const displayDataset = useMemo(
     () =>
-      motorResult.activity
-        ? { ...dataset, activity: motorResult.activity }
+      (chatActivity ?? motorResult.activity)
+        ? { ...dataset, activity: chatActivity ?? motorResult.activity }
         : dataset,
-    [dataset, motorResult.activity],
+    [dataset, motorResult.activity, chatActivity],
   );
   const [time, setTime] = useState(0);
   const [speed, setSpeed] = useState(1);
@@ -126,7 +130,7 @@ export default function App() {
   );
   const range = useMemo(() => activityRange(displayDataset), [displayDataset]);
   const duration = Math.max(
-    dataset.activity?.times.at(-1) ?? 0,
+    displayDataset.activity?.times.at(-1) ?? 0,
     motorResult.track?.times.at(-1) ?? 0,
   );
   const motorPose = useMemo(
@@ -134,6 +138,7 @@ export default function App() {
     [motorResult.track, time],
   );
   const changeMotor = (mode: string) => {
+    setChatActivity(undefined);
     setMotorMode(mode);
     if (mode === "walking-circuit") setSelected("demo-5");
     setPlaying(false);
@@ -244,6 +249,7 @@ export default function App() {
       setConnections(undefined);
     }
     setDataset(d);
+    setChatActivity(undefined);
     setPhysicsRun(undefined);
     setMotorMode(d.motor ? "replay" : "off");
     setTime(0);
@@ -260,7 +266,7 @@ export default function App() {
     let frame: number;
     let prev = performance.now();
     const tick = (now: number) => {
-      const dt = Math.min((now - prev) / 1000, 0.2);
+      const dt = Math.max(0, Math.min((now - prev) / 1000, 0.2));
       prev = now;
       setTime((t) => {
         const next = t + dt * speed;
@@ -362,7 +368,7 @@ export default function App() {
     onSelect: setSelected,
   };
   useEffect(() => {
-    if (new URLSearchParams(location.search).get("dataset") === "malecns")
+    if (new URLSearchParams(location.search).get("dataset") !== "demo")
       loadFull();
   }, []);
   return (
@@ -829,7 +835,7 @@ export default function App() {
                 Low <span className="heat-legend" /> High{" "}
                 <small>
                   {motorMode === "physics"
-                    ? "Point cloud retained · glow: rate / cell peak"
+                    ? "Point cloud retained · glow: |state| / cell peak"
                     : (displayDataset.activity?.unit ?? "No activity")}
                 </small>
               </div>
@@ -846,6 +852,7 @@ export default function App() {
                     setError("Physics run does not match this dataset");
                     return;
                   }
+                  setChatActivity(undefined);
                   setPhysicsRun(run);
                   setMotorMode("physics");
                   setTime(0);
@@ -972,132 +979,182 @@ export default function App() {
             </div>
           </section>
           <aside className="inspector">
-            <div className="section-label">
-              <span>NEURON INSPECTOR</span>
-              <Focus size={14} />
-            </div>
-            <div className="search-field">
-              <Search size={14} />
-              <input
-                aria-label="Find neurons"
-                placeholder="Find neuron or ID…"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-              />
-              {query && (
-                <button aria-label="Clear search" onClick={() => setQuery("")}>
-                  <X size={12} />
-                </button>
-              )}
-            </div>
-            <div className="neuron-list" aria-label="Neurons">
-              {filtered.slice(0, 80).map((n) => (
+            {isFull && (
+              <div className="side-tabs" role="tablist" aria-label="Side panel">
                 <button
-                  key={n.id}
-                  className={selected === n.id ? "chosen" : ""}
-                  onClick={() => setSelected(n.id)}
+                  role="tab"
+                  aria-selected={sidePanel === "chat"}
+                  onClick={() => setSidePanel("chat")}
                 >
-                  <i
-                    style={{
-                      background: palette[regions.indexOf(n.region) % 6],
-                    }}
-                  />
-                  <span>{n.label}</span>
-                  <ChevronRight size={12} />
+                  FlyGPT
                 </button>
-              ))}
-              {!filtered.length && (
-                <p className="subtle">No neurons match this search.</p>
-              )}
-            </div>
-            <p className="list-count">
-              {Math.min(filtered.length, 80)} of{" "}
-              {filtered.length.toLocaleString()} matches
-            </p>
-            {neuron && (
-              <div className="neuron-detail">
-                {isFull && (
-                  <>
-                    <p className="subtle small">{detailStatus}</p>
-                    <p className="subtle small">
-                      Position: {neuron.positionKind}. Status: {neuron.status}.
-                    </p>
-                  </>
-                )}
-                <span className="eyebrow">SELECTED NEURON</span>
-                <h2>{neuron.label}</h2>
-                <code>{neuron.id}</code>
-                <dl>
-                  <div>
-                    <dt>Region</dt>
-                    <dd>{neuron.region}</dd>
-                  </div>
-                  <div>
-                    <dt>Geometry</dt>
-                    <dd>
-                      {dataset.geometry === "synthetic"
-                        ? "Synthetic"
-                        : "Reconstructed"}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>Segments</dt>
-                    <dd>
-                      {(isFull
-                        ? (detail?.totalSegments ?? 0)
-                        : (neuron.skeleton?.length ?? 0) / 6
-                      ).toLocaleString()}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>Outgoing edges</dt>
-                    <dd>
-                      {isFull
-                        ? (outgoingCounts?.[neuronIndex.get(neuron.id) ?? -1] ??
-                          0)
-                        : dataset.edges.filter((e) => e.source === neuron.id)
-                            .length}
-                    </dd>
-                  </div>
-                </dl>
-                <div className="signal-title">
-                  <span>Activity</span>
-                  <strong>
-                    {value === undefined ? "—" : value.toFixed(3)}{" "}
-                    <small>{displayDataset.activity?.unit}</small>
-                  </strong>
-                </div>
-                <Trace
-                  dataset={displayDataset}
-                  id={neuron.id}
-                  time={time}
-                  range={range}
-                />
-                <div className="signal-axis">
-                  <span>0 s</span>
-                  <span>{duration.toFixed(1)} s</span>
-                </div>
-                <p className="subtle small">
-                  {displayDataset.activity
-                    ? motorMode === "physics"
-                      ? "Glow shows each recorded cell relative to its own peak. Trace values are unchanged. Rates are not spikes."
-                      : `${displayDataset.activity.kind} values. Color uses the dataset’s full value range.`
-                    : "Structure only. Import a JSON dataset with activity to play a recording or simulation."}
-                </p>
+                <button
+                  role="tab"
+                  aria-selected={sidePanel === "neurons"}
+                  onClick={() => setSidePanel("neurons")}
+                >
+                  Neuron inspector
+                </button>
               </div>
             )}
-            <div className="scope-note">
-              <span className="eyebrow">IN THIS VIEW</span>
-              <strong>
-                {displayDataset.activity
-                  ? `${active} / ${Object.keys(displayDataset.activity.values).length}`
-                  : "Structure only"}
-              </strong>
-              <span>
-                {displayDataset.activity
-                  ? "recorded neurons above 50% of the activity range"
-                  : "No firing activity is inferred"}
-              </span>
+            <div hidden={isFull && sidePanel !== "chat"}>
+              {" "}
+              {isFull && (
+                <ChatPanel
+                  onActivity={(reply) => {
+                    if (
+                      reply.datasetId !== dataset.id ||
+                      reply.datasetVersion !== dataset.version
+                    ) {
+                      setError("Chat model dataset mismatch");
+                      return;
+                    }
+                    setChatActivity(reply.activity);
+                    setMotorMode("off");
+                    setTime(0);
+                    setPlaying(true);
+                    const ids = Object.keys(reply.activity.values);
+                    if (ids.length) setSelected(ids[0]);
+                  }}
+                />
+              )}
+            </div>
+            <div
+              className="inspector-content"
+              hidden={isFull && sidePanel !== "neurons"}
+            >
+              <div className="section-label">
+                <span>NEURON INSPECTOR</span>
+                <Focus size={14} />
+              </div>
+              <div className="search-field">
+                <Search size={14} />
+                <input
+                  aria-label="Find neurons"
+                  placeholder="Find neuron or ID…"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                />
+                {query && (
+                  <button
+                    aria-label="Clear search"
+                    onClick={() => setQuery("")}
+                  >
+                    <X size={12} />
+                  </button>
+                )}
+              </div>
+              <div className="neuron-list" aria-label="Neurons">
+                {filtered.slice(0, 80).map((n) => (
+                  <button
+                    key={n.id}
+                    className={selected === n.id ? "chosen" : ""}
+                    onClick={() => setSelected(n.id)}
+                  >
+                    <i
+                      style={{
+                        background: palette[regions.indexOf(n.region) % 6],
+                      }}
+                    />
+                    <span>{n.label}</span>
+                    <ChevronRight size={12} />
+                  </button>
+                ))}
+                {!filtered.length && (
+                  <p className="subtle">No neurons match this search.</p>
+                )}
+              </div>
+              <p className="list-count">
+                {Math.min(filtered.length, 80)} of{" "}
+                {filtered.length.toLocaleString()} matches
+              </p>
+              {neuron && (
+                <div className="neuron-detail">
+                  {isFull && (
+                    <>
+                      <p className="subtle small">{detailStatus}</p>
+                      <p className="subtle small">
+                        Position: {neuron.positionKind}. Status: {neuron.status}
+                        .
+                      </p>
+                    </>
+                  )}
+                  <span className="eyebrow">SELECTED NEURON</span>
+                  <h2>{neuron.label}</h2>
+                  <code>{neuron.id}</code>
+                  <dl>
+                    <div>
+                      <dt>Region</dt>
+                      <dd>{neuron.region}</dd>
+                    </div>
+                    <div>
+                      <dt>Geometry</dt>
+                      <dd>
+                        {dataset.geometry === "synthetic"
+                          ? "Synthetic"
+                          : "Reconstructed"}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>Segments</dt>
+                      <dd>
+                        {(isFull
+                          ? (detail?.totalSegments ?? 0)
+                          : (neuron.skeleton?.length ?? 0) / 6
+                        ).toLocaleString()}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>Outgoing edges</dt>
+                      <dd>
+                        {isFull
+                          ? (outgoingCounts?.[
+                              neuronIndex.get(neuron.id) ?? -1
+                            ] ?? 0)
+                          : dataset.edges.filter((e) => e.source === neuron.id)
+                              .length}
+                      </dd>
+                    </div>
+                  </dl>
+                  <div className="signal-title">
+                    <span>Activity</span>
+                    <strong>
+                      {value === undefined ? "—" : value.toFixed(3)}{" "}
+                      <small>{displayDataset.activity?.unit}</small>
+                    </strong>
+                  </div>
+                  <Trace
+                    dataset={displayDataset}
+                    id={neuron.id}
+                    time={time}
+                    range={range}
+                  />
+                  <div className="signal-axis">
+                    <span>0 s</span>
+                    <span>{duration.toFixed(1)} s</span>
+                  </div>
+                  <p className="subtle small">
+                    {displayDataset.activity
+                      ? motorMode === "physics"
+                        ? "Glow shows each recorded cell relative to its own peak. Trace values are unchanged. Rates are not spikes."
+                        : `${displayDataset.activity.kind} values. Color uses the dataset’s full value range.`
+                      : "Structure only. Import a JSON dataset with activity to play a recording or simulation."}
+                  </p>
+                </div>
+              )}
+              <div className="scope-note">
+                <span className="eyebrow">IN THIS VIEW</span>
+                <strong>
+                  {displayDataset.activity
+                    ? `${active} / ${Object.keys(displayDataset.activity.values).length}`
+                    : "Structure only"}
+                </strong>
+                <span>
+                  {displayDataset.activity
+                    ? "recorded neurons above 50% of the activity range"
+                    : "No firing activity is inferred"}
+                </span>
+              </div>
             </div>
           </aside>
         </main>

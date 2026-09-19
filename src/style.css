@@ -1250,3 +1250,27 @@ footer b {
 .physics-panel details { font-size: 12px; margin-top: 12px; max-width: 90ch; }
 .physics-panel input[type=checkbox] { accent-color: #b6cf71; }
 .activity-inspection { display:flex; align-items:center; gap:8px; padding:10px 18px; font-size:12px; color:var(--muted); }
+.chat-messages { max-height:340px; overflow:auto; padding:16px 0; font-size:14px; line-height:1.6; }
+.chat-message { padding:12px 16px; margin-bottom:8px; border-radius:8px; background:#1d261e; }
+.chat-message.user { background:#242d22; margin-left:32px; }
+.chat-message strong { color:#b6cf71; font-size:11px; text-transform:uppercase; letter-spacing:.08em; }
+.chat-message p { margin:5px 0 0; white-space:pre-wrap; }
+.chat-input { display:flex; gap:12px; margin-top:8px; }
+.chat-input input { flex:1; min-width:0; background:#101810; border:1px solid #45533e; color:#e8eddc; border-radius:5px; padding:12px; }
+.chat-input button { padding:8px 20px; background:#b6cf71; color:#162012; border-radius:5px; }
+.chat-input button:disabled { opacity:.4; }
+.side-tabs { display:flex; gap:6px; padding-bottom:16px; border-bottom:1px solid var(--border); margin-bottom:18px; }
+.side-tabs button { flex:1; padding:9px 5px; border-radius:6px; font-size:12px; color:var(--muted); }
+.side-tabs button[aria-selected=true] { background:#303d27; color:#e3edcb; }
+.inspector [hidden] { display:none !important; }
+.inspector .chat-panel { padding:0; border:0; margin:0; background:transparent; }
+.inspector .chat-panel .motor-heading { display:block; }
+.inspector .chat-panel .motor-heading button { margin-top:12px; font-size:11px; }
+.inspector .chat-panel .chat-messages { min-height:300px; max-height:48vh; }
+.inspector .chat-panel .chat-message.user { margin-left:12px; }
+.inspector .chat-panel .chat-input { flex-wrap:wrap; }
+.inspector .chat-panel .chat-input input { width:100%; }
+.inspector .chat-panel .physics-options { font-size:10px; }
+@media(min-width:851px){.workbench{grid-template-columns:180px minmax(280px,1fr) 310px;}}
+@media(min-width:1400px){.workbench{grid-template-columns:220px minmax(400px,1fr) 360px;}}
+@media(max-width:850px){.inspector{display:block;} .inspector .chat-panel .chat-messages{min-height:180px;}}

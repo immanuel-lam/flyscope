@@ -14,6 +14,7 @@ test("full catalog, selected source geometry, graph and stale-request isolation"
     timeout: 60000,
   });
   await expect(page.locator(".dataset-count")).toContainText("25,582,938");
+  await page.getByRole("tab", { name: "Neuron inspector" }).click();
   await page.getByRole("textbox", { name: "Find neurons" }).fill("12781");
   await page
     .locator(".neuron-list button")

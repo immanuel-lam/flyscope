@@ -139,7 +139,7 @@ export default function Scene(props: Props) {
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
     geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
-    const focusActivity = !!props.physics && !!d.activity;
+    const focusActivity = full && d.activity?.kind === "simulation";
     const peaks = recordedPeaks(focusActivity ? d.activity : undefined);
     if (full) geometry.setIndex(activityPointOrder(d.neurons, peaks, 20000));
     const points = new THREE.Points(

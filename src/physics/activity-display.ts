@@ -4,14 +4,14 @@ export function recordedPeaks(activity?: Activity): Map<string, number> {
   return new Map(
     Object.entries(activity?.values ?? {}).map(([id, values]) => [
       id,
-      values.reduce((peak, v) => Math.max(peak, v), 0),
+      values.reduce((peak, v) => Math.max(peak, Math.abs(v)), 0),
     ]),
   );
 }
 export function relativeRate(value: number | undefined, peak: number): number {
   return value === undefined || peak <= 0
     ? 0
-    : Math.min(1, Math.max(0, value / peak));
+    : Math.min(1, Math.abs(value) / peak);
 }
 export function activityPointOrder(
   neurons: Neuron[],

@@ -16,7 +16,7 @@ test("motor rig moves, rewind is exact, run export replays, and real neurons req
 }, testInfo) => {
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto("/");
+  await page.goto("/?dataset=demo");
   await page.getByLabel("Motor controller").selectOption("manual");
   const rest = await page.getByTestId("motor-position").textContent();
   await seek(page, 1);
@@ -68,7 +68,7 @@ test("motor rig moves, rewind is exact, run export replays, and real neurons req
 });
 
 test("coupled walking shows the controller neuron rates", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/?dataset=demo");
   await page.getByLabel("Motor controller").selectOption("walking-circuit");
   await expect(page.locator(".neuron-detail code")).toHaveText("demo-5");
   await seek(page, 0.1);

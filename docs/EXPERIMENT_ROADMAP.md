@@ -12,7 +12,7 @@ User direction, 19 September 2026: use real fly wiring; train an actual language
 
 ## Stage 1: actually train a text predictor
 
-Default proposal pending user preference: a small local character/byte-level proof of concept on this Mac. A larger GPU job is an alternative, not authorized spending. No language training or trained checkpoint exists yet.
+Default proposal pending user preference: a small local character/byte-level proof of concept on this Mac. A larger GPU job is an alternative, not authorized spending. A local MLX-trained 512-cell circuit and portable checkpoint now exist; see FLYGPT.md for exact scope and evaluation.
 
 The model must perform next-token prediction through a recurrent circuit constrained by a documented subgraph of the real MaleCNS connections. Start with a tractable selected subgraph, not a dense 166,700-by-166,700 weight matrix. Define:
 
@@ -43,4 +43,4 @@ For a biological retina/optic-lobe model, use a pinned external model and its do
 
 ## Instructions to the next agent
 
-Read AGENTS.md, docs/AGENT_INTEGRATION.md and docs/LARGE_DATASETS.md. Complete Stage 1 as an actual training-and-evaluation task, with a checkpoint and viewer-compatible output; do not present only a plan or precomputed animation. Verify the available local compute/runtime before choosing the implementation. Stage 2 should display the real input to that pipeline, not decorative unrelated images. Both stages are unimplemented at the time of this note.
+Read AGENTS.md, docs/AGENT_INTEGRATION.md and docs/LARGE_DATASETS.md. Complete Stage 1 as an actual training-and-evaluation task, with a checkpoint and viewer-compatible output; do not present only a plan or precomputed animation. Verify the available local compute/runtime before choosing the implementation. Stage 2 should display the real input to that pipeline, not decorative unrelated images. Stage 1 has a working small chat proof of concept and viewer integration; real/shuffled/dense comparisons remain. Stage 2 is next.

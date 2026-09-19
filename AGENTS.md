@@ -34,8 +34,12 @@ A discoverable controller or a validated importable run, its declared mappings/u
 
 - Read `docs/LARGE_DATASETS.md` before working with full MaleCNS data. Keep graph chunks and geometry detail out of the React render state unless selected. Render the full point overview at rest; apply explicit interaction LOD and cache budgets.
 - For joint neural/motor output, use `simulateExperiment()` and the controller's optional activity declaration. Never show arbitrary synthetic signals as a real cell recording.
-- The user's next intended experiments are in `docs/EXPERIMENT_ROADMAP.md`: an actually trained connectome-constrained text model, then a panel showing its actual visual input. No trained checkpoint or vision model exists yet.
+- The user's next intended experiments are in `docs/EXPERIMENT_ROADMAP.md`: an actually trained connectome-constrained text model, then a panel showing its actual visual input. A trained 512-cell chat checkpoint now exists; see docs/FLYGPT.md. Vision remains the next stage.
 
 ## Functional physics backend
 
 Read `docs/PHYSICAL_FLY.md` for real NeuroMechFly/MuJoCo runs. The local job API executes the full MaleCNS rate network and contact physics in Python, then replays full body transforms. Its sensory encoding, dynamics and population decoder are engineering assumptions. Keep those labels. Modify the external loop for physical environments; do not add motion in the renderer. Run `npm run test:physics` after generating the three documented control recordings when this backend changes. Preserve the language and vision roadmap.
+
+## FlyGPT runtime
+
+Read `docs/FLYGPT.md` before changing the language model. Keep source cell IDs and fixed directed mask, disjoint text input/output cells, and the no-external-LLM contract. MLX is training-only; inference must remain portable. Tests must include graph ablation and CPU/export parity. The goal and publication boundary are in `docs/GOAL_PROGRESS.md`: only the point-cloud fix was authorized for push; subsequent feature commits stay local.
