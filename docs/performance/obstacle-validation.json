@@ -1,0 +1,35 @@
+{
+  "conditions": {
+    "training": {
+      "activeForwardMm": 10.838283,
+      "disabledForwardMm": 5.794264,
+      "activeContactSeconds": 0.0,
+      "disabledContactSeconds": 1.8865
+    },
+    "offset": {
+      "activeForwardMm": 13.392925,
+      "disabledForwardMm": 9.698336,
+      "activeContactSeconds": 0.4587,
+      "disabledContactSeconds": 1.3768
+    },
+    "wide": {
+      "activeForwardMm": 11.740678,
+      "disabledForwardMm": 7.479,
+      "activeContactSeconds": 0.0,
+      "disabledContactSeconds": 1.6021
+    },
+    "heldout-left": {
+      "activeForwardMm": 12.914165,
+      "disabledForwardMm": 8.88515,
+      "activeContactSeconds": 0.0,
+      "disabledContactSeconds": 1.4143000000000001
+    },
+    "heldout-right": {
+      "activeForwardMm": 6.758627,
+      "disabledForwardMm": 17.026495,
+      "activeContactSeconds": 0.0,
+      "disabledContactSeconds": 0.1892
+    }
+  },
+  "limitations": "One seed, five single-cylinder layouts; heldout-left and heldout-right tested after freezing the clearance-hold controller. Training, offset and wide are development cases. Artificial obstacle-only range sensors, not biological vision. Offset retains contact. Heldout-right avoids contact with less forward progress than disabled control. No guarantee of efficient navigation or cluttered-environment success."
+}

@@ -14,6 +14,10 @@ export function addPhysicsRig(scene:THREE.Scene,run:PhysicsRun){
     const marker=new THREE.Mesh(new THREE.RingGeometry(.7,1,32),new THREE.MeshBasicMaterial({color:'#b9db79',side:THREE.DoubleSide}));
     marker.position.fromArray(run.odour.sourcePosition);marker.position.z+=.02;root.add(marker);
   }
+  for(const obstacle of run.obstacles?.geometry??[]){
+    const mesh=new THREE.Mesh(new THREE.CylinderGeometry(obstacle.radius,obstacle.radius,obstacle.halfHeight*2,32),new THREE.MeshStandardMaterial({color:'#4d80b3',roughness:.8}));
+    mesh.rotation.x=Math.PI/2;mesh.position.fromArray(obstacle.position);root.add(mesh);
+  }
   const bodies=run.bodyNames.map(()=>{const g=new THREE.Group();root.add(g);return g;});
   let headMesh:THREE.Mesh | undefined;
   const headCenter=new THREE.Vector3();

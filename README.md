@@ -131,3 +131,5 @@ malecns data comes from flyem at hhmi janelia, the university of cambridge, mrc 
 physical simulation uses [neuromechfly / flygym](https://github.com/NeLy-EPFL/flygym) and [mujoco](https://github.com/google-deepmind/mujoco). language training uses the synthetic everyday-conversations subset of smoltalk; its source revision and checksums are recorded with the checkpoint. see the [research notes](docs/RESEARCH.md) for background and the distinction between malecns and flywire.
 
 local odour experiments sample a defined field at both simulated antennae and route steering through the rate model. the panel shows concentrations during playback. two tested source positions show improved approach against disabled steering; this is not a turbulent plume or validated biological olfactory model. see [physical experiments](docs/PHYSICAL_FLY.md).
+
+local obstacle experiments use physical collisions and artificial head-mounted range rays. the panel shows sensor readings and contact time. tests include disabled steering, neural silencing and held-out layouts; avoidance can still touch obstacles or take inefficient detours.
