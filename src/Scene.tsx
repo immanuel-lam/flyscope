@@ -17,6 +17,9 @@ import type { PhysicsRun } from "./physics/types";
 
 type Props = {
   activityVisible: boolean;
+  pointBudget?:number;
+  liveValues?: Record<string, number>;
+  liveSequence?: number;
   physics?: PhysicsRun;
   dataset: Dataset;
   detail?: Detail;
@@ -55,7 +58,7 @@ export default function Scene(props: Props) {
         "WebGL is unavailable. Use the neuron list and data controls, or open this viewer in a WebGL-enabled browser.";
       return;
     }
-    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(devicePixelRatio, props.pointBudget ? 1 : 2));
     renderer.setClearColor("#151b18", 0);
     el.appendChild(renderer.domElement);
     const scene = new THREE.Scene();
@@ -424,6 +427,7 @@ export default function Scene(props: Props) {
     const visible: boolean[] = [];
     let frame = 0;
     let lastState = "";
+    let lastGlowState = "";
     let lastReset = props.reset;
     const render = () => {
       frame = requestAnimationFrame(render);
@@ -481,11 +485,11 @@ export default function Scene(props: Props) {
         lastState = state;
         const c = new THREE.Color();
         d.neurons.forEach((n, i) => {
-          const raw = p.activityVisible
-            ? activityAt(d, n.id, p.time)
+          const raw = p.activityVisible && !p.liveValues
+            ? (p.liveValues ? p.liveValues[n.id] : activityAt(d, n.id, p.time))
             : undefined;
           const value =
-            raw === undefined ? 0 : (raw - range[0]) / (range[1] - range[0]);
+            raw === undefined ? 0 : p.liveValues ? Math.abs(raw) : (raw - range[0]) / (range[1] - range[0]);
           const show =
             (p.region === "All regions" || p.region === n.region) &&
             (!p.activityVisible ||
@@ -499,19 +503,6 @@ export default function Scene(props: Props) {
           if (n.id === p.selected && show) c.copy(white);
           c.toArray(colors, i * 3);
         });
-        glow.visible = p.activityVisible;
-        renderer.domElement.dataset.activityVisible = String(p.activityVisible);
-        let totalStrength = 0;
-        recordedIndices.forEach((ni, j) => {
-          const n = d.neurons[ni];
-          strengths[j] =
-            p.activityVisible && visible[ni]
-              ? relativeRate(activityAt(d, n.id, p.time), peaks.get(n.id)!)
-              : 0;
-          totalStrength += strengths[j];
-        });
-        glowGeometry.attributes.strength.needsUpdate = true;
-        renderer.domElement.dataset.activityStrength = totalStrength.toFixed(5);
         geometry.attributes.color.needsUpdate = true;
         const lc = lineGeo.attributes.color.array as Float32Array;
         owner.forEach((ni, i) => {
@@ -527,6 +518,23 @@ export default function Scene(props: Props) {
         edges.visible =
           p.showEdges && p.region === "All regions" && p.threshold === 0;
         body.visible = p.showBody && !physical;
+      }
+      const glowState = `${state}|${p.liveSequence}`;
+      if (glowState !== lastGlowState) {
+        lastGlowState = glowState; dirty = true;
+        glow.visible = p.activityVisible;
+        renderer.domElement.dataset.activityVisible = String(p.activityVisible);
+        let totalStrength = 0;
+        recordedIndices.forEach((ni, j) => {
+          const n = d.neurons[ni];
+          strengths[j] =
+            p.activityVisible && visible[ni]
+              ? relativeRate((p.liveValues ? p.liveValues[n.id] : activityAt(d, n.id, p.time)), peaks.get(n.id)!)
+              : 0;
+          totalStrength += strengths[j];
+        });
+        glowGeometry.attributes.strength.needsUpdate = true;
+        renderer.domElement.dataset.activityStrength = totalStrength.toFixed(5);
       }
       const motorSignature =
         JSON.stringify(p.motorPose) + (physical ? p.time : "");
@@ -558,7 +566,7 @@ export default function Scene(props: Props) {
           floor.position.z = Math.round(position.z / 6) * 6;
         }
       }
-      const budget = full
+      const budget = p.pointBudget ? Math.min(p.pointBudget,d.neurons.length) : full
         ? props.mode === "fly"
           ? 20000
           : performance.now() < interactionUntil
@@ -605,7 +613,7 @@ export default function Scene(props: Props) {
       renderer.dispose();
       renderer.domElement.remove();
     };
-  }, [props.dataset, props.mode, props.physics]);
+  }, [props.dataset, props.mode, props.physics, props.pointBudget]);
   return (
     <div
       className="scene-canvas"

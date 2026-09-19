@@ -42,7 +42,7 @@ import {
 } from "./data";
 import type { Dataset } from "./data";
 
-import ChatPanel from "./language/ChatPanel";
+import FlyWorkspace from "./language/FlyWorkspace";
 import type { Activity } from "./data";
 import PhysicsPanel from "./physics/PhysicsPanel";
 import { physicsTelemetry, type PhysicsRun } from "./physics/types";
@@ -71,7 +71,6 @@ export default function App() {
   useEffect(() => () => largeWorker.current?.terminate(), []);
   const [playing, setPlaying] = useState(false);
   const [inspectActivity, setInspectActivity] = useState(false);
-  const [sidePanel, setSidePanel] = useState<"chat" | "neurons">("chat");
   const [chatActivity, setChatActivity] = useState<Activity>();
   const [physicsRun, setPhysicsRun] = useState<PhysicsRun>();
   const [motorMode, setMotorMode] = useState("off");
@@ -119,7 +118,7 @@ export default function App() {
   const [showBody, setShowBody] = useState(true);
   const [reset, setReset] = useState(0);
   const [view, setView] = useState<"split" | "brain" | "fly">("split");
-  const [panel, setPanel] = useState<"explore" | "sources">("explore");
+  const [panel, setPanel] = useState<"explore" | "sources" | "flygpt">("explore");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const file = useRef<HTMLInputElement>(null);
@@ -391,6 +390,7 @@ export default function App() {
         <span className="top-description">Neural observatory</span>
         <span className="version">WORKBENCH / 0.1</span>
         <nav>
+          <button className={panel === "flygpt" ? "nav-active" : ""} disabled={!isFull} onClick={()=>{setPlaying(false);setPanel("flygpt");}}>FlyGPT</button>
           <button
             className={panel === "explore" ? "nav-active" : ""}
             onClick={() => setPanel("explore")}
@@ -443,7 +443,7 @@ export default function App() {
           </button>
         </div>
       )}
-      {panel === "sources" ? (
+      {panel === "flygpt" ? <FlyWorkspace key={dataset.id} dataset={dataset}/> : panel === "sources" ? (
         <section className="research">
           <div>
             <div className="eyebrow">START WITH THE EVIDENCE</div>
@@ -979,34 +979,7 @@ export default function App() {
             </div>
           </section>
           <aside className="inspector">
-            {isFull && (
-              <div className="side-tabs" role="tablist" aria-label="Side panel">
-                <button
-                  role="tab"
-                  aria-selected={sidePanel === "chat"}
-                  onClick={() => setSidePanel("chat")}
-                >
-                  FlyGPT
-                </button>
-                <button
-                  role="tab"
-                  aria-selected={sidePanel === "neurons"}
-                  onClick={() => setSidePanel("neurons")}
-                >
-                  Neuron inspector
-                </button>
-              </div>
-            )}
-            <div hidden={isFull && sidePanel !== "chat"}>
-              {" "}
-              {isFull && (
-                <ChatPanel />
-              )}
-            </div>
-            <div
-              className="inspector-content"
-              hidden={isFull && sidePanel !== "neurons"}
-            >
+            <div className="inspector-content">
               <div className="section-label">
                 <span>NEURON INSPECTOR</span>
                 <Focus size={14} />

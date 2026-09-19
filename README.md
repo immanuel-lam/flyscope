@@ -39,11 +39,46 @@ uv venv --python 3.12 .venv-physics
 uv pip install --python .venv-physics/bin/python numpy==2.5.3 tokenizers==0.23.2
 ```
 
-skip the environment-creation command if you already set up physics. prepare the full dataset, start the app, and use the flygpt side panel. the checkpoint and tokenizer are included; retraining is optional.
+skip the environment-creation command if you already set up physics. prepare the full dataset, start the app, and open the dedicated flygpt tab. the checkpoint and tokenizer are included; retraining is optional.
 
-this is a small experimental language model. replies can be unrelated, malformed or wrong. it uses general conversation training data, with no active hand-written fly q&a fine-tuning and no external model answering at runtime. the “thinking…” label means inference is running; it is not a claim that the model can reason. chat leaves the anatomy view idle instead of replaying cell states afterward. after a reply, select **inspect model computation** to examine actual cell states, source connections and token probabilities.
+this is a small experimental language model. replies can be unrelated, malformed or wrong. it uses general conversation training data, with no active hand-written fly q&a fine-tuning and no external model answering at runtime. the “thinking…” label means inference is running; it is not a claim that the model can reason. the dedicated flygpt tab streams actual cell states into the point cloud, fly and circuit diagram while tokens are computed. chat returns the anatomy to idle when done. explore is reserved for anatomy. visible-step mode pauses between actual computation steps; tokens/s includes those pauses.
 
 see [the model notes](docs/FLYGPT.md) for the architecture, training data, reproduction steps and evaluation. disabling the recurrent connections increases held-out token loss from 2.97 to 7.26. that shows dependence on the wiring, not that fly wiring is better than another network.
+
+
+## how the language model works
+
+this is a recurrent language model constrained by a selected malecns graph. it is not a transformer, a pretrained assistant, or a simulation of biological language ability.
+
+1. a byte-level tokenizer converts the conversation into ids from a 1,024-token vocabulary.
+2. learned embeddings inject the current token into 128 source cells.
+3. the same 512 cell states perform two recurrent updates. messages can travel only along the 28,452 retained directed source connections.
+4. a learned readout takes the other 384 cells and produces next-token logits. the input and output cell sets do not overlap.
+5. the runtime selects a token and feeds it back through the circuit. it stops at the end token or the output limit.
+
+in each update, a cell retains part of its previous state and mixes in a tanh-transformed weighted input. connection strengths, biases, embeddings, retention values and readout weights are learned; the source edge mask stays fixed. there is no canned-response table or external model producing replies.
+
+the checkpoint contains 788,480 allocated parameters, including masked recurrent entries that do not carry messages. it was trained with mlx on synthetic everyday conversations, then on 5,697 deduplicated conversation pairs. a correct prompt lowers held-out response loss compared with a mismatched prompt, but replies are still frequently irrelevant. this does **not** yet meet the standard of an intelligent general assistant. training data, state memory and model capacity all need further study; more parameters alone do not guarantee useful answers.
+
+## inspect the weights
+
+the model is stored in `models/malecns-chat/`:
+
+- `runtime.npz`: portable learned arrays, with off-graph recurrent weights already zeroed.
+- `manifest.json`: source cell ids, input/output indices, model assumptions, training records and weight checksum.
+- `tokenizer.json`: the learned tokenizer.
+- `evaluation.json` and `prompt-evaluation.json`: measured checks and unedited generated examples.
+
+with the inference environment installed, list every array and inspect a source cell:
+
+```sh
+.venv-physics/bin/python scripts/language/inspect-weights.py
+.venv-physics/bin/python scripts/language/inspect-weights.py --cell 11722 --limit 12
+```
+
+`recurrent[post, pre]` is the learned weight from the source cell to the destination cell. positive and negative values are learned model effects, not measured neurotransmitter signs. `embedding[token, input]` supplies the input; `readout[token, output]` maps output cells to logits. `retention` stores logits, so apply a sigmoid to obtain the retained fraction. the inspection command performs that conversion for you.
+
+in the flygpt tab, node brightness shows activation magnitude, and the circuit diagram shows 24 selected cells across two updates. hover nodes and edges for values and ids. the full 512-cell network still computes. the point cloud draws a 5,000-point overview to reduce rendering work and keeps all 512 model cells in a separate activity layer. the explore tab retains the full structural overview.
 
 ## run the walking simulation
 

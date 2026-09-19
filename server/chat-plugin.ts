@@ -86,6 +86,10 @@ export function chatPlugin(): Plugin {
           json(503, { error: "The checkpoint is still training." });
           return;
         }
+        if (active >= 1) {
+          json(429, { error: "Inference is already running" });
+          return;
+        }
         active++;
         const child = spawn(
           resolve(root, ".venv-physics/bin/python"),
@@ -100,10 +104,25 @@ export function chatPlugin(): Plugin {
             stdio: ["pipe", "pipe", "pipe"],
           },
         );
+        const streaming = input.stream === true;
+        if (streaming) {
+          res.writeHead(200, {
+            "Content-Type": "application/x-ndjson",
+            "Cache-Control": "no-store",
+          });
+          res.flushHeaders();
+        }
+        res.on("close", () => {
+          if (!res.writableEnded) child.kill();
+        });
         let output = "",
           error = "";
         const timer = setTimeout(() => child.kill(), 60000);
         child.stdout.on("data", (data) => {
+          if (streaming) {
+            res.write(data);
+            return;
+          }
           output += data;
           if (output.length > 4_000_000) child.kill();
         });
@@ -111,11 +130,24 @@ export function chatPlugin(): Plugin {
           error = (error + data).slice(-2000);
         });
         child.on("error", (e) => {
-          json(500, { error: e.message });
+          if (streaming) {
+            res.end(JSON.stringify({ type: "error", error: e.message }) + "\n");
+          } else json(500, { error: e.message });
         });
         child.on("close", (code) => {
           clearTimeout(timer);
           active--;
+          if (streaming) {
+            if (code !== 0 && !res.writableEnded)
+              res.write(
+                JSON.stringify({
+                  type: "error",
+                  error: error || "Inference stopped",
+                }) + "\n",
+              );
+            res.end();
+            return;
+          }
           if (code !== 0) {
             json(500, { error: error || "Inference stopped" });
             return;
@@ -131,6 +163,8 @@ export function chatPlugin(): Plugin {
             message: input.message,
             history,
             maxTokens: 40,
+            stream: input.stream === true,
+            visibleSteps: input.visibleSteps === true,
             ablated: input.ablated === true,
           }),
         );

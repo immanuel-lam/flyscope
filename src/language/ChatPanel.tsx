@@ -15,7 +15,28 @@ export interface ChatReply {
   datasetVersion: string;
   ablated: boolean;
 }
-export default function ChatPanel() {
+export type LiveEvent = {
+  type: string;
+  inspection?: CircuitInspection;
+  ids?: string[];
+  datasetId?: string;
+  datasetVersion?: string;
+  step?: CircuitInspection["steps"][number];
+  values?: number[];
+  sequence?: number;
+  text?: string;
+  tokenCount?: number;
+  elapsedSeconds?: number;
+  error?: string;
+  result?: ChatReply;
+};
+export default function ChatPanel({
+  onLive,
+  compact = false,
+}: {
+  onLive?: (event: LiveEvent) => void;
+  compact?: boolean;
+}) {
   const [messages, setMessages] = useState<Message[]>([]),
     [input, setInput] = useState(""),
     [busy, setBusy] = useState(false),
@@ -24,6 +45,9 @@ export default function ChatPanel() {
     [ablate, setAblate] = useState(false),
     [last, setLast] = useState<ChatReply>();
   const mounted = useRef(true);
+  const abort = useRef<AbortController | null>(null);
+  const [visibleSteps, setVisibleSteps] = useState(true);
+  const [rate, setRate] = useState(0);
   useEffect(() => {
     mounted.current = true;
     fetch("/api/chat/status")
@@ -34,6 +58,7 @@ export default function ChatPanel() {
       .catch(() => {});
     return () => {
       mounted.current = false;
+      abort.current?.abort();
     };
   }, []);
   async function submit(event: React.FormEvent) {
@@ -42,37 +67,79 @@ export default function ChatPanel() {
     const text = input.trim();
     setInput("");
     setBusy(true);
+    setRate(0);
+    onLive?.({ type: "pending" });
+    abort.current = new AbortController();
     setError("");
     setMessages((m) => [...m, { role: "user", content: text }]);
     try {
       const response = await fetch("/api/chat/generate", {
         method: "POST",
+        signal: abort.current.signal,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message: text,
           history: messages.slice(-4),
           ablated: ablate,
+          stream: true,
+          visibleSteps,
         }),
       });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.error);
-      if (!mounted.current) return;
+      if (!response.ok) throw new Error((await response.json()).error);
+      if (!response.body) throw new Error("Missing inference stream");
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let result: ChatReply | undefined;
+      setMessages((m) => [...m, { role: "assistant", content: "" }]);
+      while (true) {
+        const { done, value } = await reader.read();
+        buffer += decoder.decode(value, { stream: !done });
+        let newline: number;
+        while ((newline = buffer.indexOf("\n")) >= 0) {
+          const line = buffer.slice(0, newline);
+          buffer = buffer.slice(newline + 1);
+          if (!line.trim()) continue;
+          const event = JSON.parse(line) as LiveEvent;
+          if (event.type === "error") throw new Error(event.error);
+          if (!mounted.current) return;
+          if (event.type === "token") {
+            setMessages((m) => [
+              ...m.slice(0, -1),
+              { role: "assistant", content: event.text ?? "" },
+            ]);
+            setRate(
+              (event.tokenCount ?? 0) /
+                Math.max(event.elapsedSeconds ?? 0, 0.001),
+            );
+          }
+          if (event.type === "result") result = event.result;
+          onLive?.(event);
+        }
+        if (done) break;
+      }
+      if (!result) throw new Error("Inference stream ended before completion");
       setLast(result);
+      setRate(result.tokens.length / Math.max(result.elapsedSeconds, 0.001));
       setMessages((m) => [
-        ...m,
+        ...m.slice(0, -1),
         {
           role: "assistant",
-          content: result.text || "[Model produced an end token without text]",
+          content: result!.text || "[Model produced an end token without text]",
         },
       ]);
     } catch (e) {
       if (mounted.current) setError((e as Error).message);
     } finally {
+      onLive?.({ type: "end" });
       if (mounted.current) setBusy(false);
     }
   }
   return (
-    <section className="chat-panel motor-panel" aria-label="FlyGPT chat">
+    <section
+      className={`chat-panel motor-panel ${compact ? "compact-chat" : ""}`}
+      aria-label="FlyGPT chat"
+    >
       <div className="motor-heading">
         <div>
           <span className="eyebrow">MALECNS · EXPERIMENTAL CHAT</span>
@@ -107,7 +174,12 @@ export default function ChatPanel() {
             trained MaleCNS connections. Replies can be incorrect or unreadable.
           </p>
         )}
-        {busy && <p role="status">Thinking…</p>}
+        {busy && (
+          <p role="status">
+            Thinking… {rate.toFixed(1)} tokens/s{" "}
+            <button onClick={() => abort.current?.abort()}>Stop</button>
+          </p>
+        )}
       </div>
       <form onSubmit={submit}>
         <label htmlFor="fly-chat">Message</label>
@@ -128,6 +200,15 @@ export default function ChatPanel() {
       <label className="physics-options">
         <input
           type="checkbox"
+          checked={visibleSteps}
+          disabled={busy}
+          onChange={(e) => setVisibleSteps(e.target.checked)}
+        />{" "}
+        Visible computation steps (20 steps/s limit)
+      </label>
+      <label className="physics-options">
+        <input
+          type="checkbox"
           checked={ablate}
           onChange={(e) => setAblate(e.target.checked)}
           disabled={busy}
@@ -143,12 +224,12 @@ export default function ChatPanel() {
       {last && (
         <p className="motor-provenance" data-testid="chat-provenance">
           {last.modelId} · {last.tokens.length} generated tokens ·{" "}
-          {last.elapsedSeconds.toFixed(2)} s ·{" "}
+          {rate.toFixed(1)} tokens/s · {last.elapsedSeconds.toFixed(2)} s ·{" "}
           {last.ablated ? "connections disabled" : "real graph enabled"}.
           Artificial continuous cell states; no biological reasoning claim.
         </p>
       )}
-      {last?.inspection && <CircuitView data={last.inspection} />}
+      {!compact && last?.inspection && <CircuitView data={last.inspection} />}
       {error && (
         <p role="alert" className="motor-error">
           {error}

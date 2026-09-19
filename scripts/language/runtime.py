@@ -22,13 +22,23 @@ class ChatCircuit:
             cells=self.view_cells
             trace.append({'token':self.tokenizer.decode([int(token)],skip_special_tokens=False),'tokenId':int(token),'states':[v[cells].round(6).tolist() for v in snapshots],'input':external[cells].round(6).tolist(),'predictions':[{'token':self.tokenizer.decode([int(t)],skip_special_tokens=False),'probability':float(prob[t]),'weights':[float(self.weights['readout'][t,np.where(self.outputs==c)[0][0]]) if c in self.outputs else 0.0 for c in cells]} for t in top]})
         return logits,state
-    def generate(self,message,history=None,max_tokens=40,temperature=0,seed=7,ablated=False,inspect=False):
+    def generate(self,message,history=None,max_tokens=40,temperature=0,seed=7,ablated=False,inspect=False,emit=None,pace=0):
+        inspect=inspect or emit is not None
         trace=[] if inspect else None
         self.view_cells=np.concatenate([self.inputs[:8],self.outputs[:16]])
         started=time.perf_counter();history=history or []
         prompt=''.join(f'<{turn["role"]}> {turn["content"]} <end>\n' for turn in history[-4:] if turn['role'] in ['user','assistant'])+f'<user> {message} <end>\n<assistant>'
         prompt_ids=self.tokenizer.encode(prompt).ids[-128:];h=np.zeros(self.n,dtype=np.float32)
-        for token in prompt_ids:logits,h=self.step(token,h,ablated,trace)
+        cells=self.view_cells
+        edges=[{'from':i,'to':j,'weight':float(self.weights['recurrent'][dst,src])*(0 if ablated else 1)} for i,src in enumerate(cells) for j,dst in enumerate(cells) if self.weights['recurrent'][dst,src]!=0]
+        metadata={'cells':[{'id':self.config['neurons'][int(c)][0],'input':bool(c in self.inputs),'retention':float(self.gate[c])} for c in cells],'edges':edges,'steps':[],'promptSteps':len(prompt_ids),'selection':'First 8 input cells and first 16 readout cells; all 512 cells compute.'}
+        if emit:emit({'type':'start','inspection':metadata,'ids':[r[0] for r in self.config['neurons']],'datasetId':self.config['datasetId'],'datasetVersion':self.config['datasetVersion']})
+        def advance(token,state,phase):
+            if emit and pace:time.sleep(min(.1,max(0,pace)))
+            logits,state=self.step(token,state,ablated,trace)
+            if emit:emit({'type':'state','step':trace[-1],'values':state.round(6).tolist(),'sequence':len(trace),'phase':phase})
+            return logits,state
+        for token in prompt_ids:logits,h=advance(token,h,'prompt')
         rng=np.random.default_rng(seed);tokens=[];states=[]
         forbidden=[self.tokenizer.token_to_id(t) for t in ['<pad>','<unk>','<user>','<assistant>']]
         for _ in range(max_tokens):
@@ -37,7 +47,9 @@ class ChatCircuit:
                 p=np.exp((logits-logits.max())/temperature);p/=p.sum();token=int(rng.choice(len(p),p=p))
             else:token=int(np.argmax(logits))
             if token==self.end:break
-            tokens.append(token);states.append(h.copy());logits,h=self.step(token,h,ablated,trace)
+            tokens.append(token);states.append(h.copy())
+            if emit:emit({'type':'token','text':self.tokenizer.decode(tokens).strip(),'tokenCount':len(tokens),'elapsedSeconds':time.perf_counter()-started})
+            logits,h=advance(token,h,'generation')
         text=self.tokenizer.decode(tokens).strip()
         matrix=np.array(states,dtype=np.float32) if states else np.zeros((1,self.n),dtype=np.float32)
         view=None
@@ -48,4 +60,8 @@ class ChatCircuit:
         return {'inspection':view,'text':text,'tokens':[self.tokenizer.decode([t]) for t in tokens],'tokenIds':tokens,'elapsedSeconds':time.perf_counter()-started,'modelId':self.config['modelId'],'datasetId':self.config['datasetId'],'datasetVersion':self.config['datasetVersion'],'neurons':self.n,'edges':self.config['edges'],'ablated':ablated,'activity':{'kind':'simulation','unit':'hidden activation (signed a.u.)','times':[i*.15 for i in range(len(matrix))],'values':{row[0]:matrix[:,i].round(6).tolist() for i,row in enumerate(self.config['neurons'])}},'note':'Trained artificial dynamics on a real MaleCNS subgraph. Continuous hidden states, not biological spike measurements.'}
 if __name__=='__main__':
     import sys
-    request=json.load(sys.stdin);model=ChatCircuit();print(json.dumps(model.generate(request['message'],request.get('history'),max_tokens=request.get('maxTokens',40),ablated=request.get('ablated',False),inspect=True),allow_nan=False))
+    request=json.load(sys.stdin);model=ChatCircuit()
+    def emit(event):print(json.dumps(event,allow_nan=False),flush=True)
+    stream=request.get('stream',False)
+    result=model.generate(request['message'],request.get('history'),max_tokens=request.get('maxTokens',40),ablated=request.get('ablated',False),inspect=True,emit=emit if stream else None,pace=.05 if request.get('visibleSteps',False) else 0)
+    emit({'type':'result','result':result} if stream else result)
