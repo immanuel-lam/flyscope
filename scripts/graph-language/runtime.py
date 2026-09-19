@@ -65,6 +65,10 @@ class GraphRuntime:
         prompt = ''.join(f'<{m["role"]}> {m["content"]} <end>\n' for m in (history or [])[-8:])
         prompt += f'<user> {message} <end>\n<assistant>'
         prefix = self.tokenizer.encode(prompt).ids
+        return self.generate_tokens(prefix, max_tokens, ablated)
+
+    def generate_tokens(self, prefix, max_tokens=64, ablated=False):
+        prefix = list(prefix)
         started = time.perf_counter()
         generated = []
         forbidden = [self.tokenizer.token_to_id(t) for t in ['<pad>', '<unk>', '<user>', '<assistant>']]

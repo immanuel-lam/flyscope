@@ -29,3 +29,14 @@ An early development snapshot generated about 20.5 tokens/s on this Mac's CPU wh
 ## reply training
 
 `prepare-dialogue.py` verifies every token against the existing immutable arrays, then indexes 252,324 training replies, 2,547 validation replies and 2,668 test replies. `train-dialogue.py` samples assistant targets only and pads short contexts on the left exactly as the CPU runtime does. Windows never cross source conversation boundaries, and target tokens cannot enter their own input. The same source hash partitions are retained. A two-update pilot passed; this is a pipeline check, not model-quality evidence. Source indexing and window tests are separate from the topology and numerical checks.
+
+## evaluation
+
+`evaluate.py` selects one reply from each of 64 seeded source conversations, independently of model output. It uses the final CPU readout, not an average over auxiliary heads. The report retains every context, source reply and generated reply, along with correct-prompt, mismatched-prompt and source-cut losses. It also reports first-eight-token losses and repeated token four-grams. Source replies are supplied only to teacher-forced loss computation; free generation receives the prompt alone. Prediction and generation default to a 64-token limit, which is reported explicitly. These held-out source conversations are a reused development split across experiments, not an independent final benchmark.
+
+```sh
+VECLIB_MAXIMUM_THREADS=1 .venv-physics/bin/python scripts/graph-language/evaluate.py --run run-2 --examples 64 --tokens 64
+.venv-physics/bin/python tests/graph_evaluation_checks.py
+```
+
+A two-example, four-token validation run on the pilot checkpoint verifies the pipeline only. Its poor outputs were retained. It does not measure the quality of the still-running corrected training experiment.
