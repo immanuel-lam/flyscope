@@ -1307,6 +1307,8 @@ footer b {
 .compact-chat .chat-input input { min-height:48px; font-size:16px; }
 .compact-chat .chat-message p { font-size:15px; line-height:1.6; }
 
+.eye-images { display:flex; gap:16px; flex-wrap:wrap; }.eye-images figure { margin:0; }.eye-images img { display:block; width:180px; border-radius:8px; }.eye-images figcaption { font-size:11px; color:#adbca8; margin-top:6px; }.vision-observation { border-top:1px solid #354333; margin-top:16px; padding-top:12px; }
+
 .footer-links {
   display: flex;
   align-items: center;

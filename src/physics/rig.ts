@@ -6,6 +6,10 @@ export function addPhysicsRig(scene:THREE.Scene,run:PhysicsRun){
   root.matrixAutoUpdate=false;
   root.matrix.set(0,-1,0,0, 0,0,1,0, 1,0,0,0, 0,0,0,1);
   scene.add(root);
+  if(run.vision?.targetPosition){
+    const target=new THREE.Mesh(new THREE.SphereGeometry(2,24,16),new THREE.MeshStandardMaterial({color:'#ff1111',roughness:.7}));
+    target.position.fromArray(run.vision.targetPosition);root.add(target);
+  }
   const bodies=run.bodyNames.map(()=>{const g=new THREE.Group();root.add(g);return g;});
   let headMesh:THREE.Mesh | undefined;
   const headCenter=new THREE.Vector3();

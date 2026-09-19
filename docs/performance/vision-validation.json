@@ -1,0 +1,14 @@
+{
+  "conditions": {
+    "left": {
+      "activeFinalDistanceMm": 1.310313816228768,
+      "disabledFinalDistanceMm": 1.993302312288831
+    },
+    "right": {
+      "activeFinalDistanceMm": 3.0562737027147944,
+      "disabledFinalDistanceMm": 6.11150833331478
+    }
+  },
+  "silencedDisplacementMm": 0.1258991585555678,
+  "limitations": "Two target positions, fixed seed and red-target decoder; not general visual navigation or biological validation."
+}

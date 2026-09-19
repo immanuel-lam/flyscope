@@ -99,7 +99,7 @@ malecns supplies the reconstructed anatomy and connections. it does **not** supp
 
 the neural dynamics, text interfaces and motor mappings here are engineering choices. the physics model simulates contacts and movement, but its neural controller is not biologically validated. the language model uses a selected subgraph, not all 166,700 cells. activity values are continuous model states, not measured spikes. placing the whole nervous system inside the illustrated fly head is a visual aid, not anatomical registration.
 
-vision and navigation, odour tracking, obstacle avoidance, and learning and memory are planned experiments. they are not working features yet. the [experiment roadmap](docs/EXPERIMENT_ROADMAP.md) records the direction.
+eye-camera navigation now provides local red-target seeking with actual fisheye observations and disabled-vision controls. odour tracking, obstacle avoidance, and learning and memory are planned experiments; they are not working features yet. the [experiment roadmap](docs/EXPERIMENT_ROADMAP.md) records the direction.
 
 ## build on it
 

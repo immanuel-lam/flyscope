@@ -1,13 +1,14 @@
 import type { Activity } from '../data';
 export interface PhysicsRun {
+  vision?:{frames:{time:number;eyes:string[];redFraction:number[];turn:number}[];target:number[];targetPosition?:number[];sourceSize:number[];control:string};
   schemaVersion:1; rig:'neuromechfly-2.1.0'; datasetId:string; datasetVersion:string;
   times:number[];
   frames:{positions:number[];quaternions:number[];contacts:number;drive:number[];feedback:number[]}[];
   geometry:{name?:string;body:number;vertices:number[];faces:number[];position:number[];quaternion:number[];color:number[]}[];
   bodyNames:string[];
   activity:Activity;
-  parameters:{duration:number;drive:number;turn:number;silenced:boolean;feedback:boolean;seed:number};
-  metrics:{displacementMm:number;finalHeightMm:number;wallSeconds:number;neurons:number;effectiveSignedEdges:number;recordedNeurons:number;maxContacts:number;physicsStepSeconds:number;neuralStepSeconds:number};
+  parameters:{duration:number;drive:number;turn:number;silenced:boolean;feedback:boolean;seed:number;vision?:boolean;visionControl?:boolean;target?:number[]};
+  metrics:{displacementMm:number;finalHeightMm:number;wallSeconds:number;neurons:number;effectiveSignedEdges:number;recordedNeurons:number;maxContacts:number;physicsStepSeconds:number;neuralStepSeconds:number;targetStartDistanceMm?:number;targetFinalDistanceMm?:number};
   provenance:Record<string,string>;
 }
 export function frameIndex(run:PhysicsRun,time:number){

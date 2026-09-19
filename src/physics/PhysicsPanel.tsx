@@ -2,6 +2,7 @@ import {useEffect,useRef,useState} from 'react';
 import {frameIndex,type PhysicsRun} from './types';
 export default function PhysicsPanel({run,time,onRun}:{run?:PhysicsRun;time:number;onRun:(run:PhysicsRun)=>void}){
   const [drive,setDrive]=useState(1),[turn,setTurn]=useState(0),[seconds,setSeconds]=useState(2);
+  const [vision,setVision]=useState(false),[visionControl,setVisionControl]=useState(true),[targetY,setTargetY]=useState(4);
   const [silenced,setSilenced]=useState(false),[feedback,setFeedback]=useState(true);
   const [busy,setBusy]=useState(false),[message,setMessage]=useState(''),[error,setError]=useState(''),[available,setAvailable]=useState(false);
   const [installed,setInstalled]=useState(false);
@@ -19,9 +20,10 @@ export default function PhysicsPanel({run,time,onRun}:{run?:PhysicsRun;time:numb
   },[busy]);
   async function start(){
     setError('');setMessage('Starting local physics…');setBusy(true);
-    try{const r=await fetch('/api/physics/run',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({duration:seconds,drive,turn,silenced,feedback})});const s=await r.json();if(!r.ok)throw new Error(s.error);}
+    try{const r=await fetch('/api/physics/run',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({duration:seconds,drive,turn,silenced,feedback,vision,visionControl,targetY})});const s=await r.json();if(!r.ok)throw new Error(s.error);}
     catch(e){setBusy(false);setError((e as Error).message);}
   }
+  const eyeFrame=run?.vision?.frames.filter(f=>f.time<=time).at(-1)??run?.vision?.frames[0];
   const frame=run?.frames[frameIndex(run,time)];
   return <section className="motor-panel physics-panel" aria-label="Physical fly simulation">
     <div className="motor-heading"><div><span className="eyebrow">PHYSICAL FLY · LOCAL MUJOCO</span><h3>Neurons → legs → ground → feedback.</h3></div><button onClick={start} disabled={busy||!installed}>{busy?'Computing…':'Run physics'}</button></div>
@@ -31,9 +33,11 @@ export default function PhysicsPanel({run,time,onRun}:{run?:PhysicsRun;time:numb
       <label>Left/right bias <output>{turn.toFixed(2)}</output><input aria-label="Left/right bias" type="range" min="-1" max="1" step=".1" value={turn} onChange={e=>setTurn(+e.target.value)} disabled={busy}/></label>
       <label>Duration <select aria-label="Physics duration" value={seconds} onChange={e=>setSeconds(+e.target.value)} disabled={busy}><option value="1">1 second</option><option value="2">2 seconds</option><option value="5">5 seconds</option></select></label>
     </div>
+    <div className="physics-options"><label><input type="checkbox" checked={vision} onChange={e=>setVision(e.target.checked)} disabled={busy}/> Eye-camera navigation</label>{vision&&<><label>Target side <select aria-label="Visual target side" value={targetY} disabled={busy} onChange={e=>setTargetY(+e.target.value)}><option value="4">Left</option><option value="-4">Right</option></select></label><label><input type="checkbox" checked={visionControl} onChange={e=>setVisionControl(e.target.checked)} disabled={busy}/> Visual steering (disable for control)</label></>}</div>
     <div className="physics-options"><label><input type="checkbox" checked={feedback} onChange={e=>setFeedback(e.target.checked)} disabled={busy}/> Contact feedback to neural model</label><label><input type="checkbox" checked={silenced} onChange={e=>setSilenced(e.target.checked)} disabled={busy}/> Silence neural model (control)</label>{busy?<button onClick={()=>fetch('/api/physics/cancel',{method:'POST'})}>Cancel run</button>:available&&<button onClick={load}>Load latest run</button>}</div>
     <p role="status" className="motor-provenance">{message||'Runs at 0.1 ms physics steps. Compute first, then replay or scrub below.'}</p>
     {error&&<p role="alert" className="motor-error">{error}</p>}
+    {eyeFrame&&<section className="vision-observation" aria-label="Fly eye observations"><h4>What the fly sees</h4><div className="eye-images">{eyeFrame.eyes.map((src,i)=><figure key={i}><img src={src} alt={`${i===0?'Left':'Right'} fly eye at ${eyeFrame.time.toFixed(2)} seconds`}/><figcaption>{i===0?'Left':'Right'} eye · {(eyeFrame.redFraction[i]*100).toFixed(2)}% red pixels</figcaption></figure>)}</div><p className="motor-provenance">Actual fisheye camera frames at {eyeFrame.time.toFixed(2)} s · steering stimulus {eyeFrame.turn.toFixed(3)}. Control uses original {run?.vision?.sourceSize.join(' × ')} RGB pixels; these images are resized for display. Engineered red-target detection, not biological color vision.</p><p className="motor-provenance">Target distance: {run?.metrics.targetStartDistanceMm?.toFixed(2)} → {run?.metrics.targetFinalDistanceMm?.toFixed(2)} mm. {run?.vision?.control}</p></section>}
     {run&&<><div className="motor-telemetry" data-testid="physics-metrics"><output>{run.metrics.displacementMm.toFixed(2)} mm displacement</output><output>{frame?.contacts??0} contacts</output><output>drive {frame?.drive.map(v=>v.toFixed(2)).join(' / ')}</output><output>{run.metrics.wallSeconds.toFixed(1)} s computation</output></div><p className="motor-provenance">{run.metrics.neurons.toLocaleString()} neurons simulated · {run.metrics.effectiveSignedEdges.toLocaleString()} nonzero signed connections · {run.metrics.recordedNeurons} cells recorded. {run.parameters.silenced?'Neural model silenced.':'Neural output enabled.'} {run.parameters.feedback?'Contact feedback enabled.':'Contact feedback disabled.'}</p><details><summary>Model assumptions and provenance</summary>{Object.entries(run.provenance).map(([key,value])=><p className="motor-provenance" key={key}><strong>{key}: </strong>{value}</p>)}</details></>}
   </section>;
 }

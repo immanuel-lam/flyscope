@@ -68,3 +68,22 @@ When adding an environment or model, keep the closed loop in Python. Extend the 
 ## Activity display
 
 Physical replay retains every recorded neuron in a separate glow layer in both views. The original point cloud remains visible. When playback stops, the activity overlay is hidden and the viewer returns to structural exploration. Check **Show activity while paused** to inspect a recorded time explicitly. Glow strength is the current nonnegative rate divided by that cell’s maximum recorded rate; this relative scaling exposes low-rate motor cells without changing exported values or the trace. It is not a shared amplitude comparison across cells. Steady rates stay steady, and zero rates produce no glow. No spike times or periodic flashes are invented. The threshold slider uses the shared absolute range during activity display; it does not hide the idle explorer. The initial inspector selection chooses the recorded cell with the largest rate variation after the initial 20% of the run.
+
+## Eye-camera navigation
+
+Enable **Eye-camera navigation** before running physics. The backend adds the actual left/right FlyGym eye cameras and a red visual target. Every 100 ms it renders two 450 × 512 fisheye RGB frames. A defined red-pixel mask measures each eye's red fraction; the normalized bilateral difference supplies a bounded descending-neuron stimulus bias. The full MaleCNS rate network then determines the motor population drive. No target coordinates or bearing are supplied to the controller. The target coordinates are used only for world construction and distance metrics.
+
+The browser shows 225 × 256 display thumbnails on the shared physics clock, retaining the original resolution for control. Scrubbing and rewind select the preceding sampled observation. The target sphere is reproduced in the physical view at its recorded source position. It is visual-only and does not collide.
+
+This is engineered color-target seeking, not identified retinal neuron mapping or biological vision. The rate network, sensory encoder and motor decoder retain their earlier assumptions. It has been tested on two target positions at a fixed seed, not arbitrary environments.
+
+Two-second target-distance results (mm): left 1.310 with visual steering versus 1.993 disabled; right 3.056 versus 6.112 disabled. Neural silencing leaves only 0.126 mm passive settling and zero recorded rates. See `docs/performance/vision-validation.json`. Checks verify camera images, observation clocks, changed neural trajectories, steering ablation and browser rewind.
+
+```sh
+.venv-physics/bin/python scripts/physics/run.py --duration 2 --vision --output data/physics/vision-left.json
+.venv-physics/bin/python scripts/physics/run.py --duration 2 --vision --no-vision-control --output data/physics/vision-disabled.json
+.venv-physics/bin/python scripts/physics/run.py --duration 2 --vision --target-y -4 --output data/physics/vision-right.json
+.venv-physics/bin/python scripts/physics/run.py --duration 2 --vision --target-y -4 --no-vision-control --output data/physics/vision-right-disabled.json
+.venv-physics/bin/python scripts/physics/run.py --duration 2 --vision --silenced --output data/physics/vision-silenced.json
+.venv-physics/bin/python tests/vision_checks.py
+```
