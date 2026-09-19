@@ -4,8 +4,9 @@ export default function PhysicsPanel({run,time,onRun}:{run?:PhysicsRun;time:numb
   const [drive,setDrive]=useState(1),[turn,setTurn]=useState(0),[seconds,setSeconds]=useState(2);
   const [silenced,setSilenced]=useState(false),[feedback,setFeedback]=useState(true);
   const [busy,setBusy]=useState(false),[message,setMessage]=useState(''),[error,setError]=useState(''),[available,setAvailable]=useState(false);
+  const [installed,setInstalled]=useState(false);
   const mounted=useRef(true),callback=useRef(onRun);callback.current=onRun;
-  useEffect(()=>{mounted.current=true;fetch('/api/physics/status').then(r=>r.json()).then(s=>{if(mounted.current){setAvailable(s.available);if(s.state==='running'){setBusy(true);setMessage(s.phase);}}}).catch(()=>{});return()=>{mounted.current=false;};},[]);
+  useEffect(()=>{mounted.current=true;fetch('/api/physics/status').then(r=>r.json()).then(s=>{if(mounted.current){setAvailable(s.available);setInstalled(s.installed===true);if(s.installed===false)setMessage(s.phase||"Run npm run setup:physics locally to enable physics.");if(s.state==='running'){setBusy(true);setMessage(s.phase);}}}).catch(()=>{});return()=>{mounted.current=false;};},[]);
   async function load(){
     try{const response=await fetch('/api/physics/result');if(!response.ok)throw new Error('No completed physics run is available');const result=await response.json();if(result.rig!=='neuromechfly-2.1.0'||result.datasetId!=='male-cns-v1-full')throw new Error('Unsupported physics run');if(mounted.current){callback.current(result);setAvailable(true);}}
     catch(e){if(mounted.current)setError((e as Error).message);}
@@ -23,7 +24,7 @@ export default function PhysicsPanel({run,time,onRun}:{run?:PhysicsRun;time:numb
   }
   const frame=run?.frames[frameIndex(run,time)];
   return <section className="motor-panel physics-panel" aria-label="Physical fly simulation">
-    <div className="motor-heading"><div><span className="eyebrow">PHYSICAL FLY · LOCAL MUJOCO</span><h3>Neurons → legs → ground → feedback.</h3></div><button onClick={start} disabled={busy}>{busy?'Computing…':'Run physics'}</button></div>
+    <div className="motor-heading"><div><span className="eyebrow">PHYSICAL FLY · LOCAL MUJOCO</span><h3>Neurons → legs → ground → feedback.</h3></div><button onClick={start} disabled={busy||!installed}>{busy?'Computing…':'Run physics'}</button></div>
     <p className="motor-provenance">Actual NeuroMechFly body and contact physics. MaleCNS rate dynamics and population-to-leg mapping are experimental engineering assumptions. This is not a validated biological walking model.</p>
     <div className="motor-controls">
       <label>Descending stimulus <output>{drive.toFixed(2)}</output><input aria-label="Descending stimulus" type="range" min="0" max="2" step=".1" value={drive} onChange={e=>setDrive(+e.target.value)} disabled={busy}/></label>

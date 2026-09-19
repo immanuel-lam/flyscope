@@ -1,0 +1,3 @@
+# Hosted CPU inference only. Training and physics use separate environments.
+numpy==2.5.3
+tokenizers==0.23.2

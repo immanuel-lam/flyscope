@@ -1,0 +1,7 @@
+{
+  "dataset": "male-cns:v1.0",
+  "url": "https://github.com/immanuel-lam/flyscope/releases/download/malecns-data-v1/malecns-v1-viewer.tar.gz",
+  "sha256": "da68547b80c495d78432b0c79aad6a692198e447593f00224498d55622eeede9",
+  "license": "CC BY 4.0",
+  "source": "https://male-cns.janelia.org/download/"
+}

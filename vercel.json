@@ -1,0 +1,17 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "node scripts/fetch-hosted-data.mjs && npm run build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    {
+      "source": "/api/malecns/skeleton/:id(\\d{1,15})",
+      "destination": "https://storage.googleapis.com/flyem-male-cns/v1.0/segmentation/skeletons-malecns/skeletons-precomputed/:id"
+    }
+  ],
+  "functions": {
+    "api/**/*.py": {
+      "maxDuration": 60,
+      "excludeFiles": "{data/**,public/**,dist/**,node_modules/**,.venv/**,.venv-physics/**,.git/**,tests/**,docs/**}"
+    }
+  }
+}
