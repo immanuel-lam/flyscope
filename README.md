@@ -1,5 +1,7 @@
 # flyscope
 
+https://flyscope.vercel.app
+
 explore a fruit fly nervous system, run a walking simulation, and talk to a small language model built around real neural connections.
 
 flyscope is a local react, typescript and three.js workbench for the malecns connectome. it brings the anatomy, simulated activity and body into one view. no api keys or external language provider are needed. try the [public app](https://flyscope.vercel.app/) or run it locally.
