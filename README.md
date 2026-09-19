@@ -2,17 +2,17 @@
 
 explore a fruit fly nervous system, run a walking simulation, and talk to a small language model built around real neural connections.
 
-flyscope is a local react, typescript and three.js workbench for the malecns connectome. it brings the anatomy, simulated activity and body into one view. no api keys or hosted language service are needed.
+flyscope is a local react, typescript and three.js workbench for the malecns connectome. it brings the anatomy, simulated activity and body into one view. no api keys or external language provider are needed. try the [public app](https://flyscope.vercel.app/) or run it locally.
 
-![flyscope showing the malecns point cloud, an illustrative fly body, and the flygpt chat panel](docs/images/flyscope.jpg)
+![the flygpt workspace with a source point cloud, illustrated fly, computation panel and chat](docs/images/flygpt-workspace.jpg)
 
-*the current app with the full dataset prepared. the points are source neuron positions; the body shown here is the illustrative viewer model.*
+*the dedicated flygpt workspace. the points are source neuron positions; the body is the illustrative viewer model. the physics experiments use separate neuromechfly meshes and recorded body transforms.*
 
 ## what you can do
 
 - **explore the anatomy.** browse 166,700 classified neurons, filter cell classes, and select a neuron to load its detailed skeleton and outgoing connections. the prepared graph contains 25,582,938 directed weighted edges.
 - **run a physical fly.** a local neuromechfly and mujoco backend couples an experimental whole-connectome rate model to a walking controller and ground-contact feedback. replay the resulting body motion and sampled neural activity on the same clock.
-- **try flygpt.** the included language checkpoint generates short replies through a 512-cell malecns subgraph with 28,452 real directed connections. it was trained from scratch for next-token prediction. inference runs locally in python; mlx is used for training only.
+- **try flygpt.** the included language checkpoint generates short replies through a 512-cell malecns subgraph with 28,452 real directed connections. it was trained from scratch for next-token prediction. inference runs on cpu in python, locally or in the deployed function; mlx is used for training only.
 - **bring your own experiment.** import neuron skeletons and activity, export runs, or add a controller through the documented interfaces.
 
 ## try it locally
@@ -43,7 +43,7 @@ skip the environment-creation command if you already set up physics. prepare the
 
 this is a small experimental language model. replies can be unrelated, malformed or wrong. it uses general conversation training data, with no active hand-written fly q&a fine-tuning and no external model answering at runtime. the “thinking…” label means inference is running; it is not a claim that the model can reason. the dedicated flygpt tab streams actual cell states into the point cloud, fly and circuit diagram while tokens are computed. chat returns the anatomy to idle when done. explore is reserved for anatomy. visible-step mode pauses between actual computation steps; tokens/s includes those pauses.
 
-see [the model notes](docs/FLYGPT.md) for the architecture, training data, reproduction steps and evaluation. disabling the recurrent connections increases held-out token loss from 2.97 to 7.26. that shows dependence on the wiring, not that fly wiring is better than another network.
+see [the model notes](docs/FLYGPT.md) for the architecture, training data, reproduction steps and evaluation. disabling the recurrent connections increases held-out token loss from 2.97 to 7.26. that shows dependence on the wiring, not that fly wiring is better than another network. a [three-seed comparison](docs/LANGUAGE_COMPARISON.md) found lower test loss with shuffled wiring than with the real topology.
 
 
 ## how the language model works
@@ -58,7 +58,7 @@ this is a recurrent language model constrained by a selected malecns graph. it i
 
 in each update, a cell retains part of its previous state and mixes in a tanh-transformed weighted input. connection strengths, biases, embeddings, retention values and readout weights are learned; the source edge mask stays fixed. there is no canned-response table or external model producing replies.
 
-the checkpoint contains 788,480 allocated parameters, including masked recurrent entries that do not carry messages. it was trained with mlx on synthetic everyday conversations, then on 5,697 deduplicated conversation pairs. a correct prompt lowers held-out response loss compared with a mismatched prompt, but replies are still frequently irrelevant. this does **not** yet meet the standard of an intelligent general assistant. training data, state memory and model capacity all need further study; more parameters alone do not guarantee useful answers.
+the checkpoint contains 788,480 allocated parameters, of which 554,788 are active. masked recurrent entries do not carry messages. it was trained with mlx on synthetic everyday conversations, then on 5,697 deduplicated conversation pairs. a correct prompt lowers held-out response loss compared with a mismatched prompt, but replies are still frequently irrelevant. this does **not** yet meet the standard of an intelligent general assistant. training data, state memory and model capacity all need further study; more parameters alone do not guarantee useful answers.
 
 ## inspect the weights
 
@@ -99,7 +99,17 @@ malecns supplies the reconstructed anatomy and connections. it does **not** supp
 
 the neural dynamics, text interfaces and motor mappings here are engineering choices. the physics model simulates contacts and movement, but its neural controller is not biologically validated. the language model uses a selected subgraph, not all 166,700 cells. activity values are continuous model states, not measured spikes. placing the whole nervous system inside the illustrated fly head is a visual aid, not anatomical registration.
 
-eye-camera navigation now provides local red-target seeking with actual fisheye observations and disabled-vision controls. obstacle avoidance, and learning and memory are planned experiments; they are not working features yet. the [experiment roadmap](docs/EXPERIMENT_ROADMAP.md) records the direction.
+## physical experiments
+
+these run locally through the physics panel and record actual observations, neural states and body transforms:
+
+- **vision:** red-target seeking from bilateral fisheye camera pixels. see the images that drove each update.
+- **odour:** a defined concentration field sampled at both antennae. the display shows both signals and their steering effect.
+- **obstacles:** colliding geometry and artificial head-mounted range rays. tests show reduced contact, with remaining collisions or inefficient detours in some layouts.
+- **memory:** a [trained 512-cell circuit](docs/CUE_MEMORY.md) retains a brief left/right cue through a blank delay, then steers the physical fly. reset, untrained and graph-ablation controls test cue dependence. this is binary recall, not language reasoning.
+- **backflip:** external lift and torque, gated by neural motor output, produce a measured rotation and landing. this is an assisted stunt, not a learned biological motor skill.
+
+see the [physics guide](docs/PHYSICAL_FLY.md) for reproduction commands, limitations and measured controls. memory and locomotion have separate activity overlays because they are separate computational models.
 
 ## build on it
 
@@ -122,7 +132,7 @@ npm run test:browser
 npm run build
 ```
 
-some integration tests need the prepared dataset and local model or physics assets. a static build contains the frontend; chat, physics and on-demand skeleton loading still need the local server and their dependencies.
+some integration tests need the prepared dataset and generated physics recordings. the vercel deployment includes cpu chat functions, a source-skeleton proxy and pinned viewer-data downloads. physical simulations require the local python environment; they do not run on vercel. see [hosting](docs/HOSTING.md).
 
 ## data and credits
 
@@ -130,10 +140,4 @@ malecns data comes from flyem at hhmi janelia, the university of cambridge, mrc 
 
 physical simulation uses [neuromechfly / flygym](https://github.com/NeLy-EPFL/flygym) and [mujoco](https://github.com/google-deepmind/mujoco). language training uses the synthetic everyday-conversations subset of smoltalk; its source revision and checksums are recorded with the checkpoint. see the [research notes](docs/RESEARCH.md) for background and the distinction between malecns and flywire.
 
-local odour experiments sample a defined field at both simulated antennae and route steering through the rate model. the panel shows concentrations during playback. two tested source positions show improved approach against disabled steering; this is not a turbulent plume or validated biological olfactory model. see [physical experiments](docs/PHYSICAL_FLY.md).
-
-local obstacle experiments use physical collisions and artificial head-mounted range rays. the panel shows sensor readings and contact time. tests include disabled steering, neural silencing and held-out layouts; avoidance can still touch obstacles or take inefficient detours.
-
-a [trained cue-memory experiment](docs/CUE_MEMORY.md) retains a brief left/right cue during a blank delay, then steers the physical fly. separate overlays show memory states and locomotion rates. reset, untrained, graph-ablation and held-out delay controls are documented. this is binary cue recall, not language reasoning.
-
-an optional assisted backflip applies external lift and torque through mujoco, gated by neural motor output. it completes a measured rotation and landing in the tested run; it is an engineered stunt, not a learned biological motor skill.
+project by [immanuel lam](https://linkedin.com/in/addimmanuellam). source and issues are on [github](https://github.com/immanuel-lam/flyscope).

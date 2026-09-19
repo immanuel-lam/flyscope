@@ -1,0 +1,103 @@
+{
+  "protocol": "Original scalar-state model, 1024-token corpus, 1000 fixed AdamW updates, identical token batches per seed, final checkpoint, identical 64 held-out length-128 sequences. No held-out model selection. Dense has 391 cells to match active parameter count within 0.1%.",
+  "results": [
+    {
+      "seed": 7,
+      "variant": "real",
+      "steps": 1000,
+      "tokensSeen": 768000,
+      "allocatedParameters": 788480,
+      "activeParameters": 554788,
+      "recurrentEdges": 28452,
+      "heldOutLoss": 2.904975265264511
+    },
+    {
+      "seed": 7,
+      "variant": "shuffled",
+      "steps": 1000,
+      "tokensSeen": 768000,
+      "allocatedParameters": 788480,
+      "activeParameters": 554788,
+      "recurrentEdges": 28452,
+      "heldOutLoss": 2.822459399700165
+    },
+    {
+      "seed": 7,
+      "variant": "dense",
+      "steps": 1000,
+      "tokensSeen": 768000,
+      "allocatedParameters": 555071,
+      "activeParameters": 555071,
+      "recurrentEdges": 152881,
+      "heldOutLoss": 5.150992155075073
+    },
+    {
+      "seed": 17,
+      "variant": "shuffled",
+      "steps": 1000,
+      "tokensSeen": 768000,
+      "allocatedParameters": 788480,
+      "activeParameters": 554788,
+      "recurrentEdges": 28452,
+      "heldOutLoss": 2.828072249889374
+    },
+    {
+      "seed": 17,
+      "variant": "dense",
+      "steps": 1000,
+      "tokensSeen": 768000,
+      "allocatedParameters": 555071,
+      "activeParameters": 555071,
+      "recurrentEdges": 152881,
+      "heldOutLoss": 5.356726109981537
+    },
+    {
+      "seed": 17,
+      "variant": "real",
+      "steps": 1000,
+      "tokensSeen": 768000,
+      "allocatedParameters": 788480,
+      "activeParameters": 554788,
+      "recurrentEdges": 28452,
+      "heldOutLoss": 2.8934513330459595
+    },
+    {
+      "seed": 29,
+      "variant": "dense",
+      "steps": 1000,
+      "tokensSeen": 768000,
+      "allocatedParameters": 555071,
+      "activeParameters": 555071,
+      "recurrentEdges": 152881,
+      "heldOutLoss": 5.784176707267761
+    },
+    {
+      "seed": 29,
+      "variant": "real",
+      "steps": 1000,
+      "tokensSeen": 768000,
+      "allocatedParameters": 788480,
+      "activeParameters": 554788,
+      "recurrentEdges": 28452,
+      "heldOutLoss": 2.9513165950775146
+    },
+    {
+      "seed": 29,
+      "variant": "shuffled",
+      "steps": 1000,
+      "tokensSeen": 768000,
+      "allocatedParameters": 788480,
+      "activeParameters": 554788,
+      "recurrentEdges": 28452,
+      "heldOutLoss": 2.8457053899765015
+    }
+  ],
+  "limitations": "Small corpus and three seeds. Incoming-degree-preserving row shuffling does not preserve all graph statistics. This does not benchmark the newer four-channel candidate or establish biological language capacity. Concurrent training makes wall-clock comparisons invalid; none are claimed.",
+  "sourceChecksums": {
+    "data/language/graph.npz": "31fc438535a41aff55dffdc8ab01c92eeb021e081a5453daa8b5974fd1973869",
+    "data/language/train.npy": "8df1e9fd2e86cda7e7b99a50e3b1d339e36351f878b4cf87459f5a1a4cf0074a",
+    "data/language/test.npy": "992813a73bd013c67d3c2f177ddc6654d87461eeb70b950a62481d65bf426f24",
+    "scripts/language/compare-topology.py": "be81a5f2a629895e8fafcb1fb4b759734a7f188d4e76b2bbadbb12ff121a410f"
+  },
+  "interpretation": "Shuffled lower than real in all three seeds. No demonstrated real-topology advantage. Dense baseline is weak under the shared optimizer; results do not establish a general sparse-over-dense advantage."
+}
