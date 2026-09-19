@@ -12,7 +12,9 @@ class CircuitFoundation(nn.Module):
     def __init__(self, directory=None, reference=None):
         super().__init__()
         self.base = reference if reference is not None else load(str(directory or ROOT / 'data/foundation/smollm2-135m'))[0]
-        w = dict(np.load(ROOT / 'data/graph-language/run-2/wiring.npz'))
+        wiring_file = Path(directory) / 'wiring.npz' if directory else None
+        w = dict(np.load(wiring_file if wiring_file and wiring_file.exists()
+                         else ROOT / 'data/graph-language/run-2/wiring.npz'))
         inputs, outputs, slots = w['inputs'], w['outputs'], w['slots']
         source = np.load(ROOT / 'data/language/graph.npz')['counts'] > 0
         if not np.all(source[outputs, inputs]) or np.any(w['mask'] & ~np.eye(512, dtype=bool) & ~source):
@@ -51,7 +53,13 @@ class CircuitFoundation(nn.Module):
         identity = mx.eye(512, dtype=mx.bool_)
         mask = (self._mask[None, None] & valid[:, None, None, self._slots]) | identity
         if ablated or attention_cut:
-            mask = identity
+            mask = mx.broadcast_to(identity, (tokens.shape[0], 1, 512, 512))
+        # Structurally unreachable cells are exactly zero for this bias-free
+        # network. Stop their nonexistent derivatives before repeated RMSNorm
+        # at zero can overflow during backpropagation.
+        reachable = valid[:, self._slots] & (self._input_gate[None] > 0)
+        if not ablated:
+            reachable = reachable | (valid[:, self._slots] & (self._relay_gate[None] > 0))
         for layer in self.base.model.layers:
             a = layer.self_attn
             z = layer.input_layernorm(x)
@@ -63,6 +71,8 @@ class CircuitFoundation(nn.Module):
             message = mx.fast.scaled_dot_product_attention(q, k, v, scale=a.scale, mask=mask)
             x = x + a.o_proj(message.transpose(0, 2, 1, 3).reshape(batch, cells, width))
             x = x + layer.mlp(layer.post_attention_layernorm(x))
+            reachable = mx.any(mask[:, 0] & reachable[:, None, :], axis=-1)
+            x = mx.where(reachable[..., None], x, mx.zeros_like(x))
         readout = x[:, self._outputs] if all_logits else x[:, self._outputs[-1]]
         logits = self.base.model.embed_tokens.as_linear(self.base.model.norm(readout))
         return (logits, x) if return_states else logits

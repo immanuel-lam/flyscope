@@ -24,3 +24,18 @@ VECLIB_MAXIMUM_THREADS=4 .venv-foundation/bin/python scripts/foundation/probe.py
 ```
 
 The first eight-token CPU probe began a correct cat definition in ordinary mode, while source mode became incoherent. Source mode measured about 3.6 tokens/s in that short run. This is an untrained adaptation, not a useful replacement or a deployment performance guarantee. Adaptation training, broader raw-output evaluation, weight packaging, live-UI integration and deployment checks remain open. Ordinary-reference success cannot be counted as success of the source-wired model.
+
+## adaptation training
+
+`prepare.py` re-tokenizes the pinned source conversations with the foundation tokenizer, preserves source system messages, and keeps the existing conversation-level hash partitions. The resulting training partition has 112,742 conversations and 101,630,951 tokens. Assistant targets include the end marker. Explicit validity masks distinguish padding from valid end tokens. Validation and test partitions are held out from this adaptation only: the foundation's model card lists this same instruction corpus, so these are not globally unseen benchmarks.
+
+`train.py` updates only the 26,542,080 attention-projection parameters. Embeddings, local MLPs, source wiring and the initial relay remain fixed. It saves full weights for CPU verification, with a validation-selected checkpoint and the run settings. This is not yet a deployment package.
+
+The first pilot produced non-finite gradients despite finite forward outputs. Structurally unreachable cells remain exactly zero in this bias-free network; repeatedly differentiating their zero-state normalization caused overflow. The trainable implementation now sets these provably unreachable states to constant zero at each block. This preserves forward outputs and source edges while excluding nonexistent derivatives. CPU parity, causality, relay, ablation and finite-gradient checks pass, including both full and padded contexts.
+
+The corrected five-step pilot reduced its fixed 16-example validation loss from 5.5665 to 5.4683 and used about 2.29 GB peak MLX memory. This establishes training feasibility, not conversational ability. Its complete report is `docs/performance/foundation-training-pilot.json`.
+
+```sh
+.venv-physics/bin/python scripts/foundation/prepare.py
+.venv-foundation/bin/python scripts/foundation/train.py --run adapt-1 --steps 2000
+```

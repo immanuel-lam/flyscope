@@ -46,7 +46,8 @@ class FoundationRuntime:
         self.config = json.loads((self.directory / 'config.json').read_text())
         self.weights = load_weights(self.directory / 'model.safetensors')
         self.tokenizer = Tokenizer.from_file(str(self.directory / 'tokenizer.json'))
-        wiring = dict(np.load(ROOT / 'data/graph-language/run-2/wiring.npz'))
+        wiring_file = self.directory / 'wiring.npz'
+        wiring = dict(np.load(wiring_file if wiring_file.exists() else ROOT / 'data/graph-language/run-2/wiring.npz'))
         self.inputs, self.outputs = wiring['inputs'], wiring['outputs']
         self.slots, self.mask = wiring['slots'], wiring['mask']
         source = np.load(ROOT / 'data/language/graph.npz')['counts'] > 0
@@ -54,7 +55,9 @@ class FoundationRuntime:
             raise ValueError('Attention contains an off-source edge')
         if not np.all(source[self.outputs, self.inputs]) or set(self.inputs) & set(self.outputs):
             raise ValueError('Relay must follow source edges between disjoint cells')
-        self.ids = [str(row[0]) for row in json.loads((ROOT / 'data/language/manifest.json').read_text())['neurons']]
+        cells_file = self.directory / 'source-cells.json'
+        cells_file = cells_file if cells_file.exists() else ROOT / 'data/language/manifest.json'
+        self.ids = [str(row[0]) for row in json.loads(cells_file.read_text())['neurons']]
 
     def norm(self, x, weight):
         return x / np.sqrt(np.mean(x * x, axis=-1, keepdims=True) + self.config['rms_norm_eps']) * weight
