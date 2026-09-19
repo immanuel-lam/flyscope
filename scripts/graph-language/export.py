@@ -19,7 +19,7 @@ def main():
     parser.add_argument('--checkpoint', choices=['base', 'dialogue'], default='base')
     args = parser.parse_args()
     run = ROOT / 'data/graph-language' / args.run
-    out = run / 'portable'
+    out = run / ('portable' if args.checkpoint == 'base' else 'portable-dialogue')
     out.mkdir(exist_ok=True)
     training_file = 'training.json' if args.checkpoint == 'base' else 'dialogue-training.json'
     weights_file = 'weights.safetensors' if args.checkpoint == 'base' else 'dialogue.safetensors'

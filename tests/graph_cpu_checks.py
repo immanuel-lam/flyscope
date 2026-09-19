@@ -13,7 +13,7 @@ from runtime import GraphRuntime
 class GraphCpuChecks(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.model = GraphRuntime(ROOT / 'data/graph-language' / os.environ.get('GRAPH_LANGUAGE_RUN', 'run-2') / 'portable')
+        cls.model = GraphRuntime(ROOT / 'data/graph-language' / os.environ.get('GRAPH_LANGUAGE_RUN', 'run-2') / os.environ.get('GRAPH_LANGUAGE_EXPORT', 'portable'))
 
     def test_all_context_slots_reach_generation_cell(self):
         reach = np.eye(512, dtype=bool)

@@ -10,8 +10,9 @@ ROOT = Path(__file__).resolve().parents[2]
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--run', default='run-1')
+    parser.add_argument('--checkpoint', choices=['base', 'dialogue'], default='base')
     args = parser.parse_args()
-    directory = ROOT / 'data/graph-language' / args.run / 'portable'
+    directory = ROOT / 'data/graph-language' / args.run / ('portable' if args.checkpoint == 'base' else 'portable-dialogue')
     model = GraphRuntime(directory)
     prompts = ['hi', 'who are you?', 'what is a cat?', 'what is a tree?',
                'what is two plus three?', 'I feel sad today.']

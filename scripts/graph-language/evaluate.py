@@ -43,10 +43,11 @@ def main():
     parser.add_argument('--examples', type=int, default=64)
     parser.add_argument('--tokens', type=int, default=64)
     parser.add_argument('--split', choices=['validation', 'test'], default='test')
+    parser.add_argument('--checkpoint', choices=['base', 'dialogue'], default='base')
     args = parser.parse_args()
     if args.examples < 2 or args.tokens < 1:
         raise ValueError('Use at least two examples and one token')
-    directory = ROOT / 'data/graph-language' / args.run / 'portable'
+    directory = ROOT / 'data/graph-language' / args.run / ('portable' if args.checkpoint == 'base' else 'portable-dialogue')
     model = GraphRuntime(directory)
     tokens = np.load(ROOT / 'data/graph-language' / f'{args.split}.npy', mmap_mode='r')
     spans = np.load(ROOT / 'data/graph-language' / f'{args.split}-reply-spans.npy')
