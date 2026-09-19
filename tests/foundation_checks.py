@@ -13,13 +13,15 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts/foundation'))
 from model import CircuitFoundation
 from runtime import FoundationRuntime
+from train import sample
 
 
 class FoundationChecks(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.cpu = FoundationRuntime()
-        cls.model = CircuitFoundation()
+        directory = os.environ.get('FOUNDATION_CHECKPOINT')
+        cls.cpu = FoundationRuntime(directory)
+        cls.model = CircuitFoundation(directory)
         cls.model.set_dtype(mx.float32)
 
     def test_cpu_matches_source_model(self):
@@ -87,6 +89,19 @@ class FoundationChecks(unittest.TestCase):
                 self.assertTrue(bool(mx.all(mx.isfinite(gradient))), key)
             first = gradients['base']['model']['layers'][0]['self_attn']['v_proj']['weight']
             self.assertGreater(float(mx.max(mx.abs(first))), 0)
+
+    def test_sample_target_is_assistant_and_context_stays_in_conversation(self):
+        tokens = np.arange(500, dtype=np.int32)
+        spans = np.array([[20, 30, 70], [200, 230, 400]], dtype=np.int64)
+        x, y, valid, mask = map(np.array, sample(tokens, spans, np.random.default_rng(13), 64))
+        for row in range(len(x)):
+            target = int(y[row, -1])
+            begin, reply, end = next(s for s in spans if s[1] <= target < s[2])
+            expected = np.arange(max(begin, target - 128), target)
+            np.testing.assert_array_equal(x[row, valid[row]], expected)
+            np.testing.assert_array_equal(y[row, valid[row]], expected + 1)
+            self.assertEqual(mask[row, -1], 1)
+            self.assertTrue(np.all(mask[row, ~valid[row]] == 0))
 
 
 if __name__ == '__main__':

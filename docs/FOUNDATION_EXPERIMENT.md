@@ -39,3 +39,15 @@ The corrected five-step pilot reduced its fixed 16-example validation loss from 
 .venv-physics/bin/python scripts/foundation/prepare.py
 .venv-foundation/bin/python scripts/foundation/train.py --run adapt-1 --steps 2000
 ```
+
+The first 2,000-step run finished in 157.37 seconds with best auxiliary-readout validation loss 3.8803. Its saved CPU checkpoint passes the numerical and structural checks, but its raw replies remain repetitive and often incorrect. It is rejected for deployment.
+
+The next experiment scores only the final readout cell, matching the cell used for generation. Earlier auxiliary readouts have incomplete source-path access to some preceding slots, so their average objective differs from the actual generation objective. The new pilot uses batch four and 64 validation targets, with about 5.54 GB peak MLX memory. Its initial loss of 2.4308 is **not comparable** to the prior all-readout average of 3.8803. A five-step pilot had finite gradients but did not improve validation loss; it verifies execution only. A longer run is needed to test usefulness.
+
+```sh
+.venv-foundation/bin/python scripts/foundation/train.py --run adapt-readout-1 --initial-run adapt-1 --target last --batch 4 --steps 5000 --seed 197 --validation-examples 64
+VECLIB_MAXIMUM_THREADS=4 FOUNDATION_CHECKPOINT=data/foundation/adapt-1 .venv-foundation/bin/python tests/foundation_checks.py
+VECLIB_MAXIMUM_THREADS=4 .venv-foundation/bin/python scripts/foundation/evaluate.py --run adapt-1 --tokens 48
+```
+
+`--initial-run` creates a separate artifact and records the initial weight hash; it never overwrites the earlier run. Seven checks now include reply-target alignment and conversation-boundary preservation. Generated evaluation reports retain every prompt, token ID, raw response, CPU timing and weight hash. No candidate is promoted based on loss alone.

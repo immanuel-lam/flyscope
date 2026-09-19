@@ -36,15 +36,21 @@ def main():
     parser.add_argument('--steps', type=int, default=2000)
     parser.add_argument('--batch', type=int, default=1)
     parser.add_argument('--lr', type=float, default=1e-5)
+    parser.add_argument('--initial-run', help='Start a separate run from an existing checkpoint')
+    parser.add_argument('--seed', type=int, default=191)
+    parser.add_argument('--target', choices=['all', 'last'], default='all')
+    parser.add_argument('--validation-examples', type=int, default=16)
     args = parser.parse_args()
     root = ROOT / 'data/foundation'
     out = root / args.run
     out.mkdir(exist_ok=True)
     if (out / 'model.safetensors').exists():
         raise FileExistsError('Use a new directory to preserve existing runs')
-    mx.random.seed(191)
-    rng = np.random.default_rng(191)
-    model = CircuitFoundation()
+    mx.random.seed(args.seed)
+    rng = np.random.default_rng(args.seed)
+    initial_directory = root / args.initial_run if args.initial_run else root / 'smollm2-135m'
+    initial_hash = hashlib.sha256((initial_directory / 'model.safetensors').read_bytes()).hexdigest()
+    model = CircuitFoundation(initial_directory)
     model.set_dtype(mx.float32)
     model.freeze()
     for layer in model.base.model.layers:
@@ -58,16 +64,18 @@ def main():
     train = np.load(root / 'corpus/train.npy', mmap_mode='r')
     train_spans = np.load(root / 'corpus/train-reply-spans.npy')
     validation = sample(np.load(root / 'corpus/validation.npy', mmap_mode='r'),
-                        np.load(root / 'corpus/validation-reply-spans.npy'), np.random.default_rng(193), 16)
+                        np.load(root / 'corpus/validation-reply-spans.npy'), np.random.default_rng(193), args.validation_examples)
 
     def loss(m, x, y, valid, mask):
+        if args.target == 'last':
+            return nn.losses.cross_entropy(m(x, valid), y[:, -1], reduction='mean')
         values = nn.losses.cross_entropy(m(x, valid, all_logits=True), y, reduction='none')
         return mx.sum(values * mask) / mx.maximum(mx.sum(mask), 1)
 
     grad = nn.value_and_grad(model, loss)
 
     def evaluate():
-        return float(mx.mean(mx.stack([loss(model, *(v[i:i + 1] for v in validation)) for i in range(16)])))
+        return float(mx.mean(mx.stack([loss(model, *(v[i:i + 1] for v in validation)) for i in range(args.validation_examples)])))
 
     for filename in ['config.json', 'tokenizer.json', 'tokenizer_config.json', 'special_tokens_map.json']:
         shutil.copyfile(root / 'smollm2-135m' / filename, out / filename)
@@ -97,7 +105,8 @@ def main():
                 temporary = out / 'temporary.safetensors'
                 model.base.save_weights(str(temporary))
                 temporary.replace(out / 'model.safetensors')
-            report = {'arguments': vars(args), 'seed': 191, 'initialValidationLoss': initial,
+            report = {'arguments': vars(args), 'seed': args.seed, 'initialCheckpointSha256': initial_hash,
+                      'initialValidationLoss': initial,
                       'bestValidationLoss': best, 'history': history,
                       'totalParameters': sum(v.size for _, v in tree_flatten(model.parameters())),
                       'trainableParameters': sum(v.size for _, v in trainable),
