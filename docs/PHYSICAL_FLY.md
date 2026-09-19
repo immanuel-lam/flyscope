@@ -1,8 +1,8 @@
 # Functional physical fly
 
-The MaleCNS view now runs a local, coupled neural/body simulation. Choose **Run physics**, wait for computation, and press **Play** or scrub the time slider. This is computed replay, not a real-time interactive simulator. Two simulated seconds currently take about 14.5 wall-clock seconds on this Mac.
+The MaleCNS view now runs a local, coupled neural/body simulation. Choose **Run physics**, wait for computation, and press **Play** or scrub the time slider. This is computed replay, not a real-time interactive simulator. An earlier isolated two-second run took about 14.5 wall-clock seconds on this Mac. The latest parallel validation runs, concurrent with language training and browser checks, took about 49 seconds; those timings are not a matched performance comparison.
 
-The body is NeuroMechFly/FlyGym 2.1.0 with MuJoCo 3.9.0. Joint position actuators, gravity, collisions, foot adhesion and the published hybrid walking controller produce physical motion. The browser renders the simulator's compiled meshes and every body's measured world transform. It does not use the old procedural gait for these runs. Wings are passive; this implementation does not fly.
+The body is NeuroMechFly/FlyGym 2.1.0 with MuJoCo 3.9.0. Joint position actuators, gravity, collisions, foot adhesion and the published hybrid walking controller produce physical motion. The browser renders the simulator's compiled meshes and each compiled body's measured world transform. Fixed segments fused into a parent, such as the head, retain their mesh on that parent and are omitted as independent body rows. New exports include compiled body IDs and source-file checksums; missing body IDs must never index another body's transform. It does not use the old procedural gait for these runs. Wings are passive; this implementation does not fly.
 
 ## Neural connection and its limits
 

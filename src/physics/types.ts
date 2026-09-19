@@ -5,6 +5,7 @@ export interface PhysicsRun {
   obstacles?:{frames:{time:number;origin:number[];directions:number[][];distances:number[];turn:number;contacts:number}[];geometry:{position:number[];radius:number;halfHeight:number}[];control:string};
   odour?:{frames:{time:number;antennae:number[][];concentration:number[];turn:number}[];sourcePosition:number[];spreadMm:number;control:string};
   vision?:{frames:{time:number;eyes:string[];redFraction:number[];turn:number}[];target:number[];targetPosition?:number[];sourceSize:number[];control:string};
+  compiledBodyIds?:number[];sourceChecksums?:Record<string,string>;
   schemaVersion:1; rig:'neuromechfly-2.1.0'; datasetId:string; datasetVersion:string;
   times:number[];
   frames:{positions:number[];quaternions:number[];contacts:number;drive:number[];feedback:number[]}[];

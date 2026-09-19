@@ -1,15 +1,17 @@
 import { test, expect } from "@playwright/test";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 test("physical body replay shares neural time, rewinds, and clears on dataset switch", async ({
   page,
 }) => {
   test.skip(
-    !existsSync("data/physics/latest.json"),
+    !existsSync("data/physics/driven.json"),
     "Generate a physics run first",
   );
   test.setTimeout(60000);
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
+  await page.route("**/api/physics/status",route=>route.fulfill({contentType:"application/json",body:JSON.stringify({state:"complete",available:true,installed:true})}));
+  await page.route("**/api/physics/result",route=>route.fulfill({contentType:"application/json",body:readFileSync("data/physics/driven.json","utf8")}));
   await page.goto("/?dataset=malecns");
   await page.getByRole("button", { name: "Load latest run" }).click();
   await expect(page.getByLabel("Motor controller")).toHaveValue("physics");

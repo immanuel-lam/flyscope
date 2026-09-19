@@ -9,11 +9,48 @@
     "deterministic neural dynamics",
     "graph ablation stops descending drive"
   ],
+  "recordingSha256": {
+    "driven": "2b220c7161a627c35b9c5cec3fe60b667a28b099e480e7cf9ec1b434dc0b7110",
+    "silenced": "0bfb5cdbeddd068c65760f2bf0ed1576c355c4d7f46ea65e2820a2ab9d6286b0",
+    "no-feedback": "4faf39a6357867049127c5f7b91d38b74149ed9b2e2bb3e549f777175a0ea357"
+  },
+  "recordedSourceChecksums": {
+    "driven": {
+      "scripts/physics/check-backflip.py": "adb0234a2cebf2121b632cbd0f15a42947a51cac574244be4336d9a0f20dca10",
+      "scripts/physics/backflip.py": "73d571f8e8697159b900cd7d0b890f703cb21bca745e11d45cbc2fe077c3f0e4",
+      "scripts/physics/run.py": "b524e6a722dcae71a6e9b8acb81a85be323ebedd51317919181c55b726ca6343",
+      "scripts/physics/vision.py": "148f932b204f0f5d7607a49740f0d70a2d5186f05d6daaa37a167df21cec18c8",
+      "scripts/physics/brain.py": "318240ff635e2a831d112c8bd9d0220455875a130db42ce8b7c3fd1d85dead51",
+      "scripts/physics/obstacles.py": "55f20a9258044a0cf1d03d92ad3e12970a8702ea97031992e39bb93459a417f0",
+      "scripts/physics/odour.py": "46db2578d7092cf95137ddb72a4bcb403330c43aaf65b16bdf62c15ed5b92133",
+      "scripts/memory/runtime.py": "8f1155f2218638e4a2d4b04149295995e2322a002f82c3b60da4c7dca0862637"
+    },
+    "silenced": {
+      "scripts/physics/check-backflip.py": "adb0234a2cebf2121b632cbd0f15a42947a51cac574244be4336d9a0f20dca10",
+      "scripts/physics/backflip.py": "73d571f8e8697159b900cd7d0b890f703cb21bca745e11d45cbc2fe077c3f0e4",
+      "scripts/physics/run.py": "b524e6a722dcae71a6e9b8acb81a85be323ebedd51317919181c55b726ca6343",
+      "scripts/physics/vision.py": "148f932b204f0f5d7607a49740f0d70a2d5186f05d6daaa37a167df21cec18c8",
+      "scripts/physics/brain.py": "318240ff635e2a831d112c8bd9d0220455875a130db42ce8b7c3fd1d85dead51",
+      "scripts/physics/obstacles.py": "55f20a9258044a0cf1d03d92ad3e12970a8702ea97031992e39bb93459a417f0",
+      "scripts/physics/odour.py": "46db2578d7092cf95137ddb72a4bcb403330c43aaf65b16bdf62c15ed5b92133",
+      "scripts/memory/runtime.py": "8f1155f2218638e4a2d4b04149295995e2322a002f82c3b60da4c7dca0862637"
+    },
+    "no-feedback": {
+      "scripts/physics/check-backflip.py": "adb0234a2cebf2121b632cbd0f15a42947a51cac574244be4336d9a0f20dca10",
+      "scripts/physics/backflip.py": "73d571f8e8697159b900cd7d0b890f703cb21bca745e11d45cbc2fe077c3f0e4",
+      "scripts/physics/run.py": "b524e6a722dcae71a6e9b8acb81a85be323ebedd51317919181c55b726ca6343",
+      "scripts/physics/vision.py": "148f932b204f0f5d7607a49740f0d70a2d5186f05d6daaa37a167df21cec18c8",
+      "scripts/physics/brain.py": "318240ff635e2a831d112c8bd9d0220455875a130db42ce8b7c3fd1d85dead51",
+      "scripts/physics/obstacles.py": "55f20a9258044a0cf1d03d92ad3e12970a8702ea97031992e39bb93459a417f0",
+      "scripts/physics/odour.py": "46db2578d7092cf95137ddb72a4bcb403330c43aaf65b16bdf62c15ed5b92133",
+      "scripts/memory/runtime.py": "8f1155f2218638e4a2d4b04149295995e2322a002f82c3b60da4c7dca0862637"
+    }
+  },
   "runs": {
     "driven": {
       "displacementMm": 11.147040823040795,
       "finalHeightMm": 1.128747,
-      "wallSeconds": 14.542385875000036,
+      "wallSeconds": 49.300328417000856,
       "neurons": 166700,
       "effectiveSignedEdges": 24469412,
       "recordedNeurons": 756,
@@ -24,7 +61,7 @@
     "silenced": {
       "displacementMm": 0.1258385551728881,
       "finalHeightMm": 1.016512,
-      "wallSeconds": 14.342420041997684,
+      "wallSeconds": 48.77843066599962,
       "neurons": 166700,
       "effectiveSignedEdges": 24469412,
       "recordedNeurons": 756,
@@ -35,7 +72,7 @@
     "no-feedback": {
       "displacementMm": 10.921696683662388,
       "finalHeightMm": 1.127491,
-      "wallSeconds": 14.420818041002349,
+      "wallSeconds": 48.792487957998674,
       "neurons": 166700,
       "effectiveSignedEdges": 24469412,
       "recordedNeurons": 756,
@@ -43,10 +80,5 @@
       "physicsStepSeconds": 0.0001,
       "neuralStepSeconds": 0.01
     }
-  },
-  "sourceChecksums": {
-    "data/malecns/neurotransmitters.feather": "95c9289220663abeb3409f3ad9e5a7f8a53f8093f5139d15502cd08da8879621",
-    "scripts/physics/brain.py": "318240ff635e2a831d112c8bd9d0220455875a130db42ce8b7c3fd1d85dead51",
-    "scripts/physics/run.py": "00ef5bdd79fb35500eecadf0aa09c8034cd88c8df11d13998acf36831ccb0192"
   }
 }

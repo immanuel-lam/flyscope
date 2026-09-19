@@ -1,5 +1,5 @@
 """Run MuJoCo physics and full-connectome rate dynamics on one fixed clock."""
-import argparse,json,time,sys
+import argparse,json,time,sys,hashlib
 from pathlib import Path
 import numpy as np
 import mujoco
@@ -20,6 +20,9 @@ def rounded(a): return np.asarray(a).round(6).tolist()
 
 def run(duration=2,drive=1,turn=0,silenced=False,feedback=True,output=None,vision=False,vision_control=True,target=(12,4),odour=False,odour_control=True,obstacles=False,avoidance=True,layout="training",memory=False,cue_side="left",reset_memory=False,backflip=False):
     start=time.perf_counter()
+    source_files=[*Path(__file__).parent.glob('*.py'),ROOT/'scripts/memory/runtime.py']
+    if memory:source_files.append(ROOT/'models/malecns-cue-memory/runtime.npz')
+    source_checksums={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in source_files}
     print(json.dumps({'phase':'Loading whole-connectome neural model'}),flush=True)
     brain=ConnectomeBrain()
     memory_model=CueMemory() if memory else None
@@ -31,8 +34,16 @@ def run(duration=2,drive=1,turn=0,silenced=False,feedback=True,output=None,visio
     world.add_fly(fly,spawn_position=[0,0,0.3],spawn_rotation=Rotation3D('quat',[1,0,0,0]),add_ground_contact_sensors=False)
     sim=Simulation(world);sim.reset();mujoco.mj_forward(sim.mj_model,sim.mj_data)
     ctrl=HybridTurningController(timestep=sim.timestep);ctrl.reset(seed=0)
-    body_ids=sim._internal_bodyids_by_fly[fly.name]
-    body_names=[b.name for b in fly.get_bodysegs_order()]
+    raw_body_ids=sim._internal_bodyids_by_fly[fly.name]
+    # Fixed segments can be fused into their parent. A missing ID (-1) must not
+    # index the final MuJoCo body and fabricate a transform for that segment.
+    compiled_indices=np.flatnonzero(np.asarray(raw_body_ids)>=0)
+    body_ids=np.asarray(raw_body_ids)[compiled_indices]
+    source_names=[b.name for b in fly.get_bodysegs_order()]
+    body_names=[source_names[int(i)] for i in compiled_indices]
+    if len(set(body_ids.tolist()))!=len(body_ids):raise ValueError('Duplicate compiled body mapping')
+    for name,body_id in zip(body_names,body_ids):
+        if mujoco.mj_id2name(sim.mj_model,mujoco.mjtObj.mjOBJ_BODY,int(body_id))!=fly.name+'/'+name:raise ValueError('Compiled body name mismatch')
     range_sensor=RangeSensor(sim,mujoco.mj_name2id(sim.mj_model,mujoco.mjtObj.mjOBJ_GEOM,fly.name+'/c_head'),int(body_ids[body_names.index('c_thorax')])) if obstacles else None
     flip=BackflipAssist(sim,int(body_ids[0])) if backflip else None
     flip_frames=[];flip_state=None
@@ -86,8 +97,8 @@ def run(duration=2,drive=1,turn=0,silenced=False,feedback=True,output=None,visio
         if flip:flip_state=flip.step(step*sim.timestep,signal)
         if step%stride==0 or step==steps:
             if flip:flip_frames.append({'time':round(step*sim.timestep,6),**flip_state})
-            positions=sim.get_body_positions(fly.name)-origin
-            rotations=sim.get_body_rotations(fly.name)
+            positions=sim.get_body_positions(fly.name)[compiled_indices]-origin
+            rotations=sim.get_body_rotations(fly.name)[compiled_indices]
             frames.append({'positions':rounded(positions.ravel()),'quaternions':rounded(rotations.ravel()),'contacts':int(sim.mj_data.ncon),'drive':rounded(signal),'feedback':rounded(contacts)})
             if memory_model:memory_samples.append(memory_model.state.copy())
             samples.append(brain.rates[brain.recorded].copy());times.append(round(step*sim.timestep,6))
@@ -98,7 +109,7 @@ def run(duration=2,drive=1,turn=0,silenced=False,feedback=True,output=None,visio
     values=np.stack(samples)
     activity={'kind':'simulation','unit':'normalized rate (a.u.)','times':times,'values':{brain.rows[int(idx)][0]:rounded(values[:,j]) for j,idx in enumerate(brain.recorded)}}
     first=np.array(frames[0]['positions'][:3]);last=np.array(frames[-1]['positions'][:3])
-    result={'schemaVersion':1,'rig':'neuromechfly-2.1.0','datasetId':brain.catalog['id'],'datasetVersion':brain.catalog['version'],'times':times,'frames':frames,'geometry':geometry,'bodyNames':[b.name for b in fly.get_bodysegs_order()],'activity':activity,
+    result={'sourceChecksums':source_checksums,'schemaVersion':1,'rig':'neuromechfly-2.1.0','datasetId':brain.catalog['id'],'datasetVersion':brain.catalog['version'],'times':times,'frames':frames,'geometry':geometry,'bodyNames':body_names,'compiledBodyIds':body_ids.tolist(),'activity':activity,
       'parameters':{'duration':duration,'drive':drive,'turn':turn,'silenced':silenced,'feedback':feedback,'seed':0,'vision':vision,'visionControl':vision_control,'target':list(target),'odour':odour,'odourControl':odour_control,'obstacles':obstacles,'avoidance':avoidance,'layout':layout,'memory':memory,'cueSide':cue_side,'resetMemory':reset_memory,'backflip':backflip},
       'metrics':{'displacementMm':float(np.linalg.norm((last-first)[:2])),'finalHeightMm':float(last[2]),'wallSeconds':time.perf_counter()-start,'neurons':len(brain.rows),'effectiveSignedEdges':brain.weights.nnz,'recordedNeurons':len(brain.recorded),'maxContacts':max(f['contacts'] for f in frames),'physicsStepSeconds':sim.timestep,'neuralStepSeconds':brain.dt},
       'provenance':{'physics':'NeuroMechFly/FlyGym 2.1.0, MuJoCo 3.9.0; position actuators, gravity, collision contacts and adhesion; seed 0','brain':'MaleCNS v1.0 weighted graph; engineered rectified tanh rate dynamics, tau 50 ms, row-normalized signed recurrence gain 0.9. ACh +1, GABA/Glu -1, other/unknown zero: assumed receptor-independent signs, not validated dynamics.','mapping':'Drive stimulates side-labelled descending neurons. Thoracic motor population means x24 feed the published hybrid CPG controller. Ground-contact counts feed side-labelled VNC sensory populations. These are engineered population mappings, not identified sensor-to-cell or muscle-to-cell connections.','recording':'All classified neurons are simulated. Only decoder neurons and 256 distributed input/sensory/intermediate cells are recorded for display. Missing cells have no displayed sample, not measured zero.','geometry':'Actual simulator mesh and body transforms in mm, source X forward/Y left/Z up. Neural overlay registration remains illustrative. Wings are passive; no flight simulation.'}}
