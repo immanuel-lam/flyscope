@@ -1,0 +1,19 @@
+node_modules/
+dist/
+.DS_Store
+test-results/
+playwright-report/
+__pycache__/
+*.pyc
+examples/neural-motor-run.json
+.venv/
+data/
+public/malecns/
+
+.venv-physics/
+
+# Local credentials and generated browser screenshots
+.env
+.env.*
+!.env.example
+tests/*.png

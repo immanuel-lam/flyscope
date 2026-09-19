@@ -1,0 +1,5 @@
+flygym==2.1.0
+mujoco==3.9.0
+numpy==2.5.3
+scipy==1.18.1
+pyarrow==25.0.1

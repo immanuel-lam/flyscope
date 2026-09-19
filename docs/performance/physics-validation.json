@@ -1,0 +1,52 @@
+{
+  "checks": [
+    "physical displacement",
+    "neural silencing",
+    "contact feedback changes neural output and trajectory",
+    "finite body transforms",
+    "unit quaternions",
+    "silent input",
+    "deterministic neural dynamics",
+    "graph ablation stops descending drive"
+  ],
+  "runs": {
+    "driven": {
+      "displacementMm": 11.147040823040795,
+      "finalHeightMm": 1.128747,
+      "wallSeconds": 14.542385875000036,
+      "neurons": 166700,
+      "effectiveSignedEdges": 24469412,
+      "recordedNeurons": 756,
+      "maxContacts": 12,
+      "physicsStepSeconds": 0.0001,
+      "neuralStepSeconds": 0.01
+    },
+    "silenced": {
+      "displacementMm": 0.1258385551728881,
+      "finalHeightMm": 1.016512,
+      "wallSeconds": 14.342420041997684,
+      "neurons": 166700,
+      "effectiveSignedEdges": 24469412,
+      "recordedNeurons": 756,
+      "maxContacts": 12,
+      "physicsStepSeconds": 0.0001,
+      "neuralStepSeconds": 0.01
+    },
+    "no-feedback": {
+      "displacementMm": 10.921696683662388,
+      "finalHeightMm": 1.127491,
+      "wallSeconds": 14.420818041002349,
+      "neurons": 166700,
+      "effectiveSignedEdges": 24469412,
+      "recordedNeurons": 756,
+      "maxContacts": 12,
+      "physicsStepSeconds": 0.0001,
+      "neuralStepSeconds": 0.01
+    }
+  },
+  "sourceChecksums": {
+    "data/malecns/neurotransmitters.feather": "95c9289220663abeb3409f3ad9e5a7f8a53f8093f5139d15502cd08da8879621",
+    "scripts/physics/brain.py": "318240ff635e2a831d112c8bd9d0220455875a130db42ce8b7c3fd1d85dead51",
+    "scripts/physics/run.py": "00ef5bdd79fb35500eecadf0aa09c8034cd88c8df11d13998acf36831ccb0192"
+  }
+}

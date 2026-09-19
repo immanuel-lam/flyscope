@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "adapter-fixture",
+  "name": "External pose adapter fixture",
+  "source": "Synthetic test geometry; no measured neurons",
+  "version": "1",
+  "geometry": "synthetic",
+  "coordinateSpace": "fixture",
+  "units": "arbitrary",
+  "neurons": [
+    {
+      "id": "fixture-0",
+      "label": "Fixture neuron",
+      "region": "Fixture",
+      "position": [
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "edges": []
+}

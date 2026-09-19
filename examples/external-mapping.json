@@ -1,0 +1,78 @@
+{
+  "time": {
+    "column": "time"
+  },
+  "x": {
+    "column": "x"
+  },
+  "y": {
+    "column": "y"
+  },
+  "z": {
+    "column": "z"
+  },
+  "heading": {
+    "column": "heading"
+  },
+  "LF.sweep": {
+    "column": "lf_sweep_degrees",
+    "scale": 0.017453292519943295
+  },
+  "LF.lift": {
+    "constant": 0
+  },
+  "LF.knee": {
+    "constant": 0
+  },
+  "LM.sweep": {
+    "constant": 0
+  },
+  "LM.lift": {
+    "constant": 0
+  },
+  "LM.knee": {
+    "constant": 0
+  },
+  "LH.sweep": {
+    "constant": 0
+  },
+  "LH.lift": {
+    "constant": 0
+  },
+  "LH.knee": {
+    "constant": 0
+  },
+  "RF.sweep": {
+    "constant": 0
+  },
+  "RF.lift": {
+    "constant": 0
+  },
+  "RF.knee": {
+    "constant": 0
+  },
+  "RM.sweep": {
+    "constant": 0
+  },
+  "RM.lift": {
+    "constant": 0
+  },
+  "RM.knee": {
+    "constant": 0
+  },
+  "RH.sweep": {
+    "constant": 0
+  },
+  "RH.lift": {
+    "constant": 0
+  },
+  "RH.knee": {
+    "constant": 0
+  },
+  "wing.L": {
+    "constant": 0
+  },
+  "wing.R": {
+    "constant": 0
+  }
+}

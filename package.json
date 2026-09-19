@@ -1,0 +1,44 @@
+{
+  "name": "flyscope",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "test:browser": "playwright test",
+    "new:controller": "node scripts/new-controller.mjs",
+    "example:motor": "node --experimental-strip-types scripts/export-example.ts",
+    "validate:dataset": "node --experimental-strip-types scripts/validate-dataset.ts",
+    "prepare:malecns": ".venv/bin/python scripts/prepare-malecns.py --graph --anchors",
+    "benchmark:large": "node scripts/benchmark-large.mjs",
+    "setup:physics": "sh scripts/setup-physics.sh",
+    "simulate:physics": ".venv-physics/bin/python scripts/physics/run.py",
+    "test:physics": ".venv-physics/bin/python tests/physics_checks.py"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "@fontsource/geist": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "lucide-react": "^1.47.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "three": "^0.186.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/three": "^0.186.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "prettier": "^3.9.8",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.0"
+  }
+}

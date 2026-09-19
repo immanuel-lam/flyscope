@@ -1,0 +1,39 @@
+{
+  "timestamp": "2026-09-19T11:52:03.816Z",
+  "environment": "Headless Chromium with SwiftShader software rendering, 1440x1000; local Vite dev server. RAF timings are scheduling, not a physical-GPU FPS claim.",
+  "loadMs": 3447.017417,
+  "searchMs": 66.16720800000621,
+  "rafMedianMs": 166.60000000000218,
+  "rafP95Ms": 166.70000000000437,
+  "longTasks": [
+    2052,
+    354,
+    103,
+    461,
+    481,
+    51
+  ],
+  "heap": {
+    "used": 123000000,
+    "total": 123000000
+  },
+  "canvases": [
+    {
+      "engine": "three.js r186",
+      "drawCalls": "4",
+      "points": "166700",
+      "lines": "16998",
+      "geometries": "4"
+    },
+    {
+      "engine": "three.js r186",
+      "drawCalls": "47",
+      "points": "166700",
+      "lines": "17048",
+      "geometries": "47"
+    }
+  ],
+  "status": "166,700 cells · 166,700 source positionsSkeletons load on selection. No invented activity.Catalog 12.5 MB · worker 104 ms · 1,426 outgoing partners for selected cell",
+  "detail": "15942 / 15942 segments · 311 KBPosition: soma. Status: Traced.SELECTED NEURONDNge104_R12781Regiondescending neuronGeometryReconstructedSegments15,942Outgoing edges1426Activity— No activity data0 s0.0 sStructure only. Import a JSON dataset with activity to play a recording or simulation.",
+  "errors": []
+}
