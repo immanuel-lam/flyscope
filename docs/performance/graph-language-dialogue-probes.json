@@ -1,0 +1,721 @@
+{
+  "checkpointSha256": "bdd66ff9b9e173f9e0f4f9f81f6c053dc702105602833b78b7bff3368ae5b707",
+  "trainingHistoryAtExport": {
+    "step": 10000,
+    "loss": 2.986994981765747,
+    "validationLoss": 3.0843207836151123,
+    "seconds": 519.9420316249998
+  },
+  "parameters": 3803392,
+  "replies": [
+    {
+      "prompt": "hi",
+      "text": "The book, the book is a brief, and I'm a bit of a book that's been a lot of books. The book is a bit of a lot of books,",
+      "tokenIds": [
+        401,
+        289,
+        1001,
+        16,
+        267,
+        289,
+        1001,
+        315,
+        262,
+        289,
+        399,
+        709,
+        16,
+        288,
+        326,
+        989,
+        262,
+        2005,
+        294,
+        262,
+        289,
+        1001,
+        335,
+        354,
+        871,
+        262,
+        311,
+        330,
+        294,
+        289,
+        622,
+        603,
+        18,
+        401,
+        289,
+        1001,
+        315,
+        262,
+        2005,
+        294,
+        262,
+        311,
+        330,
+        294,
+        289,
+        622,
+        603,
+        16
+      ],
+      "elapsedSeconds": 1.9066872500006866,
+      "tokensPerSecond": 25.174553404069133,
+      "engine": "NumPy CPU",
+      "ablated": false
+    },
+    {
+      "prompt": "who are you?",
+      "text": "The book, I'm a bit about the little bit of a book, but I'm a bit of a little bit of a lot of a lot of book. I'm a bit of a",
+      "tokenIds": [
+        401,
+        289,
+        1001,
+        16,
+        326,
+        989,
+        262,
+        2005,
+        579,
+        267,
+        311,
+        278,
+        1637,
+        2005,
+        294,
+        262,
+        289,
+        1001,
+        16,
+        564,
+        326,
+        989,
+        262,
+        2005,
+        294,
+        262,
+        311,
+        278,
+        1637,
+        2005,
+        294,
+        262,
+        311,
+        330,
+        294,
+        262,
+        311,
+        330,
+        294,
+        289,
+        1001,
+        18,
+        326,
+        989,
+        262,
+        2005,
+        294,
+        262
+      ],
+      "elapsedSeconds": 1.8766295409986924,
+      "tokensPerSecond": 25.57777065283523,
+      "engine": "NumPy CPU",
+      "ablated": false
+    },
+    {
+      "prompt": "what is a cat?",
+      "text": "The brilliant and a catalyst for the crime scene, and I'm a bit of a piece of a piece of piece. The bright is a p",
+      "tokenIds": [
+        401,
+        289,
+        399,
+        322,
+        77,
+        355,
+        288,
+        262,
+        271,
+        269,
+        281,
+        93,
+        325,
+        337,
+        267,
+        271,
+        86,
+        532,
+        1837,
+        73,
+        16,
+        288,
+        326,
+        989,
+        262,
+        2005,
+        294,
+        262,
+        285,
+        508,
+        321,
+        294,
+        262,
+        285,
+        508,
+        321,
+        294,
+        285,
+        508,
+        321,
+        18,
+        401,
+        289,
+        86,
+        424,
+        315,
+        262,
+        285
+      ],
+      "elapsedSeconds": 1.8828401249993476,
+      "tokensPerSecond": 25.493401889348746,
+      "engine": "NumPy CPU",
+      "ablated": false
+    },
+    {
+      "prompt": "what is a tree?",
+      "text": "The book is a brief, a brief explanation of the book. I'm a bit of a biggery, and I'm a bit of a bit of a lot of breath",
+      "tokenIds": [
+        401,
+        289,
+        1001,
+        315,
+        262,
+        289,
+        399,
+        709,
+        16,
+        262,
+        289,
+        399,
+        709,
+        799,
+        283,
+        319,
+        294,
+        267,
+        289,
+        1001,
+        18,
+        326,
+        989,
+        262,
+        2005,
+        294,
+        262,
+        289,
+        334,
+        1746,
+        93,
+        16,
+        288,
+        326,
+        989,
+        262,
+        2005,
+        294,
+        262,
+        2005,
+        294,
+        262,
+        311,
+        330,
+        294,
+        289,
+        831,
+        76
+      ],
+      "elapsedSeconds": 1.919949417002499,
+      "tokensPerSecond": 25.0006586501323,
+      "engine": "NumPy CPU",
+      "ablated": false
+    },
+    {
+      "prompt": "what is two plus three?",
+      "text": "The base of the base of the base of the base of the base of the base of the base.\n\nThe baseble is the base of the base of the base.",
+      "tokenIds": [
+        401,
+        289,
+        536,
+        294,
+        267,
+        289,
+        536,
+        294,
+        267,
+        289,
+        536,
+        294,
+        267,
+        289,
+        536,
+        294,
+        267,
+        289,
+        536,
+        294,
+        267,
+        289,
+        536,
+        294,
+        267,
+        289,
+        536,
+        18,
+        203,
+        203,
+        575,
+        289,
+        536,
+        70,
+        296,
+        315,
+        267,
+        289,
+        536,
+        294,
+        267,
+        289,
+        536,
+        294,
+        267,
+        289,
+        536,
+        18
+      ],
+      "elapsedSeconds": 1.8709682090011484,
+      "tokensPerSecond": 25.655166009274794,
+      "engine": "NumPy CPU",
+      "ablated": false
+    },
+    {
+      "prompt": "I feel sad today.",
+      "text": "I'm excited to help you with a lot of my own body, but I'm a bit of a lot of my life. I'm not sure I'm not sure I'm not sure I'm not sure I'm",
+      "tokenIds": [
+        326,
+        989,
+        1659,
+        1334,
+        290,
+        573,
+        314,
+        359,
+        262,
+        311,
+        330,
+        294,
+        585,
+        1097,
+        289,
+        2003,
+        16,
+        564,
+        326,
+        989,
+        262,
+        2005,
+        294,
+        262,
+        311,
+        330,
+        294,
+        585,
+        1256,
+        18,
+        326,
+        989,
+        465,
+        1785,
+        326,
+        989,
+        465,
+        1785,
+        326,
+        989,
+        465,
+        1785,
+        326,
+        989,
+        465,
+        1785,
+        326,
+        989
+      ],
+      "elapsedSeconds": 1.8745972079996136,
+      "tokensPerSecond": 25.60550063510491,
+      "engine": "NumPy CPU",
+      "ablated": false
+    }
+  ],
+  "limitations": "Qualitative development probes, not held-out quality measurement. Timing includes full CPU graph recomputation per generated token, while MLX training may be running.",
+  "parity": [
+    {
+      "ablated": false,
+      "maxLogitError": 2.384185791015625e-05,
+      "maxStateError": 0.000244140625
+    },
+    {
+      "ablated": true,
+      "maxLogitError": 1.239776611328125e-05,
+      "maxStateError": 0.000213623046875
+    }
+  ],
+  "training": {
+    "arguments": {
+      "steps": 10000,
+      "batch": 8,
+      "width": 256,
+      "layers": 4,
+      "run": "run-2",
+      "init": "data/graph-language/run-1/weights.safetensors"
+    },
+    "seed": 163,
+    "parameters": 3803392,
+    "baseCheckpointSha256": "6662d701bb28927b74333b27f92fb3133734630b972f16d375c06a2e4effe3fa",
+    "initialValidationLoss": 3.2215375900268555,
+    "bestValidationLoss": 3.076870918273926,
+    "history": [
+      {
+        "step": 1,
+        "loss": 3.0849609375,
+        "validationLoss": 3.2214560508728027,
+        "seconds": 0.18461150000075577
+      },
+      {
+        "step": 200,
+        "loss": 2.7153191566467285,
+        "validationLoss": 3.2010445594787598,
+        "seconds": 10.463784874998964
+      },
+      {
+        "step": 400,
+        "loss": 3.433621883392334,
+        "validationLoss": 3.167672634124756,
+        "seconds": 20.82149479200234
+      },
+      {
+        "step": 600,
+        "loss": 2.8125226497650146,
+        "validationLoss": 3.164447546005249,
+        "seconds": 31.20027283300078
+      },
+      {
+        "step": 800,
+        "loss": 3.2275726795196533,
+        "validationLoss": 3.1480984687805176,
+        "seconds": 41.52577250000104
+      },
+      {
+        "step": 1000,
+        "loss": 3.4187731742858887,
+        "validationLoss": 3.1391634941101074,
+        "seconds": 51.84598066699982
+      },
+      {
+        "step": 1200,
+        "loss": 3.404890775680542,
+        "validationLoss": 3.1345033645629883,
+        "seconds": 62.22796108300099
+      },
+      {
+        "step": 1400,
+        "loss": 3.0648181438446045,
+        "validationLoss": 3.132627010345459,
+        "seconds": 72.83057654200093
+      },
+      {
+        "step": 1600,
+        "loss": 3.09362530708313,
+        "validationLoss": 3.1248011589050293,
+        "seconds": 83.56245112499892
+      },
+      {
+        "step": 1800,
+        "loss": 3.2681257724761963,
+        "validationLoss": 3.1268563270568848,
+        "seconds": 94.33837375000076
+      },
+      {
+        "step": 2000,
+        "loss": 3.2462594509124756,
+        "validationLoss": 3.127488613128662,
+        "seconds": 104.97243941700071
+      },
+      {
+        "step": 2200,
+        "loss": 3.078019857406616,
+        "validationLoss": 3.119083881378174,
+        "seconds": 115.49498595800105
+      },
+      {
+        "step": 2400,
+        "loss": 2.966477394104004,
+        "validationLoss": 3.1184380054473877,
+        "seconds": 126.01347449999957
+      },
+      {
+        "step": 2600,
+        "loss": 3.280534505844116,
+        "validationLoss": 3.115212917327881,
+        "seconds": 136.5368244170022
+      },
+      {
+        "step": 2800,
+        "loss": 3.2568297386169434,
+        "validationLoss": 3.1103835105895996,
+        "seconds": 147.01276908300133
+      },
+      {
+        "step": 3000,
+        "loss": 3.481731414794922,
+        "validationLoss": 3.1085684299468994,
+        "seconds": 157.48772962500152
+      },
+      {
+        "step": 3200,
+        "loss": 3.34855055809021,
+        "validationLoss": 3.110884666442871,
+        "seconds": 167.99551429200073
+      },
+      {
+        "step": 3400,
+        "loss": 3.1143007278442383,
+        "validationLoss": 3.1087710857391357,
+        "seconds": 178.60417245799908
+      },
+      {
+        "step": 3600,
+        "loss": 2.787632703781128,
+        "validationLoss": 3.1125173568725586,
+        "seconds": 189.22806924999895
+      },
+      {
+        "step": 3800,
+        "loss": 3.474027633666992,
+        "validationLoss": 3.109647750854492,
+        "seconds": 199.796820208001
+      },
+      {
+        "step": 4000,
+        "loss": 3.4662046432495117,
+        "validationLoss": 3.1049439907073975,
+        "seconds": 210.2917506670019
+      },
+      {
+        "step": 4200,
+        "loss": 3.254223585128784,
+        "validationLoss": 3.100132942199707,
+        "seconds": 220.82116533299995
+      },
+      {
+        "step": 4400,
+        "loss": 2.8317043781280518,
+        "validationLoss": 3.0895965099334717,
+        "seconds": 231.38675991700075
+      },
+      {
+        "step": 4600,
+        "loss": 3.1864335536956787,
+        "validationLoss": 3.0913093090057373,
+        "seconds": 241.8674897919991
+      },
+      {
+        "step": 4800,
+        "loss": 2.972689628601074,
+        "validationLoss": 3.095611095428467,
+        "seconds": 252.34100633300113
+      },
+      {
+        "step": 5000,
+        "loss": 2.7708914279937744,
+        "validationLoss": 3.0977869033813477,
+        "seconds": 262.8187110830004
+      },
+      {
+        "step": 5200,
+        "loss": 3.039466619491577,
+        "validationLoss": 3.0939226150512695,
+        "seconds": 273.2637015
+      },
+      {
+        "step": 5400,
+        "loss": 2.765479326248169,
+        "validationLoss": 3.0975096225738525,
+        "seconds": 283.6342278330012
+      },
+      {
+        "step": 5600,
+        "loss": 3.019573211669922,
+        "validationLoss": 3.0959558486938477,
+        "seconds": 293.9691465830001
+      },
+      {
+        "step": 5800,
+        "loss": 3.232693672180176,
+        "validationLoss": 3.097559928894043,
+        "seconds": 304.2802127499999
+      },
+      {
+        "step": 6000,
+        "loss": 3.379823684692383,
+        "validationLoss": 3.100156784057617,
+        "seconds": 314.54598862499915
+      },
+      {
+        "step": 6200,
+        "loss": 2.9434702396392822,
+        "validationLoss": 3.093522787094116,
+        "seconds": 324.73144387499997
+      },
+      {
+        "step": 6400,
+        "loss": 3.390458583831787,
+        "validationLoss": 3.0843653678894043,
+        "seconds": 334.8968679169993
+      },
+      {
+        "step": 6600,
+        "loss": 3.034058094024658,
+        "validationLoss": 3.087322473526001,
+        "seconds": 345.1121723750002
+      },
+      {
+        "step": 6800,
+        "loss": 3.003473997116089,
+        "validationLoss": 3.085803985595703,
+        "seconds": 355.32066104200203
+      },
+      {
+        "step": 7000,
+        "loss": 2.742131233215332,
+        "validationLoss": 3.0896286964416504,
+        "seconds": 365.5461283330005
+      },
+      {
+        "step": 7200,
+        "loss": 3.3416314125061035,
+        "validationLoss": 3.0931551456451416,
+        "seconds": 375.83002591699915
+      },
+      {
+        "step": 7400,
+        "loss": 2.926851272583008,
+        "validationLoss": 3.0928688049316406,
+        "seconds": 386.12195758300004
+      },
+      {
+        "step": 7600,
+        "loss": 3.110795736312866,
+        "validationLoss": 3.0899763107299805,
+        "seconds": 396.4792574580024
+      },
+      {
+        "step": 7800,
+        "loss": 3.467715263366699,
+        "validationLoss": 3.091829776763916,
+        "seconds": 406.7986210420022
+      },
+      {
+        "step": 8000,
+        "loss": 3.02594256401062,
+        "validationLoss": 3.0892839431762695,
+        "seconds": 417.13416916700226
+      },
+      {
+        "step": 8200,
+        "loss": 2.8027098178863525,
+        "validationLoss": 3.086216449737549,
+        "seconds": 427.42936808300146
+      },
+      {
+        "step": 8400,
+        "loss": 2.9471678733825684,
+        "validationLoss": 3.0783143043518066,
+        "seconds": 437.72040183300123
+      },
+      {
+        "step": 8600,
+        "loss": 3.3236465454101562,
+        "validationLoss": 3.081136703491211,
+        "seconds": 447.9900756669995
+      },
+      {
+        "step": 8800,
+        "loss": 2.990454912185669,
+        "validationLoss": 3.076870918273926,
+        "seconds": 458.2787375830012
+      },
+      {
+        "step": 9000,
+        "loss": 3.154771327972412,
+        "validationLoss": 3.0783767700195312,
+        "seconds": 468.56165454200163
+      },
+      {
+        "step": 9200,
+        "loss": 2.9678266048431396,
+        "validationLoss": 3.0909018516540527,
+        "seconds": 478.84511983300035
+      },
+      {
+        "step": 9400,
+        "loss": 3.3489174842834473,
+        "validationLoss": 3.0806498527526855,
+        "seconds": 489.1116152079994
+      },
+      {
+        "step": 9600,
+        "loss": 3.2003707885742188,
+        "validationLoss": 3.081132173538208,
+        "seconds": 499.4028343329992
+      },
+      {
+        "step": 9800,
+        "loss": 2.315746545791626,
+        "validationLoss": 3.079982280731201,
+        "seconds": 509.6626229169997
+      },
+      {
+        "step": 10000,
+        "loss": 2.986994981765747,
+        "validationLoss": 3.0843207836151123,
+        "seconds": 519.9420316249998
+      }
+    ],
+    "assumptions": "128 token slots mapped to distinct input/readout source cells. Causal source-edge attention, local self-retention and local feed-forward operations. Engineered feature vectors, not biological compartments. No external LM or logits bypass.",
+    "objective": "Assistant token cross entropy, conversation-bounded left-padded windows; uniform reply and within-reply target sampling.",
+    "source": {
+      "sourceSha256": "498cd4580014f42c40cfde066573564ed28e3e1548a5566715b615f5ea932856",
+      "splitRule": "Same non-system conversation hash as base training; no changes to base arrays.",
+      "objective": "Assistant next-token loss only; conversation-bounded, left-padded windows matching CPU inference.",
+      "splits": {
+        "train": {
+          "replies": 252324,
+          "tokensVerified": 141869735,
+          "spansSha256": "1e30a1422b99102ba6752a1951bb5a7ed9baf873bd7f67487b0f4986fb073f86"
+        },
+        "validation": {
+          "replies": 2547,
+          "tokensVerified": 1449580,
+          "spansSha256": "6d2436ea78fa65d7650d95a6fa3553c4113609358bce2f9190f5b81b3b3cfd6c"
+        },
+        "test": {
+          "replies": 2668,
+          "tokensVerified": 1438914,
+          "spansSha256": "6ae00dff7b27dffd3734dd35c5e14a4d6e09e42897010882fecabfba70a88b0a"
+        }
+      }
+    }
+  },
+  "decision": "Rejected for deployment: all six simple probes are irrelevant or repetitive. Passing structural and numerical tests does not establish useful replies."
+}
