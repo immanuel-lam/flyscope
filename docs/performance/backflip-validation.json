@@ -1,0 +1,10 @@
+{
+  "achievedMinimumPitchRadians": -6.458129820247059,
+  "achievedFinalPitchRadians": -6.313957450703071,
+  "maximumHeightMm": 9.02404,
+  "finalHeightMm": 1.127579,
+  "finalUprightCosine": 0.99888383375,
+  "finalContacts": 8,
+  "silencedAssistActive": false,
+  "limitations": "Fixed-seed externally assisted stunt. Neural output gates the assist; the network did not learn a biological backflip."
+}

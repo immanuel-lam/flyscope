@@ -31,7 +31,7 @@ export function physicsPlugin(): Plugin {
         let body='';for await(const chunk of req){body+=chunk;if(body.length>2048)throw new Error('Request too large');}
         const p=JSON.parse(body);
         if(!Number.isFinite(p.duration)||p.duration<0.5||p.duration>5||!Number.isFinite(p.drive)||p.drive<0||p.drive>2||!Number.isFinite(p.turn)||p.turn< -1||p.turn>1||typeof p.silenced!=='boolean'||typeof p.feedback!=='boolean')throw new Error('Invalid physics parameters');
-        for(const key of ['odour','odourControl','obstacles','avoidance','memory','resetMemory'])if(p[key]!==undefined&&typeof p[key]!=='boolean')throw new Error('Invalid odour option');
+        for(const key of ['odour','odourControl','obstacles','avoidance','memory','resetMemory','backflip'])if(p[key]!==undefined&&typeof p[key]!=='boolean')throw new Error('Invalid odour option');
         if(p.vision!==undefined&&typeof p.vision!=='boolean')throw new Error('Invalid vision option');
         if(p.visionControl!==undefined&&typeof p.visionControl!=='boolean')throw new Error('Invalid vision control option');
         if(p.targetY!==undefined&&![4,-4].includes(p.targetY))throw new Error('Invalid target position');
@@ -41,7 +41,7 @@ export function physicsPlugin(): Plugin {
         const python=resolve(root,'.venv-physics/bin/python');
         if(!existsSync(python))throw new Error('Physics runtime missing. Run npm run setup:physics.');
         state={state:'running',phase:'Starting simulator',progress:0};
-        child=spawn(python,[resolve(root,'scripts/physics/run.py'),'--duration',String(p.duration),'--drive',String(p.drive),'--turn',String(p.turn),...(p.silenced?['--silenced']:[]),...(!p.feedback?['--no-feedback']:[]),...(p.vision?['--vision']:[]),...((p.vision||p.odour)?['--target-y',String(p.targetY??4)]:[]),...(p.odour?['--odour']:[]),...(p.odourControl===false?['--no-odour-control']:[]),...(p.obstacles?['--obstacles','--layout',p.layout??'training']:[]),...(p.avoidance===false?['--no-avoidance']:[]),...(p.memory?['--memory','--cue-side',p.cueSide??'left']:[]),...(p.resetMemory?['--reset-memory']:[]),...(p.visionControl===false?['--no-vision-control']:[])],{cwd:root,stdio:['ignore','pipe','pipe']});
+        child=spawn(python,[resolve(root,'scripts/physics/run.py'),'--duration',String(p.duration),'--drive',String(p.drive),'--turn',String(p.turn),...(p.silenced?['--silenced']:[]),...(!p.feedback?['--no-feedback']:[]),...(p.vision?['--vision']:[]),...((p.vision||p.odour)?['--target-y',String(p.targetY??4)]:[]),...(p.odour?['--odour']:[]),...(p.odourControl===false?['--no-odour-control']:[]),...(p.obstacles?['--obstacles','--layout',p.layout??'training']:[]),...(p.avoidance===false?['--no-avoidance']:[]),...(p.memory?['--memory','--cue-side',p.cueSide??'left']:[]),...(p.resetMemory?['--reset-memory']:[]),...(p.backflip?['--backflip']:[]),...(p.visionControl===false?['--no-vision-control']:[])],{cwd:root,stdio:['ignore','pipe','pipe']});
         let pending='',stderr='';
         child.stdout?.on('data',chunk=>{pending+=chunk;let i;while((i=pending.indexOf('\n'))>=0){const line=pending.slice(0,i);pending=pending.slice(i+1);try{const v=JSON.parse(line);state={state:'running',phase:v.phase,progress:v.progress};}catch{}}});
         child.stderr?.on('data',chunk=>{stderr=(stderr+chunk).slice(-3000);});

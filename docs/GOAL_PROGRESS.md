@@ -16,4 +16,4 @@ Chat now uses a pending “Thinking…” indicator and leaves anatomy idle; no 
 
 Language follow-up: v3 uses deduplicated external assistant-token training. Prompt-conditioning tests show lower loss with the matching input, but generated semantics remain poor. Computation inspection shows measured recurrent states and source edges with no automatic replay. Authored Q&A files removed.
 
-Follow-up: dedicated live FlyGPT workspace, 5k structural rendering budget with all 512 model activity cells, larger chat, end-to-end tokens/s, and read-only weight inspection command. Intelligence remains unproven; no canned response fallback. Backflip physics experiment added to requested follow-up work.
+Follow-up: dedicated live FlyGPT workspace, 5k structural rendering budget with all 512 model activity cells, larger chat, end-to-end tokens/s, and read-only weight inspection command. Intelligence remains unproven; no canned response fallback. Assisted backflip implemented and verified with actual rotation, landing and neural-silencing checks. It uses explicitly labelled external force/torque, not a learned biological skill.

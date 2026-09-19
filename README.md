@@ -135,3 +135,5 @@ local odour experiments sample a defined field at both simulated antennae and ro
 local obstacle experiments use physical collisions and artificial head-mounted range rays. the panel shows sensor readings and contact time. tests include disabled steering, neural silencing and held-out layouts; avoidance can still touch obstacles or take inefficient detours.
 
 a [trained cue-memory experiment](docs/CUE_MEMORY.md) retains a brief left/right cue during a blank delay, then steers the physical fly. separate overlays show memory states and locomotion rates. reset, untrained, graph-ablation and held-out delay controls are documented. this is binary cue recall, not language reasoning.
+
+an optional assisted backflip applies external lift and torque through mujoco, gated by neural motor output. it completes a measured rotation and landing in the tested run; it is an engineered stunt, not a learned biological motor skill.

@@ -107,3 +107,17 @@ FlyGym uses explicit contact pairs: the obstacles are included in its terrain ge
 Run `.venv-physics/bin/python scripts/physics/run.py --obstacles --layout training --duration 3 --output data/physics/obstacle-training.json`. Layouts are `training`, `offset`, `wide`, `heldout-left`, and `heldout-right`. For each layout, save a matching `obstacle-<layout>-disabled.json` using `--no-avoidance`. Also save `obstacle-silenced.json` using `--silenced`. Run `.venv-physics/bin/python tests/obstacle_checks.py` to verify measured contact reduction, continued movement, the real ray intersections, and the silenced control.
 
 Results are in `performance/obstacle-validation.json`. Contact time fell in all five fixed-seed layouts. Four runs had no obstacle contact; `offset` retained 0.459 seconds of contact versus 1.377 seconds disabled. Both held-out layouts had no contact, but the right layout made only 6.759 mm forward progress versus 17.026 mm disabled: avoidance traded speed for clearance. The tests therefore verify contact reduction and movement, not efficient route completion or universal collision-free navigation. The three development layouts informed implementation; the two held-out layouts were run after the clearance rule was fixed.
+
+## Assisted backflip
+
+Enable **Assisted backflip** to run an explicitly external-force stunt. Once mean neural motor output exceeds 0.1 after 0.6 seconds, a controller applies bounded lift and torque to the thorax for 0.9 seconds. It tracks an 8 mm lift arc and a full backward rotation, then removes all applied forces. MuJoCo integrates the motion and landing; no body poses or joint positions are teleported. Joint locomotion control continues. This is not a learned backflip, biological muscle mapping, flight model, or evidence that the connectome specifies this behavior.
+
+The UI records applied force and torque at each body sample and labels the assist state. The force/torque values use the simulator's model units. Neural activity remains the actual whole-CNS rate output; it gates the external controller but does not generate its trajectory.
+
+```sh
+.venv-physics/bin/python scripts/physics/run.py --backflip --duration 3 --output data/physics/backflip.json
+.venv-physics/bin/python scripts/physics/run.py --backflip --silenced --duration 3 --output data/physics/backflip-silenced.json
+.venv-physics/bin/python tests/backflip_checks.py
+```
+
+The final verified fixed-seed run completed a backward rotation, reached 9.024 mm maximum thorax height, and landed at 1.128 mm with upright cosine 0.999 and eight contact points. The test measures actual recorded body quaternions, not the commanded angle. All external force and torque were zero after the assist ended. Neural silencing prevented activation entirely. Earlier tuning produced an incomplete rotation; only the final measured checkpoint is claimed successful. See `performance/backflip-validation.json`.
